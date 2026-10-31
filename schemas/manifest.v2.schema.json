@@ -1,0 +1,327 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Immutable locked TFL Selection manifest v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "packId",
+    "targetId",
+    "release",
+    "status",
+    "selectionMode",
+    "minecraft",
+    "files"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "packId": {
+      "const": "tfl-selection"
+    },
+    "targetId": {
+      "type": "string",
+      "pattern": "^mc-[a-z0-9][a-z0-9.-]{2,79}$"
+    },
+    "release": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "published"
+      ]
+    },
+    "selectionMode": {
+      "const": "locked"
+    },
+    "publishedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "minimumLauncherVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "minecraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "loader",
+        "javaMajor"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "loader": {
+          "enum": [
+            "ornithe-gen2",
+            "fabric"
+          ]
+        },
+        "javaMajor": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 30
+        },
+        "loaderVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "bootstrap": {
+          "enum": [
+            "launcher-pinned-fabric",
+            "launcher-pinned-ornithe"
+          ]
+        }
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "tag"
+      ],
+      "properties": {
+        "repository": {
+          "const": "TFLivesStudio/TFLSelectionDistribution"
+        },
+        "tag": {
+          "type": "string",
+          "pattern": "^selection-mc-[a-z0-9.-]+-v[0-9A-Za-z.+-]+$"
+        }
+      }
+    },
+    "noticesAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assetName",
+        "sha256",
+        "bytes"
+      ],
+      "properties": {
+        "assetName": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{1,199}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "maxItems": 5000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "path",
+          "sha256",
+          "bytes",
+          "assetName",
+          "installPolicy",
+          "origin"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{1,119}$"
+          },
+          "kind": {
+            "enum": [
+              "mod",
+              "config",
+              "resourcepack",
+              "shaderpack",
+              "asset",
+              "datapack",
+              "loader-bootstrap"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 300
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "assetName": {
+            "type": "string",
+            "pattern": "^sha256-[a-f0-9]{64}\\.bin$"
+          },
+          "installPolicy": {
+            "enum": [
+              "managed",
+              "seed-if-absent"
+            ]
+          },
+          "platforms": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "windows",
+                "linux",
+                "macos"
+              ]
+            }
+          },
+          "architectures": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "x64",
+                "arm64"
+              ]
+            }
+          },
+          "origin": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "project",
+              "projectVersion",
+              "sourceRepository",
+              "sourceRevision",
+              "licenseSpdx",
+              "licenseEvidenceUrl",
+              "redistributionBasis"
+            ],
+            "properties": {
+              "project": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "projectVersion": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "sourceRepository": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https://"
+              },
+              "sourceRevision": {
+                "type": "string",
+                "minLength": 7,
+                "maxLength": 100
+              },
+              "licenseSpdx": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 120
+              },
+              "licenseEvidenceUrl": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https://"
+              },
+              "redistributionBasis": {
+                "enum": [
+                  "owned",
+                  "open-source-license",
+                  "explicit-permission"
+                ]
+              },
+              "permissionEvidenceUrl": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https://"
+              },
+              "correspondingSourceAsset": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "assetName",
+                  "sha256",
+                  "bytes"
+                ],
+                "properties": {
+                  "assetName": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{1,199}$"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "bytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 2147483647
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "published"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "publishedAt",
+          "minimumLauncherVersion",
+          "distribution",
+          "noticesAsset"
+        ],
+        "properties": {
+          "files": {
+            "minItems": 1
+          },
+          "minecraft": {
+            "required": [
+              "version",
+              "loader",
+              "javaMajor",
+              "loaderVersion",
+              "bootstrap"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

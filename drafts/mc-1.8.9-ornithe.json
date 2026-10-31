@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "packId": "tfl-selection",
+  "targetId": "mc-1.8.9-ornithe",
+  "release": "0.0.0-dev.0",
+  "status": "draft",
+  "selectionMode": "locked",
+  "minecraft": {
+    "version": "1.8.9",
+    "loader": "ornithe-gen2",
+    "javaMajor": 25
+  },
+  "files": []
+}

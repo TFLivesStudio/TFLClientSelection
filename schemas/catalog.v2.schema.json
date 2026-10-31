@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Signed TFL Selection release catalog v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "packId",
+    "generation",
+    "distributionRepository",
+    "targets"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "packId": {
+      "const": "tfl-selection"
+    },
+    "distributionRepository": {
+      "const": "TFLivesStudio/TFLSelectionDistribution"
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "targetId",
+          "minecraftVersion",
+          "loader",
+          "channels"
+        ],
+        "properties": {
+          "targetId": {
+            "type": "string",
+            "pattern": "^mc-[a-z0-9][a-z0-9.-]{2,79}$"
+          },
+          "minecraftVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "loader": {
+            "enum": [
+              "ornithe-gen2",
+              "fabric"
+            ]
+          },
+          "channels": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "stable": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "release",
+                  "tag",
+                  "manifestSha256"
+                ],
+                "properties": {
+                  "release": {
+                    "type": "string",
+                    "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+                  },
+                  "tag": {
+                    "type": "string",
+                    "pattern": "^selection-mc-[a-z0-9.-]+-v[0-9A-Za-z.+-]+$"
+                  },
+                  "manifestSha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              },
+              "beta": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "release",
+                  "tag",
+                  "manifestSha256"
+                ],
+                "properties": {
+                  "release": {
+                    "type": "string",
+                    "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+                  },
+                  "tag": {
+                    "type": "string",
+                    "pattern": "^selection-mc-[a-z0-9.-]+-v[0-9A-Za-z.+-]+$"
+                  },
+                  "manifestSha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              },
+              "dev": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "release",
+                  "tag",
+                  "manifestSha256"
+                ],
+                "properties": {
+                  "release": {
+                    "type": "string",
+                    "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+                  },
+                  "tag": {
+                    "type": "string",
+                    "pattern": "^selection-mc-[a-z0-9.-]+-v[0-9A-Za-z.+-]+$"
+                  },
+                  "manifestSha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

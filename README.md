@@ -1,41 +1,46 @@
-# TFL Selection
+# TFL Selection — official, locked Minecraft distributions
 
-Repositorio **privado** para definir los perfiles y lanzamientos del modpack multimodo TFL Selection, consumidos exclusivamente mediante el contrato del **TFL Client Launcher**.
+This is the **private source-of-truth** for TFL Selection, the official Minecraft mod selection installed by the open-source **TFL Client** launcher.
 
-> **Estado:** fundación de arquitectura; no hay releases ni binarios descargables publicados. Este repositorio no es un servidor de descargas.
+- Minecraft **1.8.9**: **Ornithe Gen2** (independent bootstrap integration required in the launcher).
+- Modern Minecraft: **Fabric**, starting with the **26.3** target.
+- **Locked Selection**: TFLives chooses the entire mod set. The launcher must not offer user-installed, removed, updated or overridden mods inside Selection.
+- **No Modrinth in the Selection install/update path.** Each approved third-party mod binary is mirrored and pinned by SHA-256 in TFL-controlled GitHub Releases.
+- **No VPS, API server or R2 required** for the distribution design.
+- **No .mrpack** for official Selection. Existing normal launcher instances and their capabilities are a separate product mode.
+- Players can alter Minecraft settings and keep worlds/saves, but not the managed mod selection.
+- Files delivered to the player remain inspectable; the goal is modest friction against casual copying, not unbreakable DRM.
 
-## Responsabilidades
+## Repositories and ownership
 
-- Definir qué mods, configuraciones y recursos corresponden a cada versión de Minecraft.
-- Mantener manifiestos versionados, hashes SHA-256, políticas de instalación y procedencia/licencias.
-- Validar y aprobar los cambios antes de publicar un canal (`stable`, `beta` o `dev`).
-- Coordinar el TFL Core (compilado en su propio repositorio) sin incorporar su código fuente aquí.
+| Repository | Visibility | Responsibility |
+| --- | --- | --- |
+| TFLClientSelection (this repository) | **Private** | Authoring, manifests, curated inventory, licensing evidence, test/verification and release preparation |
+| TFLSelectionDistribution (**planned, does not yet exist**) | **Public** | Immutable GitHub Release assets, detached signatures and signed channel catalog |
+| TFLClient | Public | Bootstrapping, downloads, cache, integrity, rollback, locked UI and launch |
+| TFLClientMOD | Independent | Building/providing pinned TFL Core artifacts |
 
-La distribución de archivos privados se realizará desde almacenamiento de objetos y una API controlada. **Nunca** debe incluirse un token GitHub, clave de almacenamiento ni secreto de firma en el launcher.
+Public release data is not secret. Never disguise a public repo to imply protection, and never ship credentials in a client.
 
-## Arquitectura objetivo
+## Status
 
-```text
-TFL Client (launcher abierto)
-   -> API de distribución TFL (catálogo y manifiestos firmados)
-   -> tickets de descarga de duración limitada
-   -> almacenamiento de objetos privados / fuentes oficiales autorizadas
-   -> verificación SHA-256 y actualización transaccional local
+This repository currently contains **drafts only**. No mods, source snapshots, signature keys, published catalogs or launchable packs have been uploaded. The distribution repository, publishing workflow and launcher integration remain to be implemented.
 
-TFL Selection (este repositorio privado)
-   -> esquemas, manifiestos, revisión y automatización del lanzamiento
-TFL Core (repositorio independiente)
-   -> binarios propios versionados consumidos por Selection
+## Docs
+
+- [Architecture and release design](docs/ARCHITECTURE.md)
+- [Exact release contract](docs/LAUNCHER_CONTRACT.md)
+- [Launcher code audit and integration plan](docs/LAUNCHER_INTEGRATION.md)
+- [File layout and release operations](docs/RELEASE_PROCESS.md)
+- [Licensing and security policy](docs/SECURITY_AND_LICENSING.md)
+- [Target compatibility / inventory plan](docs/SELECTION_MATRIX.md)
+
+## Static validation
+
+```sh
+python -m pip install -r requirements-dev.txt
+python scripts/validate_manifests.py
+python -m unittest discover -s tests -v
 ```
 
-La privatización evita publicar el repositorio y su configuración de lanzamiento, pero **no impide** que un usuario autorizado extraiga los archivos que se instalan en su computadora. Las licencias de terceros deben respetarse por separado.
-
-## Versiones objetivo (iniciales)
-
-- Minecraft **1.8.9**, loader **Ornithe Gen2**.
-- Minecraft **26.3**, loader **Fabric**.
-- El diseño admitirá versiones adicionales sin cambiar el protocolo.
-
-## Desarrollo
-
-La propuesta inicial se trabajará en una rama y se integrará tras revisión. Consultar `docs/` para arquitectura, seguridad, protocolo y proceso de release.
+The pinned-schema and path validation CI is a **first gate only**, not legal clearance or proof the binaries exist and boot. Release publication will require additional manual and automated checks.

@@ -1,0 +1,14 @@
+# Never commit binaries, private keys or per-machine files
+*.jar
+*.zip
+*.mrpack
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.idea/

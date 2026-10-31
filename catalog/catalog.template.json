@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 2,
+  "packId": "tfl-selection",
+  "distributionRepository": "TFLivesStudio/TFLSelectionDistribution",
+  "targets": [
+    {
+      "targetId": "mc-1.8.9-ornithe",
+      "minecraftVersion": "1.8.9",
+      "loader": "ornithe-gen2",
+      "channels": {}
+    },
+    {
+      "targetId": "mc-26.3-fabric",
+      "minecraftVersion": "26.3",
+      "loader": "fabric",
+      "channels": {}
+    }
+  ],
+  "generation": 0
+}

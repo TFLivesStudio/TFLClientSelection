@@ -34,6 +34,8 @@ This repository currently contains **drafts only**. No mods, source snapshots, s
 - [File layout and release operations](docs/RELEASE_PROCESS.md)
 - [Licensing and security policy](docs/SECURITY_AND_LICENSING.md)
 - [Target compatibility / inventory plan](docs/SELECTION_MATRIX.md)
+- [Fabric 26.3 — review of 56 proposed mod JARs](docs/MC26_3_MOD_REVIEW.md)
+- [Fabric 26.3 — versioned candidate inventory (CSV)](docs/inventory/mc-26.3-fabric-candidates.csv)
 
 ## Static validation
 

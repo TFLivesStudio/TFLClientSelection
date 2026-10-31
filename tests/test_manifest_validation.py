@@ -1,4 +1,4 @@
-"""Contract and path-security tests for the distribution validator."""
+"""Regression tests: closed Selection, GitHub assets, licenses and paths."""
 import copy
 import sys
 import unittest
@@ -6,94 +6,123 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from validate_manifests import (  # noqa: E402
-    load_json, safe_https, safe_install_path, validate_manifest, validate_catalog
-)
+from validate_manifests import (load_json, safe_https, safe_install_path,  # noqa: E402
+                                validate_manifest, validate_catalog, expected_tag)
 
-SCHEMA = load_json(ROOT / "schemas" / "manifest.v1.schema.json")
-CATALOG_SCHEMA = load_json(ROOT / "schemas" / "catalog.v1.schema.json")
-EXAMPLE = load_json(ROOT / "drafts" / "mc-1.8.9-ornithe.json")
+SCHEMA = load_json(ROOT / "schemas" / "manifest.v2.schema.json")
+CATALOG = load_json(ROOT / "schemas" / "catalog.v2.schema.json")
+DRAFT = load_json(ROOT / "drafts" / "mc-1.8.9-ornithe.json")
 
 
-def owned_file():
-    sha = "a" * 64
+def artifact(license_id="MIT", basis="open-source-license"):
+    digest = "a" * 64
     return {
-        "id": "tfl-core-test", "kind": "mod", "path": "mods/tfl-core.jar",
-        "sha256": sha, "bytes": 123, "installPolicy": "managed",
-        "delivery": {"mode": "private-object", "objectKey": f"sha256/aa/{sha}"},
-        "origin": {"project": "TFL Core", "homepage": "https://github.com/TFLivesStudio",
-                   "license": "proprietary", "redistribution": "owned"},
+        "id": "test-mod", "kind": "mod", "path": "mods/test-mod.jar",
+        "sha256": digest, "bytes": 111, "assetName": f"sha256-{digest}.bin",
+        "installPolicy": "managed",
+        "origin": {
+            "project": "Example", "projectVersion": "1.0.0",
+            "sourceRepository": "https://github.com/example/mod",
+            "sourceRevision": "deadbeef",
+            "licenseSpdx": license_id,
+            "licenseEvidenceUrl": "https://github.com/example/mod/blob/deadbeef/LICENSE",
+            "redistributionBasis": basis,
+        }
     }
 
 
-class ContractTests(unittest.TestCase):
-    def test_drafts_validate(self):
+class Contracts(unittest.TestCase):
+    def test_drafts(self):
         for path in (ROOT / "drafts").glob("*.json"):
-            self.assertEqual(validate_manifest(load_json(path), SCHEMA, f"drafts/{path.name}"), [])
+            self.assertEqual(validate_manifest(load_json(path), SCHEMA, "drafts/" + path.name), [])
 
-    def test_catalog_template_valid(self):
-        catalog = load_json(ROOT / "catalog" / "catalog.template.json")
-        self.assertEqual(validate_catalog(catalog, CATALOG_SCHEMA, False), [])
+    def test_empty_catalog_is_not_a_release(self):
+        self.assertEqual(validate_catalog(load_json(ROOT / "catalog" / "catalog.template.json"), CATALOG), [])
 
-    def test_owned_private_object_valid(self):
-        manifest = copy.deepcopy(EXAMPLE)
-        manifest["files"] = [owned_file()]
-        self.assertEqual(validate_manifest(manifest, SCHEMA), [])
+    def test_owned_or_oss_mod(self):
+        x = copy.deepcopy(DRAFT)
+        x["files"] = [artifact()]
+        self.assertEqual(validate_manifest(x, SCHEMA), [])
 
-    def test_upstream_only_private_object_rejected(self):
-        manifest = copy.deepcopy(EXAMPLE)
-        item = owned_file()
-        item["origin"]["redistribution"] = "upstream-only"
-        manifest["files"] = [item]
-        self.assertTrue(validate_manifest(manifest, SCHEMA))
+    def test_no_upstream_or_optional_features(self):
+        x = copy.deepcopy(DRAFT)
+        x["features"] = [{"id": "personal-mods"}]
+        self.assertTrue(validate_manifest(x, SCHEMA))
+        x.pop("features")
+        entry = artifact()
+        entry["delivery"] = {"mode": "upstream", "url": "https://modrinth.com"}
+        x["files"] = [entry]
+        self.assertTrue(validate_manifest(x, SCHEMA))
 
-    def test_authorized_without_evidence_rejected(self):
-        manifest = copy.deepcopy(EXAMPLE)
-        item = owned_file()
-        item["origin"]["redistribution"] = "authorized"
-        manifest["files"] = [item]
-        self.assertTrue(any("evidence" in e for e in validate_manifest(manifest, SCHEMA)))
+    def test_release_assets_tied_to_hash(self):
+        x = copy.deepcopy(DRAFT)
+        x["files"] = [artifact()]
+        x["files"][0]["assetName"] = "sodium.jar"
+        self.assertTrue(any("assetName" in e for e in validate_manifest(x, SCHEMA)))
 
-    def test_content_address_must_match(self):
-        manifest = copy.deepcopy(EXAMPLE)
-        item = owned_file()
-        item["delivery"]["objectKey"] = "sha256/ff/" + "f" * 64
-        manifest["files"] = [item]
-        self.assertTrue(any("objectKey" in e for e in validate_manifest(manifest, SCHEMA)))
+    def test_unreviewed_license_fails_closed(self):
+        x = copy.deepcopy(DRAFT)
+        x["files"] = [artifact("LicenseRef-Unknown")]
+        self.assertTrue(any("not yet reviewed" in e for e in validate_manifest(x, SCHEMA)))
 
-    def test_case_insensitive_collision(self):
-        manifest = copy.deepcopy(EXAMPLE)
-        item = owned_file()
-        other = copy.deepcopy(item)
-        other["id"] = "different"
-        other["path"] = "mods/TFL-Core.jar"
-        manifest["files"] = [item, other]
-        self.assertTrue(any("duplicate install path" in e for e in validate_manifest(manifest, SCHEMA)))
+    def test_gpl_requires_source_snapshot(self):
+        x = copy.deepcopy(DRAFT)
+        x["files"] = [artifact("GPL-3.0-only")]
+        self.assertTrue(any("corresponding source" in e for e in validate_manifest(x, SCHEMA)))
 
-    def test_feature_must_be_declared(self):
-        manifest = copy.deepcopy(EXAMPLE)
-        item = owned_file()
-        item["featureId"] = "unknown"
-        manifest["files"] = [item]
-        self.assertTrue(any("unknown feature" in e for e in validate_manifest(manifest, SCHEMA)))
+    def test_license_with_source_archive(self):
+        x = copy.deepcopy(DRAFT)
+        a = artifact("GPL-3.0-only")
+        digest = "b" * 64
+        a["origin"]["correspondingSourceAsset"] = {
+            "assetName": f"source-{digest}.zip", "sha256": digest, "bytes": 333
+        }
+        x["files"] = [a]
+        self.assertEqual(validate_manifest(x, SCHEMA), [])
 
-    def test_paths_reject_traversal_and_windows_tricks(self):
-        unsafe = [
-            "/mods/core.jar", "mods/../core.jar", "mods//core.jar",
-            "mods\\core.jar", "mods/CON.jar", "mods/com1.txt",
-            "mods/nul.txt", "mods/core.jar.", "mods/core.jar:stream",
-            "config/core.jar", "mods/a?b.jar",
-        ]
-        for path in unsafe:
+    def test_permission_needs_evidence(self):
+        x = copy.deepcopy(DRAFT)
+        x["files"] = [artifact("LicenseRef-TFL-Permission", "explicit-permission")]
+        self.assertTrue(any("permission" in e for e in validate_manifest(x, SCHEMA)))
+
+    def test_duplicate_casefold_paths(self):
+        x = copy.deepcopy(DRAFT)
+        a = artifact()
+        b = artifact()
+        b["id"] = "second"
+        b["path"] = "mods/Test-Mod.jar"
+        x["files"] = [a, b]
+        self.assertTrue(any("duplicate" in e for e in validate_manifest(x, SCHEMA)))
+
+    def test_path_traversal_and_windows_paths(self):
+        for path in ["mods/../t.jar", "mods\\t.jar", "mods/CON.jar",
+                     "mods/com1.jar", "/mods/t.jar", "mods//t.jar",
+                     "mods/t.jar:stream", "mods/t.jar.", "config/x.jar"]:
             self.assertFalse(safe_install_path(path, "mod"), path)
-        self.assertTrue(safe_install_path("mods/core.jar", "mod"))
+        self.assertTrue(safe_install_path("mods/t.jar", "mod"))
+        self.assertTrue(safe_install_path("config/settings.json", "config"))
 
-    def test_urls_refuse_local_and_insecure(self):
-        for url in ("http://example.com/x.jar", "https://localhost/x.jar",
-                    "https://127.0.0.1/x.jar", "https://u:p@example.com/x.jar",
-                    "https://local.internal/x.jar"):
-            self.assertFalse(safe_https(url), url)
-        self.assertTrue(safe_https("https://cdn.modrinth.com/example.jar"))
+    def test_mod_must_be_managed(self):
+        x = copy.deepcopy(DRAFT)
+        a = artifact()
+        a["installPolicy"] = "seed-if-absent"
+        x["files"] = [a]
+        self.assertTrue(any("mods must be managed" in e for e in validate_manifest(x, SCHEMA)))
+
+    def test_url_security(self):
+        for url in ["http://github.com/abc", "https://localhost/abc",
+                    "https://192.168.0.1/", "https://u:p@github.com/a"]:
+            self.assertFalse(safe_https(url))
+        self.assertTrue(safe_https("https://github.com/a/b"))
+
+    def test_tag_format(self):
+        self.assertEqual(expected_tag("mc-1.8.9-ornithe", "1.0.0"),
+                         "selection-mc-1.8.9-ornithe-v1.0.0")
+
+    def test_cannot_publish_empty_release(self):
+        x = copy.deepcopy(DRAFT)
+        x["status"] = "published"
+        self.assertTrue(validate_manifest(x, SCHEMA))
 
 
 if __name__ == "__main__":

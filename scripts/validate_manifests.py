@@ -1,178 +1,192 @@
 #!/usr/bin/env python3
-"""Validate schema and distribution safety for TFL Selection manifests.
-
-This is CI/static validation, not a proof that remote blobs exist or licenses are valid.
-"""
+"""Validate TFL Selection v2 *authoring* contracts. Publication requires separate checks."""
 from __future__ import annotations
-
 import hashlib
 import ipaddress
 import json
+import re
 from pathlib import Path
 from urllib.parse import urlsplit
-
 from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST_SCHEMA = ROOT / "schemas" / "manifest.v1.schema.json"
-CATALOG_SCHEMA = ROOT / "schemas" / "catalog.v1.schema.json"
+MANIFEST_SCHEMA = ROOT / "schemas/manifest.v2.schema.json"
+CATALOG_SCHEMA = ROOT / "schemas/catalog.v2.schema.json"
+DISTRIBUTION = "TFLivesStudio/TFLSelectionDistribution"
 KIND_ROOT = {
     "mod": "mods", "config": "config", "resourcepack": "resourcepacks",
     "shaderpack": "shaderpacks", "asset": "assets", "datapack": "datapacks",
+    "loader-bootstrap": "bootstrap",
 }
-WINDOWS_RESERVED = {
-    "con", "prn", "aux", "nul",
-    *(f"com{i}" for i in range(1, 10)),
-    *(f"lpt{i}" for i in range(1, 10)),
+WINDOWS_RESERVED = {"con", "prn", "aux", "nul", *(f"com{i}" for i in range(1, 10)), *(f"lpt{i}" for i in range(1, 10))}
+# Not a legal opinion: this allowlist simply requires an explicit licensing review.
+OPEN_SOURCE_REVIEWED = {
+    "MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC",
+    "GPL-3.0-only", "GPL-3.0-or-later", "LGPL-3.0-only",
+    "LGPL-3.0-or-later", "MPL-2.0", "CC0-1.0",
 }
+SOURCE_REQUIRED = {"GPL-3.0-only", "GPL-3.0-or-later", "LGPL-3.0-only", "LGPL-3.0-or-later"}
 
 
 def load_json(path: Path) -> dict:
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+    with path.open(encoding="utf-8") as f:
+        return json.load(f)
 
 
 def schema_errors(document: dict, schema: dict) -> list[str]:
-    validator = Draft202012Validator(schema, format_checker=FormatChecker())
-    return [
-        f"{'/'.join(str(p) for p in err.absolute_path) or '<root>'}: {err.message}"
-        for err in sorted(validator.iter_errors(document), key=lambda err: str(list(err.path)))
-    ]
+    v = Draft202012Validator(schema, format_checker=FormatChecker())
+    return [f"{'/'.join(map(str, e.absolute_path)) or '<root>'}: {e.message}"
+            for e in sorted(v.iter_errors(document), key=lambda e: str(list(e.absolute_path)))]
 
 
 def safe_https(value: str) -> bool:
+    if not isinstance(value, str):
+        return False
     try:
         parts = urlsplit(value)
         if parts.scheme != "https" or not parts.netloc or parts.username or parts.password:
             return False
-        host = parts.hostname or ""
-        if not host or host == "localhost" or host.endswith((".localhost", ".local", ".internal")):
+        hostname = (parts.hostname or "").lower()
+        if not hostname or hostname == "localhost" or hostname.endswith((".localhost", ".local", ".internal")):
             return False
         try:
-            ipaddress.ip_address(host)
-            return False  # do not offer direct IP URLs to the downloader
+            ipaddress.ip_address(hostname)
+            return False
         except ValueError:
-            pass
-        return True
+            return True
     except ValueError:
         return False
 
 
 def safe_install_path(path: str, kind: str) -> bool:
-    if not isinstance(path, str) or not path or len(path) > 300 or "\\" in path:
+    if not isinstance(path, str) or not isinstance(kind, str) or len(path) > 300:
         return False
-    if any(ord(ch) < 32 or ord(ch) == 127 for ch in path) or ":" in path:
+    if "\\" in path or ":" in path or any(ord(c) < 32 or ord(c) == 127 for c in path):
         return False
-    segments = path.split("/")
-    if len(segments) < 2 or segments[0] != KIND_ROOT.get(kind):
+    parts = path.split("/")
+    if len(parts) < 2 or parts[0] != KIND_ROOT.get(kind):
         return False
-    if any(part in ("", ".", "..") or part.endswith((".", " ")) for part in segments):
+    if any(p in ("", ".", "..") or p.endswith((" ", ".")) for p in parts):
         return False
-    if any(part.split(".")[0].casefold() in WINDOWS_RESERVED for part in segments):
+    if any(p.split(".")[0].casefold() in WINDOWS_RESERVED for p in parts):
         return False
-    if any(any(ch in '<>"|?*' for ch in part) for part in segments):
+    if any(any(c in '<>"|?*' for c in p) for p in parts):
+        return False
+    if kind in ("mod", "loader-bootstrap") and not path.endswith(".jar"):
         return False
     return True
 
 
+def expected_tag(target_id: str, release: str) -> str:
+    return f"selection-{target_id}-v{release}"
+
+
 def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.json") -> list[str]:
     errors = schema_errors(data, schema)
-    seen_paths: set[str] = set()
-    seen_ids: set[str] = set()
-    feature_ids: set[str] = set()
-
-    for feature in data.get("features", []):
-        if not isinstance(feature, dict):
+    if not isinstance(data, dict):
+        return errors
+    seen_ids, seen_paths = set(), set()
+    status = data.get("status")
+    if location.startswith("drafts/") and status != "draft":
+        errors.append("drafts must have status=draft")
+    if location.startswith("releases/"):
+        parts = location.split("/")
+        if status != "published" or len(parts) != 3 or parts[1] != data.get("targetId") or parts[2] != str(data.get("release")) + ".json":
+            errors.append("published manifests live at releases/<targetId>/<release>.json")
+    minecraft = data.get("minecraft", {})
+    if isinstance(minecraft, dict):
+        target = data.get("targetId")
+        if target == "mc-1.8.9-ornithe" and (minecraft.get("version") != "1.8.9" or minecraft.get("loader") != "ornithe-gen2"):
+            errors.append("Ornithe target mismatch")
+        if target == "mc-26.3-fabric" and (minecraft.get("version") != "26.3" or minecraft.get("loader") != "fabric"):
+            errors.append("Fabric target mismatch")
+        if status == "published":
+            expected = "launcher-pinned-ornithe" if minecraft.get("loader") == "ornithe-gen2" else "launcher-pinned-fabric"
+            if minecraft.get("bootstrap") != expected:
+                errors.append("bootstrap strategy must match pinned loader")
+    distribution = data.get("distribution", {})
+    if isinstance(distribution, dict) and distribution:
+        if distribution.get("tag") != expected_tag(data.get("targetId", ""), data.get("release", "")):
+            errors.append("distribution tag must match target and release")
+    files = data.get("files", [])
+    if not isinstance(files, list):
+        return errors
+    for entry in files:
+        if not isinstance(entry, dict):
             continue
-        fid = feature.get("id")
-        if fid in feature_ids:
-            errors.append(f"duplicate feature id: {fid}")
-        feature_ids.add(fid)
-
-    for file in data.get("files", []):
-        if not isinstance(file, dict):
-            continue
-        fid, path = file.get("id"), file.get("path")
+        fid, kind, path, digest = entry.get("id"), entry.get("kind"), entry.get("path"), entry.get("sha256")
         if not isinstance(fid, str) or not isinstance(path, str):
             continue
         if fid in seen_ids:
             errors.append(f"duplicate file id: {fid}")
         seen_ids.add(fid)
-        normalized = path.casefold()
-        if normalized in seen_paths:
-            errors.append(f"duplicate install path (case-insensitive): {path}")
-        seen_paths.add(normalized)
-        if not safe_install_path(path, file.get("kind", "")):
-            errors.append(f"unsafe or wrong-kind install path: {path}")
-        if "featureId" in file and file["featureId"] not in feature_ids:
-            errors.append(f"unknown featureId for {fid}: {file['featureId']}")
-
-        delivery, origin = file.get("delivery", {}), file.get("origin", {})
-        if not isinstance(delivery, dict) or not isinstance(origin, dict):
+        if path.casefold() in seen_paths:
+            errors.append(f"duplicate installed path (case-insensitive): {path}")
+        seen_paths.add(path.casefold())
+        if not safe_install_path(path, kind):
+            errors.append(f"unsafe path or wrong artifact kind: {path}")
+        if kind == "mod" and entry.get("installPolicy") != "managed":
+            errors.append(f"{fid}: mods must be managed, not seed-if-absent")
+        if isinstance(digest, str) and entry.get("assetName") != f"sha256-{digest}.bin":
+            errors.append(f"{fid}: release assetName must exactly match sha256")
+        origin = entry.get("origin", {})
+        if not isinstance(origin, dict):
             continue
-        mode, rights = delivery.get("mode"), origin.get("redistribution")
-        if mode == "private-object":
-            if rights not in ("owned", "authorized"):
-                errors.append(f"{fid}: private storage requires ownership or redistribution authorization")
-            if rights == "authorized" and not origin.get("evidenceUrl"):
-                errors.append(f"{fid}: authorized redistribution requires evidenceUrl")
-            digest = file.get("sha256")
-            if isinstance(digest, str):
-                expected = f"sha256/{digest[:2]}/{digest}"
-                if delivery.get("objectKey") != expected:
-                    errors.append(f"{fid}: objectKey must match content hash {expected}")
-        elif mode == "upstream":
-            if not safe_https(delivery.get("url", "")):
-                errors.append(f"{fid}: upstream download must be a safe HTTPS URL")
-        if rights == "upstream-only" and mode != "upstream":
-            errors.append(f"{fid}: upstream-only licensing forbids private distribution")
-        for key in ("homepage", "evidenceUrl"):
+        basis, license_id = origin.get("redistributionBasis"), origin.get("licenseSpdx")
+        if basis == "open-source-license" and license_id not in OPEN_SOURCE_REVIEWED:
+            errors.append(f"{fid}: SPDX license not yet reviewed; do not publish")
+        if basis == "explicit-permission" and not origin.get("permissionEvidenceUrl"):
+            errors.append(f"{fid}: explicit redistribution permission needs evidence")
+        if basis == "owned" and license_id != "LicenseRef-TFLives-Proprietary" and license_id not in OPEN_SOURCE_REVIEWED:
+            errors.append(f"{fid}: unreviewed owned artifact license")
+        for key in ("sourceRepository", "licenseEvidenceUrl", "permissionEvidenceUrl"):
             if key in origin and not safe_https(origin[key]):
                 errors.append(f"{fid}: origin.{key} must be safe HTTPS")
-
-    status = data.get("status")
-    if location.startswith("drafts/") and status != "draft":
-        errors.append("drafts/ can only contain draft manifests")
-    if location.startswith("releases/"):
-        if status != "published":
-            errors.append("releases/ must contain published manifests")
-        parts = location.split("/")
-        if len(parts) != 4 or parts[1] != data.get("targetId") or parts[2] != data.get("release"):
-            errors.append("release path must be releases/<targetId>/<release>/<channel>.json")
-        elif parts[3] != data.get("channel", "") + ".json":
-            errors.append("release filename must match channel")
+        if license_id in SOURCE_REQUIRED and not isinstance(origin.get("correspondingSourceAsset"), dict):
+            errors.append(f"{fid}: GPL/LGPL requires mirrored corresponding source archive")
+        if license_id in SOURCE_REQUIRED and isinstance(origin.get("correspondingSourceAsset"), dict):
+            source = origin["correspondingSourceAsset"]
+            digest_source = source.get("sha256", "")
+            if source.get("assetName") != f"source-{digest_source}.zip":
+                errors.append(f"{fid}: GPL/LGPL source asset must be content-addressed")
+    if status == "published":
+        notices = data.get("noticesAsset", {})
+        if isinstance(notices, dict) and notices.get("assetName") != f"notices-{notices.get('sha256', '')}.zip":
+            errors.append("published notices ZIP must be content-addressed")
     return errors
 
 
-def validate_catalog(data: dict, schema: dict, require_local_files: bool) -> list[str]:
+def validate_catalog(data: dict, schema: dict, require_local_files: bool = False) -> list[str]:
     errors = schema_errors(data, schema)
-    targets: set[str] = set()
+    if not isinstance(data, dict):
+        return errors
+    seen = set()
     for target in data.get("targets", []):
-        tid = target.get("targetId")
-        if tid in targets:
+        if not isinstance(target, dict):
+            continue
+        tid = target.get("targetId", "")
+        if tid in seen:
             errors.append(f"duplicate target: {tid}")
-        targets.add(tid)
-        for channel, entry in target.get("channels", {}).items():
-            path = entry.get("manifestPath", "")
-            if not path.startswith(f"releases/{tid}/") or not path.endswith(f"/{channel}.json"):
-                errors.append(f"{tid}/{channel}: mismatched release manifest path")
-                continue
-            parts = path.split("/")
-            if len(parts) != 4 or parts[2] != entry.get("release"):
-                errors.append(f"{tid}/{channel}: release does not match catalog path")
-                continue
+        seen.add(tid)
+        for channel, item in target.get("channels", {}).items():
+            if item.get("tag") != expected_tag(tid, item.get("release", "")):
+                errors.append(f"{tid}/{channel}: noncanonical release tag")
             if require_local_files:
-                manifest_path = ROOT / path
-                if not manifest_path.is_file():
-                    errors.append(f"{tid}/{channel}: referenced manifest missing: {path}")
-                else:
-                    raw = manifest_path.read_bytes()
-                    digest = hashlib.sha256(raw).hexdigest()
-                    if digest != entry.get("manifestSha256"):
-                        errors.append(f"{tid}/{channel}: manifestSha256 does not match file bytes")
-                    signature_path = ROOT / (path + ".sig")
-                    if not signature_path.is_file():
-                        errors.append(f"{tid}/{channel}: detached Ed25519 signature missing: {path}.sig")
+                release_path = ROOT / "releases" / tid / f"{item.get('release')}.json"
+                if not release_path.is_file():
+                    errors.append(f"{tid}/{channel}: manifest missing: {release_path}")
+                    continue
+                raw = release_path.read_bytes()
+                if hashlib.sha256(raw).hexdigest() != item.get("manifestSha256"):
+                    errors.append(f"{tid}/{channel}: manifest hash does not match exact bytes")
+                if not Path(str(release_path) + ".sig").is_file():
+                    errors.append(f"{tid}/{channel}: detached manifest signature missing")
+                manifest = load_json(release_path)
+                if (manifest.get("targetId") != tid or manifest.get("release") != item.get("release")
+                    or manifest.get("distribution", {}).get("tag") != item.get("tag")
+                    or manifest.get("minecraft", {}).get("version") != target.get("minecraftVersion")
+                    or manifest.get("minecraft", {}).get("loader") != target.get("loader")):
+                    errors.append(f"{tid}/{channel}: channel target differs from release manifest")
     return errors
 
 
@@ -180,37 +194,33 @@ def main() -> int:
     manifest_schema, catalog_schema = load_json(MANIFEST_SCHEMA), load_json(CATALOG_SCHEMA)
     Draft202012Validator.check_schema(manifest_schema)
     Draft202012Validator.check_schema(catalog_schema)
-    checked = 0
-    failures: list[str] = []
-    paths = sorted((ROOT / "drafts").glob("*.json")) + sorted((ROOT / "releases").glob("*/*/*.json"))
+    problems, inspected = [], 0
+    paths = sorted((ROOT / "drafts").glob("*.json")) + sorted((ROOT / "releases").glob("*/*.json"))
     if not paths:
-        failures.append("No manifests or drafts found")
+        problems.append("no manifest drafts or releases")
     for path in paths:
-        location = path.relative_to(ROOT).as_posix()
+        relative = path.relative_to(ROOT).as_posix()
         try:
-            errs = validate_manifest(load_json(path), manifest_schema, location)
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
-            errs = [str(exc)]
-        failures.extend(f"{location}: {error}" for error in errs)
-        checked += 1
-    catalog_paths = [ROOT / "catalog" / "catalog.template.json"]
-    current = ROOT / "catalog" / "current.json"
-    if current.exists():
-        catalog_paths.append(current)
-    for path in catalog_paths:
-        location = path.relative_to(ROOT).as_posix()
+            errors = validate_manifest(load_json(path), manifest_schema, relative)
+        except (OSError, ValueError) as exc:
+            errors = [str(exc)]
+        problems.extend(f"{relative}: {e}" for e in errors)
+        inspected += 1
+    for path in (ROOT / "catalog" / "catalog.template.json", ROOT / "catalog" / "current.json"):
+        if path.name == "current.json" and not path.exists():
+            continue
         try:
-            errs = validate_catalog(load_json(path), catalog_schema, require_local_files=path == current)
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
-            errs = [str(exc)]
-        failures.extend(f"{location}: {error}" for error in errs)
-        checked += 1
-    if failures:
-        print(f"FAILED ({len(failures)} issues; {checked} documents inspected)")
-        for error in failures:
-            print(f" - {error}")
+            errors = validate_catalog(load_json(path), catalog_schema, require_local_files=path.name == "current.json")
+        except (OSError, ValueError) as exc:
+            errors = [str(exc)]
+        problems.extend(f"{path.relative_to(ROOT)}: {e}" for e in errors)
+        inspected += 1
+    if problems:
+        print(f"FAILED: {len(problems)} issues in {inspected} files")
+        for issue in problems:
+            print(" -", issue)
         return 1
-    print(f"OK: {checked} JSON documents verified against schemas and safety policies")
+    print(f"OK: {inspected} JSON documents passed v2 contract and static safety checks")
     return 0
 
 

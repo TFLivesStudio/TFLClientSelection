@@ -1,26 +1,14 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "packId": "tfl-selection",
   "targetId": "mc-26.3-fabric",
   "release": "0.0.0-dev.0",
-  "channel": "dev",
   "status": "draft",
+  "selectionMode": "locked",
   "minecraft": {
     "version": "26.3",
     "loader": "fabric",
     "javaMajor": 25
   },
-  "features": [
-    {
-      "id": "performance",
-      "label": "Rendimiento",
-      "defaultEnabled": true
-    },
-    {
-      "id": "visual",
-      "label": "Visual",
-      "defaultEnabled": false
-    }
-  ],
   "files": []
 }

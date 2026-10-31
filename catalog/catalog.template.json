@@ -1,6 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "packId": "tfl-selection",
+  "distributionRepository": "TFLivesStudio/TFLSelectionDistribution",
   "targets": [
     {
       "targetId": "mc-1.8.9-ornithe",

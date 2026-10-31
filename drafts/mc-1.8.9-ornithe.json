@@ -1,26 +1,14 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "packId": "tfl-selection",
   "targetId": "mc-1.8.9-ornithe",
   "release": "0.0.0-dev.0",
-  "channel": "dev",
   "status": "draft",
+  "selectionMode": "locked",
   "minecraft": {
     "version": "1.8.9",
     "loader": "ornithe-gen2",
     "javaMajor": 25
   },
-  "features": [
-    {
-      "id": "performance",
-      "label": "Rendimiento",
-      "defaultEnabled": true
-    },
-    {
-      "id": "quality-of-life",
-      "label": "Calidad de vida",
-      "defaultEnabled": true
-    }
-  ],
   "files": []
 }

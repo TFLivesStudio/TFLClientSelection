@@ -1,4 +1,4 @@
-name: Validate Selection manifest contracts
+name: Validate locked TFL Selection contracts
 
 on:
   pull_request:
@@ -14,14 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: requirements-dev.txt
-      - name: Install pinned validation dependencies
+      - name: Install validation dependencies
         run: python -m pip install -r requirements-dev.txt
-      - name: Validate pack and channel metadata
+      - name: Manifest and license policy
         run: python scripts/validate_manifests.py
-      - name: Unit tests
+      - name: Regression tests
         run: python -m unittest discover -s tests -v
+      - name: Check repo tracked files
+        run: python scripts/check_repo_policy.py

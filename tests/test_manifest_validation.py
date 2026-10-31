@@ -39,6 +39,17 @@ class Contracts(unittest.TestCase):
     def test_empty_catalog_is_not_a_release(self):
         self.assertEqual(validate_catalog(load_json(ROOT / "catalog" / "catalog.template.json"), CATALOG), [])
 
+    def test_signed_catalog_generation_required_for_active_channel(self):
+        x = load_json(ROOT / "catalog" / "catalog.template.json")
+        x["targets"][0]["channels"]["dev"] = {
+            "release": "1.0.0",
+            "tag": expected_tag("mc-1.8.9-ornithe", "1.0.0"),
+            "manifestSha256": "a" * 64,
+        }
+        self.assertTrue(any("generation" in e for e in validate_catalog(x, CATALOG)))
+        x["generation"] = 1
+        self.assertEqual(validate_catalog(x, CATALOG), [])
+
     def test_owned_or_oss_mod(self):
         x = copy.deepcopy(DRAFT)
         x["files"] = [artifact()]

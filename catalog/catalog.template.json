@@ -15,5 +15,6 @@
       "loader": "fabric",
       "channels": {}
     }
-  ]
+  ],
+  "generation": 0
 }

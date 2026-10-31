@@ -35,3 +35,5 @@ Record: project URL, source commit, mod version, exact Minecraft target, loader,
 - Do not add mods simply because an old planning note named them.
 - Separate target folders and release tags; no shared runtime files unless sha256 verified.
 - User saves and Minecraft personal settings remain private and unmodified by pack repair.
+
+> Source audit note: `TFLClientMOD`'s current main README still describes 0.3.0-alpha.1 with Fabric Loader 0.19.5+. This is **not** a pinning decision: inspect the exact current build branch/artifacts and run compatibility tests before releasing Selection.

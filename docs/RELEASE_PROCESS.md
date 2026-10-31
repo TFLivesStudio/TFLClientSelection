@@ -16,7 +16,7 @@
 4. **Produce release manifest**: copy validated draft to `releases/<targetId>/<release>.json`; set status=published only after real binary evidence, loader boot tests and approval. Pin `loaderVersion` and `javaMajor`. Publish `sha256-<digest>.bin` assets; `manifest.json` and `manifest.json.sig`, `notices-<sha>.zip`, and necessary `source-<sha>.zip`.
 5. **Sign** exact UTF-8 manifest and catalog bytes offline or in protected CI using Ed25519. Do not expose keys to untrusted PR workflows. Verify signatures using pinned public key in launcher integration tests.
 6. **Upload immutable Release** to public distribution GitHub repository with tag `selection-<targetId>-v<release>`. Verify HTTP-fetched Release assets against recorded hash/length.
-7. **Publish channel pointer**: edit `catalog/current.json` and re-sign `catalog/current.json.sig` in a single verified commit in distribution repository. This is the only mutable routing entry. Promotion stable/beta/dev points to the same signed immutable release; do not edit old manifest bytes.
+7. **Publish channel pointer**: increment the monotonic `generation` and edit `catalog/current.json`; re-sign `catalog/current.json.sig` in a single verified commit in distribution repository. This is the only mutable routing entry. Promotion stable/beta/dev points to the same signed immutable release; do not edit old manifest bytes.
 8. **Smoke test from TFL Client** on Windows/Linux/macOS where supported; verify launch, unknown-mod quarantine, offline cached launch, interrupted update, rollback, incompatible loader and corrupted blob.
 9. **Retain** all signed releases and source archives while supported installs depend on them; do not rewrite or delete historical assets casually.
 

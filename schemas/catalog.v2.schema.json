@@ -6,6 +6,7 @@
   "required": [
     "schemaVersion",
     "packId",
+    "generation",
     "distributionRepository",
     "targets"
   ],
@@ -125,6 +126,10 @@
           }
         }
       }
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
     }
   }
 }

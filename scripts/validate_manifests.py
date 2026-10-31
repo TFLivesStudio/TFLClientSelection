@@ -160,6 +160,8 @@ def validate_catalog(data: dict, schema: dict, require_local_files: bool = False
     errors = schema_errors(data, schema)
     if not isinstance(data, dict):
         return errors
+    if any(t.get("channels") for t in data.get("targets", []) if isinstance(t, dict)) and data.get("generation", 0) < 1:
+        errors.append("active catalog requires positive generation (signed monotonic revision)")
     seen = set()
     for target in data.get("targets", []):
         if not isinstance(target, dict):

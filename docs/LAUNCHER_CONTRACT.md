@@ -1,13 +1,13 @@
 # TFL Client ↔ Selection Distribution contract v2
 
-This is the **target integration contract**, not an existing endpoint. Public distribution repo `TFLivesStudio/TFLSelectionDistribution` has **not** yet been created.
+This is the **target integration contract**, not an already deployed installer. The distribution repository is this existing **public** `TFLivesStudio/TFLClientSelection` repository; no second repository is required.
 
 ## Discover channels without API server
 
-1. Launcher downloads two static files from the public distribution repository's **pinned branch/path**, e.g. `catalog/current.json` and `catalog/current.json.sig`. HTTPS + response-size bound. Use a canonical GitHub raw URL; allow configured failover to Github Contents only when the same bytes and signature verify.
+1. Launcher downloads two static files from this repository's **pinned main branch/path**, e.g. `catalog/current.json` and `catalog/current.json.sig`. HTTPS + response-size bound. Use `https://raw.githubusercontent.com/TFLivesStudio/TFLClientSelection/main/catalog/current.json` and its matching `.sig` as canonical URLs; allow configured failover to Github Contents only when the same bytes and signature verify.
 2. Verify detached Ed25519 signature over **the exact raw catalog bytes** using a public verification key shipped with the launcher. Signature file format: standard Base64 of a raw 64-byte Ed25519 signature. Never reserialize JSON before checking signature. Reject invalid keys, malformed signature, unauthorized target IDs or unknown schema versions.
 3. Check signed `generation` (monotonic integer). Persist the highest previously verified generation per distribution for online updates; reject lower online catalogs as replay, except use a locally verified offline snapshot without claiming it is a fresh catalog. `generation=0` is for unpublished template only.
-4. Parse the catalog: `schemaVersion=2`, `distributionRepository=TFLivesStudio/TFLSelectionDistribution`, targets, and `stable|beta|dev` channel pointers. Each pointer contains exact release version, immutable release tag and SHA-256 digest of **raw** release manifest.
+4. Parse the catalog: `schemaVersion=2`, `distributionRepository=TFLivesStudio/TFLClientSelection`, targets, and `stable|beta|dev` channel pointers. Each pointer contains exact release version, immutable release tag and SHA-256 digest of **raw** release manifest.
 5. Construct exact GitHub URL for immutable public Release `https://github.com/<distributionRepository>/releases/download/<tag>/manifest.json` and `manifest.json.sig` **from whitelisted/pinned repository and validated tag fields**. Fetch bytes, verify catalog SHA-256, manifest Ed25519 signature, size and schema.
 6. For each mod file in selected release, fetch `https://github.com/<distributionRepository>/releases/download/<tag>/<assetName>`. Asset name is always `sha256-<digest>.bin`, even if local install path is `mods/actual-mod.jar`.
 7. Stream downloads to a separate temp path. Verify exact expected byte length and SHA-256 **before promoting to cache/install**. Reject untrusted redirects and unsupported protocols. Use retries, backoff and bounded concurrency.

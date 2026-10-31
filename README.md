@@ -1,6 +1,6 @@
 # TFL Selection — official, locked Minecraft distributions
 
-This is the **private source-of-truth** for TFL Selection, the official Minecraft mod selection installed by the open-source **TFL Client** launcher.
+This is the **public source-of-truth** for TFL Selection, the official Minecraft mod selection installed by the open-source **TFL Client** launcher.
 
 - Minecraft **1.8.9**: **Ornithe Gen2** (independent bootstrap integration required in the launcher).
 - Modern Minecraft: **Fabric**, starting with the **26.3** target.
@@ -15,16 +15,16 @@ This is the **private source-of-truth** for TFL Selection, the official Minecraf
 
 | Repository | Visibility | Responsibility |
 | --- | --- | --- |
-| TFLClientSelection (this repository) | **Private** | Authoring, manifests, curated inventory, licensing evidence, test/verification and release preparation |
-| TFLSelectionDistribution (**planned, does not yet exist**) | **Public** | Immutable GitHub Release assets, detached signatures and signed channel catalog |
+| TFLClientSelection (this repository) | **Public** | Authoring, manifests, curated inventory, licensing evidence, test/verification and release preparation |
+| GitHub Releases **in this same repository** | **Public** | Immutable binary assets, detached signatures and signed channel catalog |
 | TFLClient | Public | Bootstrapping, downloads, cache, integrity, rollback, locked UI and launch |
 | TFLClientMOD | Independent | Building/providing pinned TFL Core artifacts |
 
-Public release data is not secret. Never disguise a public repo to imply protection, and never ship credentials in a client.
+This repository and release data are public. Never disguise a public repo to imply protection, and never ship credentials in a client.
 
 ## Status
 
-This repository currently contains **drafts only**. No mods, source snapshots, signature keys, published catalogs or launchable packs have been uploaded. The distribution repository, publishing workflow and launcher integration remain to be implemented.
+This repository currently contains **drafts only**. No mods, source snapshots, signature keys, published catalogs or launchable packs have been uploaded. The release publishing workflow and launcher integration remain to be implemented; public GitHub Release assets will be hosted **right here**.
 
 ## Docs
 

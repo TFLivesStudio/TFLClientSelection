@@ -16,13 +16,14 @@ Java 25 for both targets is a **planning input** from prior client work, not ver
 - Legacy LWJGL3 integration (review launcher bootstrap; not necessarily a mod JAR)
 - Additional PvP and FPS mods: **not chosen or validated yet**
 
-## Target 26.3 — review queue, not a confirmed mod list
+## Target 26.3 — candidate inventory registered (not an install manifest)
 
-- TFL Core Fabric build, version/commit/hash missing
-- Fabric loader, pin exact build instead of resolving latest
-- Sodium, Iris: **candidates only**, check exact compatibility and license evidence
-- Any dependencies (Fabric API etc): only after exact compatibility review
-- Additional QoL/visual mods: **not yet chosen**
+- User-supplied **56 candidates** inventoried with exact version, JAR filename, source URL, review status, preliminary license gates and technical notes: [readable review](MC26_3_MOD_REVIEW.md) / [CSV inventory](inventory/mc-26.3-fabric-candidates.csv).
+- TFL Core Fabric build, version/commit/hash missing; Fabric loader remains to be pinned.
+- Sodium, Iris and other stack options remain **candidates only** until actual compatibility, redistribution permissions and source notices are verified.
+- Sodium (PolyForm Shield) and EntityCulling (protective no-outside-mirroring rule) are explicitly **blocked for TFL-hosted binary publication** pending authorization/review.
+- C2ME/ScalableLux/Vitrail and overlapping patches require isolated benchmark and integration tests.
+- No mod has been approved for publication or added to the immutable/managed install list by this inventory update.
 
 ### Inventory review for every candidate
 

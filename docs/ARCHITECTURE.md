@@ -8,7 +8,7 @@ The user-selected behavior is **A: TFLives decides every mod**. Selection is a d
 
 ### Roles
 
-\`\`\`text
+```text
 TFLClientSelection (PRIVATE, this repository)
   curated drafts / manifests / license evidence / tests / approval
        |
@@ -28,7 +28,7 @@ TFLClient (PUBLIC, Rust/Tauri launcher)
   pinned signing key -> catalog verification -> pinned release
   verify manifest signature + digest -> cache -> staged install
   launch exact Minecraft/loader/TFL Core build from manifest
-\`\`\`
+```
 
 Selection is **not** responsible for Minecraft base game assets, Mojang auth or Java runtime distribution; these remain TFLClient responsibilities. The no-Modrinth requirement applies to **Selection's curated mod set**, not a promise of zero external services for a fresh Minecraft install.
 
@@ -44,14 +44,14 @@ A public repository's release assets and catalog are discoverable. A neutral rep
 - **Mutable player data:** saves, screenshots, options, keybindings, account data, logs; do not erase or copy into release.
 - TFL Client must never show 'install mod', 'add local mods', 'update mod', 'remove mod', 'import .mrpack' or 'export modpack' operations **for a Selection profile**.
 - Enforcement must be on Rust command/service boundaries, not only hidden frontend controls.
-- Extra \`mods/\` files are diagnosed and quarantined with a recoverable record (no silent deletion). Official managed files are repaired against signed manifest before launch.
+- Extra `mods/` files are diagnosed and quarantined with a recoverable record (no silent deletion). Official managed files are repaired against signed manifest before launch.
 - Player modifications to Minecraft options remain allowed; user saves never overwritten.
 
 ### Practical file layout on player PC
 
 TFLClient controls the exact OS-specific application-data root.
 
-\`\`\`text
+```text
 <TFL_CLIENT_DATA>/
   cache/selection/blobs/sha256/<digest>   # verified, stable local cache
   selection/profiles/<targetId>/          # instance metadata & player data
@@ -60,7 +60,7 @@ TFLClient controls the exact OS-specific application-data root.
     mods/*.jar
     config/*                  # managed config; seed-if-absent if user-editable
   selection/snapshots/<targetId>/         # last-known-good release + lockfile
-\`\`\`
+```
 
 Runtime filesystem locations are obscured from **normal instance UI**, but actual JARs remain readable once loaded. This is light organization, not DRM. On supported Fabric versions, custom mods directory may be possible, but must be verified; for Ornithe do **not** assume an equivalent exists. Prefer normal loader-visible paths within a private application-data root to unreliable bytecode/encrypted-memory tricks.
 
@@ -70,7 +70,7 @@ Selection does not support arbitrary mods. That does not mean other **normal** l
 
 Both signed raw catalog and manifest need pinned Ed25519 keys and SHA-256 over exact manifest bytes. Local cache is content-addressed, only verified files can be installed. Download SHA validation without trusted signatures is insufficient.
 
-Bootstrap loader version is **pinned**. For Ornithe Gen2, launcher integration is new work; a \`loaderVersion\` field in JSON does not make boot support appear.
+Bootstrap loader version is **pinned**. For Ornithe Gen2, launcher integration is new work; a `loaderVersion` field in JSON does not make boot support appear.
 
 ### No secret client credentials
 
@@ -78,4 +78,4 @@ A public, open-source client must never contain GitHub PAT, release-write token,
 
 ### Permanent protocol, evolution allowed
 
-Keep manifest \`schemaVersion=2\` backwards compatible for this generation. If the protocol ever needs a breaking change, introduce v3 with launcher compatibility gates; do not silently mutate v2 fields or overwrite published releases. "Permanent architecture" means stable responsibilities and invariants, not forbidding future bug fixes/security improvements.
+Keep manifest `schemaVersion=2` backwards compatible for this generation. If the protocol ever needs a breaking change, introduce v3 with launcher compatibility gates; do not silently mutate v2 fields or overwrite published releases. "Permanent architecture" means stable responsibilities and invariants, not forbidding future bug fixes/security improvements.

@@ -2,8 +2,8 @@
 
 | Target ID | Minecraft | Runtime loader | Java major | Current state |
 | --- | --- | --- | --- | --- |
-| \`mc-1.8.9-ornithe\` | 1.8.9 | Ornithe Gen2 | **25 (candidate, test first)** | contract draft; no binaries |
-| \`mc-26.3-fabric\` | 26.3 | Fabric | **25 (candidate, test first)** | contract draft; no binaries |
+| `mc-1.8.9-ornithe` | 1.8.9 | Ornithe Gen2 | **25 (candidate, test first)** | contract draft; no binaries |
+| `mc-26.3-fabric` | 26.3 | Fabric | **25 (candidate, test first)** | contract draft; no binaries |
 
 Java 25 for both targets is a **planning input** from prior client work, not verified here. Official Minecraft 1.8.9 normally uses an older Java runtime, and Ornithe Gen2/Legacy LWJGL3/Argentum setup must be tested in the actual launcher before pinning 25. The published manifest must reflect the Java runtime that truly boots every selected mod.
 

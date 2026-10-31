@@ -25,10 +25,10 @@
 - Do not change TFLClient or TFLClientMOD automatically while editing this repository; coordinate explicit integration PRs.
 
 ## Version/release invariants
-- Drafts: \`drafts/*.json\`; never treated as downloadable.
-- Published manifest: \`releases/<targetId>/<release>.json\`; immutable forever.
-- Release tag: \`selection-<targetId>-v<release>\` in public distribution repo.
-- Asset JAR names in release: \`sha256-<64 lowercase hex>.bin\`, installed under exact local \`mods/*.jar\` paths.
-- Signed \`catalog/current.json\` points to immutable release; **channel promotion edits catalog only**.
+- Drafts: `drafts/*.json`; never treated as downloadable.
+- Published manifest: `releases/<targetId>/<release>.json`; immutable forever.
+- Release tag: `selection-<targetId>-v<release>` in public distribution repo.
+- Asset JAR names in release: `sha256-<64 lowercase hex>.bin`, installed under exact local `mods/*.jar` paths.
+- Signed `catalog/current.json` points to immutable release; **channel promotion edits catalog only**.
 - No user-selectable optional features/variants inside one release manifest.
-- Run \`python scripts/validate_manifests.py\` and \`python -m unittest discover -s tests -v\`; verify GitHub Actions.
+- Run `python scripts/validate_manifests.py` and `python -m unittest discover -s tests -v`; verify GitHub Actions.

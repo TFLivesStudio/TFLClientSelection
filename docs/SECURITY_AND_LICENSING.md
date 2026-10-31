@@ -12,7 +12,7 @@ Each binary must record exact project, version, upstream source repository, immu
 - MPL-2.0 and other copyleft: review file-level/source obligations for the specific artifact, do not assume GPL rules are identical.
 - Other/ambiguous/commercial/no-license: hold for review, seek explicit permission or **exclude and select another mod**. No Modrinth fallback is allowed for official Selection.
 
-License notices available to players (verified \`notices-<sha>.zip\`) remain public alongside the binaries. GPL source archives are public and readable. You cannot make GPL sources secretly proprietary by renaming the assets.
+License notices available to players (verified `notices-<sha>.zip`) remain public alongside the binaries. GPL source archives are public and readable. You cannot make GPL sources secretly proprietary by renaming the assets.
 
 ### Special case: TFL Core provenance
 
@@ -22,7 +22,7 @@ TFL Core must be reviewed for inherited licenses from any forked upstream code o
 
 1. Ed25519 signatures of the exact raw published catalog and manifest bytes. Trusted public key embedded in launcher, private key only in a protected release workflow.
 2. Manifest hash checked against signed catalog, downloaded asset bytes and SHA-256 checked against signed manifest.
-3. Content-addressed binaries with immutable release tags, no \`latest\` mod or bootstrap.
+3. Content-addressed binaries with immutable release tags, no `latest` mod or bootstrap.
 4. Path safety: reject absolute/relative traversal, symlinks, Unicode/OS case-folding collisions, reserved DOS names, source mismatch, suspicious GitHub redirects.
 5. Download timeouts, retries, rate limiting, bounded size and concurrency, safe file permissions, atomic swaps, journaling and old-known-good restore.
 6. Enforce locked selection in Rust backend commands too; the frontend can be modified by an advanced user.

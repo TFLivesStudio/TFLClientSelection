@@ -37,10 +37,10 @@ This repository currently contains **drafts only**. No mods, source snapshots, s
 
 ## Static validation
 
-\`\`\`sh
+```sh
 python -m pip install -r requirements-dev.txt
 python scripts/validate_manifests.py
 python -m unittest discover -s tests -v
-\`\`\`
+```
 
 The pinned-schema and path validation CI is a **first gate only**, not legal clearance or proof the binaries exist and boot. Release publication will require additional manual and automated checks.

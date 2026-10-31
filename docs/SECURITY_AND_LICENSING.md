@@ -1,32 +1,41 @@
-# Security and third-party mod redistribution
+# Security and third-party redistribution policy
 
-## Confidentiality vs source availability
+## Legal baseline
 
-- Repository: **private**, controls who can inspect unpublished release plans.
-- Launcher: **open source** by project decision, so it cannot safely embed a reusable secret.
-- Installed packs: visible to the users who download them. This system protects the service, integrity and unreleased metadata, not the secrecy of installed JAR files.
-- Never promise that a manifest, encryption, compression, renaming or short-lived URLs prevent extraction after installation.
+User preference is to host **all selected mod binaries ourselves** in GitHub Releases and never fetch Selection mods from Modrinth. This is feasible only after verification that every chosen JAR may legally be redistributed. A source repository's existence or public visibility does **not** automatically grant redistribution rights.
 
-## Security requirements
+Each binary must record exact project, version, upstream source repository, immutable commit/tag, **version-appropriate license evidence**, SHA-256, exact bytes and release asset name. Before publication, manually verify that the downloadable JAR and its bundled assets/dependencies fall within the applicable license.
 
-1. Release JSON and catalog cryptographically signed with Ed25519, public verification keys pinned to launcher. Keep private keys outside Git and isolated from arbitrary pull-request workflows.
-2. SHA-256 and exact byte sizes enforced for every asset *after* download and before installation; hashes do **not** authenticate the catalog without a trusted signature.
-3. Verify immutable object IDs and scope tickets to authorized asset IDs. Rate-limit and audit without recording bearer tokens.
-4. Validate all local paths, path case-collisions, symlinks and file type expectations before any write. No archive extraction into arbitrary locations.
-5. Verify upstream redirect targets and block loopback/private/link-local destinations; avoid dangerous protocols. CI's static URL validation is only a **first layer**.
-6. Keep per-profile directories, secure caches, rollback snapshots and user-owned configuration changes separate.
-7. Test malicious manifest inputs, interrupted downloads, corrupt blobs, replay/rollback policy, compromised mirror and revoked release scenarios before public launch.
+- MIT/BSD/ISC: typically permit redistribution but preserve license and copyright notices.
+- Apache-2.0: ensure license and applicable NOTICE conditions.
+- GPLv3/LGPLv3: redistribute under appropriate terms, provide license notices and **complete corresponding source at no extra cost** with convenient access equivalent to our mirrored binary. Preserve source build scripts and modifications, not merely a possibly disappearing upstream GitHub link. This repo's contract requires a content-addressed source archive in **our distribution Release** for GPL/LGPL binaries.
+- MPL-2.0 and other copyleft: review file-level/source obligations for the specific artifact, do not assume GPL rules are identical.
+- Other/ambiguous/commercial/no-license: hold for review, seek explicit permission or **exclude and select another mod**. No Modrinth fallback is allowed for official Selection.
 
-## License checklist — required for each third-party artifact
+License notices available to players (verified \`notices-<sha>.zip\`) remain public alongside the binaries. GPL source archives are public and readable. You cannot make GPL sources secretly proprietary by renaming the assets.
 
-- Record exact project, official URL, version, hash, upstream download location and license.
-- Inspect the license and distribution terms for **that artifact/version**; `MIT`, `GPL` etc. are not equivalent to unconditional permission to redistribute everything bundled with a mod.
-- If a mod's assets, dependencies or download service forbid mirroring, set `origin.redistribution=upstream-only` and use `delivery.mode=upstream`, or omit it.
-- If owned by TFL, use `owned`. If third-party redistribution is affirmatively permitted, use `authorized` and record `evidenceUrl`.
-- Comply with required attribution, license files, notices and source-code obligations when distributing binaries; private GitHub visibility does not waive obligations.
-- Some commercial mods explicitly prohibit redistribution. Never upload them to private blob storage or ship keys/paid assets without permission.
-- Antivirus and supply-chain checks must happen before any binary is accepted as a release.
+### Special case: TFL Core provenance
 
-## Pre-release gating
+TFL Core must be reviewed for inherited licenses from any forked upstream code or assets (e.g. TRS-derived components), plus its dependencies; do **not** mark the whole Core as proprietary merely because TFLives maintains its current repository.
 
-A green schema validator is **not** a proof of legal redistribution, real artifact existence, mod compatibility or malware safety. Human review is required; the release pipeline must additionally verify uploaded blob digests and signature validity. None of those publication/hosting integrations is active yet.
+## Security controls
+
+1. Ed25519 signatures of the exact raw published catalog and manifest bytes. Trusted public key embedded in launcher, private key only in a protected release workflow.
+2. Manifest hash checked against signed catalog, downloaded asset bytes and SHA-256 checked against signed manifest.
+3. Content-addressed binaries with immutable release tags, no \`latest\` mod or bootstrap.
+4. Path safety: reject absolute/relative traversal, symlinks, Unicode/OS case-folding collisions, reserved DOS names, source mismatch, suspicious GitHub redirects.
+5. Download timeouts, retries, rate limiting, bounded size and concurrency, safe file permissions, atomic swaps, journaling and old-known-good restore.
+6. Enforce locked selection in Rust backend commands too; the frontend can be modified by an advanced user.
+7. Quarantine extra mod JARs with recovery metadata; never silently destroy personal data.
+8. Rollback, offline cache and signature rotation tested before release.
+9. No reusable GitHub token in the open-source client. GitHub Actions PR jobs have only read-only permissions and no access to publisher secrets.
+
+## Compliance automation is not enough
+
+The Python validator rejects absent required source archives, missing license review basis, unsafe paths, unknown SPDXs and SHA naming mismatches. It cannot independently prove actual IP rights, source completeness, mod compatibility or integrity of remote Release assets. Those are **pre-publication release gates**.
+
+## Verified external references
+
+- MIT license: https://choosealicense.com/licenses/mit/
+- GPLv3 §6 source obligations: https://www.gnu.org/licenses/gpl-3.0.en.html
+- GitHub licensing overview: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository

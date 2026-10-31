@@ -1,26 +1,37 @@
-# Initial modpack targets — pending inventory
+# Selection targets and curated inventory — awaiting actual file review
 
-The following are **design inputs**, not verified or redistributed binary selections.
-
-| Target | Loader / bootstrap candidate | TFL Core | Other candidate groups | Current state |
+| Target ID | Minecraft | Runtime loader | Java major | Current state |
 | --- | --- | --- | --- | --- |
-| mc-1.8.9-ornithe | Ornithe Gen2, OSL, legacy LWJGL3 support and Argentum (exact versions to confirm) | Ornithe build (pin exact JAR) | PvP, performance, HUD/QoL, compatibility | draft only |
-| mc-26.3-fabric | Fabric (exact loader and runtime versions to confirm) | Fabric build (pin exact JAR) | Sodium/Iris ecosystem, vanilla-oriented performance and visual/QoL | draft only |
+| \`mc-1.8.9-ornithe\` | 1.8.9 | Ornithe Gen2 | **25 (candidate, test first)** | contract draft; no binaries |
+| \`mc-26.3-fabric\` | 26.3 | Fabric | **25 (candidate, test first)** | contract draft; no binaries |
 
-## Pending decisions
+Java 25 for both targets is a **planning input** from prior client work, not verified here. Official Minecraft 1.8.9 normally uses an older Java runtime, and Ornithe Gen2/Legacy LWJGL3/Argentum setup must be tested in the actual launcher before pinning 25. The published manifest must reflect the Java runtime that truly boots every selected mod.
 
-1. Where binaries reside: private R2 bucket, VPS gateway or a compatible equivalent.
-2. Download entitlement: public access to signed *release* metadata, authenticated access, internal dev/beta access.
-3. Inventory and feature groups by target, including exact mods and version-specific compatibility tests.
-4. Redistribution review for every third-party JAR; where prohibited, official upstream delivery or exclusion.
-5. Launcher integration protocol agreement, trusted signature keys, signing service, rollback behavior.
-6. Install-time isolation for per-user settings and extra mods.
-7. Target-specific Java major/loader setup must be confirmed with real boot tests.
+## Target 1.8.9 — review queue, not a confirmed mod list
 
-## Priorities
+- TFL Core (Ornithe Gen2 build), version/commit/hash missing
+- Ornithe Gen2 bootstrap support (not implemented in current launcher)
+- OSL modules (review exact needed modules and licenses)
+- Argentum renderer (review compatibility/rights)
+- Legacy LWJGL3 integration (review launcher bootstrap; not necessarily a mod JAR)
+- Additional PvP and FPS mods: **not chosen or validated yet**
 
-- First deliver a legal, reproducible, boot-tested minimum set on **each target**.
-- Then add optional features and machine-specific quality profiles.
-- Add newer Minecraft versions by introducing a new `targetId`, not by mixing incompatible binaries in one profile.
+## Target 26.3 — review queue, not a confirmed mod list
 
-The catalog currently has **zero published channels**.
+- TFL Core Fabric build, version/commit/hash missing
+- Fabric loader, pin exact build instead of resolving latest
+- Sodium, Iris: **candidates only**, check exact compatibility and license evidence
+- Any dependencies (Fabric API etc): only after exact compatibility review
+- Additional QoL/visual mods: **not yet chosen**
+
+### Inventory review for every candidate
+
+Record: project URL, source commit, mod version, exact Minecraft target, loader, Java major, direct dependencies, conflicts, build method, SHA-256, byte size, license evidence, redistribution eligibility, notices and corresponding source archive if required. No unverifiable selection gets uploaded.
+
+### Invariants
+
+- Every required mod is picked by TFLives, not by the end user.
+- Never automatically choose newer mod versions at player install time.
+- Do not add mods simply because an old planning note named them.
+- Separate target folders and release tags; no shared runtime files unless sha256 verified.
+- User saves and Minecraft personal settings remain private and unmodified by pack repair.

@@ -1,43 +1,40 @@
-# Release lifecycle
+# GitHub-only release process (design + staging)
 
-## 0. No release is currently live
+## Existing state
 
-`drafts/*.json` are **planning documents**, not live manifests. `catalog/catalog.template.json` intentionally points to no release; the launcher must not be directed to it as if stable were available.
+- Private authoring repo: **TFLClientSelection**, created.
+- Public distribution repo: **TFLSelectionDistribution**, **NOT CREATED**.
+- No JAR binaries or source archives uploaded yet.
+- No active published channel. Drafts are not a release.
+- No signing key, signature service or production release publisher installed yet.
 
-## 1. Curate a target
+## Target lifecycle
 
-For each Minecraft/loader version, verify actual bootability and Java requirements. Decide required/optional mod groups. Record exact artifact versions, official sources, SHA-256, byte lengths, install paths, platform constraints and licensing evidence. Keep TFL Core version pinned like every other mod; never point at an unversioned nightly asset.
+1. **Curate** exactly compatible mod versions per Minecraft/loader target; freeze their Git commit, license, jar bytes, SHA-256 and notices/source obligations.
+2. **Import approved JARs** from an upstream build or reproducible local build into temporary protected staging **outside Git history**. Repeatable build preferred. Do not depend on Modrinth at install time.
+3. **Build compliance bundle**: include per-artifact full license notices and GPL/LGPL corresponding source archives. Archive each source tree with required build scripts and modifications, not just a GitHub link. Record exact sha/bytes.
+4. **Produce release manifest**: copy validated draft to \`releases/<targetId>/<release>.json\`; set status=published only after real binary evidence, loader boot tests and approval. Pin \`loaderVersion\` and \`javaMajor\`. Publish \`sha256-<digest>.bin\` assets; \`manifest.json\` and \`manifest.json.sig\`, \`notices-<sha>.zip\`, and necessary \`source-<sha>.zip\`.
+5. **Sign** exact UTF-8 manifest and catalog bytes offline or in protected CI using Ed25519. Do not expose keys to untrusted PR workflows. Verify signatures using pinned public key in launcher integration tests.
+6. **Upload immutable Release** to public distribution GitHub repository with tag \`selection-<targetId>-v<release>\`. Verify HTTP-fetched Release assets against recorded hash/length.
+7. **Publish channel pointer**: edit \`catalog/current.json\` and re-sign \`catalog/current.json.sig\` in a single verified commit in distribution repository. This is the only mutable routing entry. Promotion stable/beta/dev points to the same signed immutable release; do not edit old manifest bytes.
+8. **Smoke test from TFL Client** on Windows/Linux/macOS where supported; verify launch, unknown-mod quarantine, offline cached launch, interrupted update, rollback, incompatible loader and corrupted blob.
+9. **Retain** all signed releases and source archives while supported installs depend on them; do not rewrite or delete historical assets casually.
 
-## 2. Build immutable candidate
+## Design constraints for publisher
 
-- Add files to a copied manifest in `releases/<targetId>/<release>/<channel>.json`; set status `published` only after rights and technical review.
-- Upload approved private objects by content hash to private storage; verify server-side and client-side size/digest.
-- Use `delivery.mode=upstream` for official sources when mirroring is not allowed.
-- Verify launcher boot, mod loader compatibility, updates, offline launch and rollback against real machines.
+GitHub Actions in private authoring repo must not have write access to the publication repo on untrusted PRs. A future dedicated publisher triggered by a protected **manual approval** may use a GitHub App with least-privilege contents permissions scoped to only \`TFLSelectionDistribution\`. Neither the launcher nor published catalog contains those credentials.
 
-## 3. Sign and publish
+Do not add auto-publish workflow until distribution repo and protected signing keys exist and the first release's legal and loader approvals are complete.
 
-- Generate Ed25519 signature of **exact manifest bytes** using a controlled signing step (private key never exposed to untrusted PRs).
-- Commit accompanying `.json.sig` and verify signature against pinned public keys in a release pipeline.
-- Point `catalog/current.json` to the immutable manifest with its raw-byte SHA-256; sign exact catalog bytes too.
-- Publish catalog and manifest via API; backend denies access to unapproved files and issues limited-scope presigned GETs.
+## QA gates
 
-The exact signer, trust-key rotation mechanism and backend are **not yet implemented**; no release should be considered production-ready before these are completed.
+- Static: \`python scripts/validate_manifests.py\`
+- Unit: \`python -m unittest discover -s tests -v\`
+- Release: actual archive hashes/sizes, license archive/source completeness, signature verification and binary scanning
+- Launch: correct Java and loader pin, cold install, incremental update, repair, rollback and offline behavior
 
-## 4. Channels and rollback
+## GitHub limits
 
-- `dev`: internal testing with controlled visibility.
-- `beta`: external opt-in testing.
-- `stable`: boot-tested, licensed and supported release.
-- Rollback: repoint a channel to its **previous signed immutable** manifest; never overwrite historical artifacts.
-- Preserve old blobs according to a documented retention period, including any snapshot still installed and supported.
+GitHub Releases supports up to **1,000 assets per release** and **2 GiB per asset** (official docs); if we approach limits, bundle items deterministically while preserving per-file hash metadata and incremental behavior. These are future scaling considerations, not a reason to introduce a VPS.
 
-## Local validation
-
-```bash
-python -m pip install -r requirements-dev.txt
-python scripts/validate_manifests.py
-python -m unittest discover -s tests -v
-```
-
-CI validates schemas, basic permission metadata, path safety, expected object keys and catalog cross-references. It does not access production storage.
+https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases

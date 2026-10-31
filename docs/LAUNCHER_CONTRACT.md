@@ -1,77 +1,65 @@
-# Launcher ↔ Selection distribution protocol (proposal v1)
+# TFL Client ↔ Selection Distribution contract v2
 
-This document defines the **target interface**, not an already-running API. No URL, credentials, signing key or binary is deployed yet.
+This is the **target integration contract**, not an existing endpoint. Public distribution repo \`TFLivesStudio/TFLSelectionDistribution\` has **not** yet been created.
 
-## Trust chain
+## Discover channels without API server
 
-Launcher ships trusted Ed25519 **public** key(s). Backend/secure release job signs the **exact raw UTF-8 JSON bytes** of both published catalog and immutable manifests. No JSON reserialization before verifying signatures. Key ID is transport metadata; an unknown/unpinned key must be rejected. Signatures do not replace TLS.
+1. Launcher downloads two static files from the public distribution repository's **pinned branch/path**, e.g. \`catalog/current.json\` and \`catalog/current.json.sig\`. HTTPS + response-size bound. Use a canonical GitHub raw URL; allow configured failover to Github Contents only when the same bytes and signature verify.
+2. Verify detached Ed25519 signature over **the exact raw catalog bytes** using a public verification key shipped with the launcher. Signature file format: standard Base64 of a raw 64-byte Ed25519 signature. Never reserialize JSON before checking signature. Reject invalid keys, malformed signature, unauthorized target IDs or unknown schema versions.
+3. Parse the catalog: \`schemaVersion=2\`, \`distributionRepository=TFLivesStudio/TFLSelectionDistribution\`, targets, and \`stable|beta|dev\` channel pointers. Each pointer contains exact release version, immutable release tag and SHA-256 digest of **raw** release manifest.
+4. Construct exact GitHub URL for immutable public Release \`https://github.com/<distributionRepository>/releases/download/<tag>/manifest.json\` and \`manifest.json.sig\` **from whitelisted/pinned repository and validated tag fields**. Fetch bytes, verify catalog SHA-256, manifest Ed25519 signature, size and schema.
+5. For each mod file in selected release, fetch \`https://github.com/<distributionRepository>/releases/download/<tag>/<assetName>\`. Asset name is always \`sha256-<digest>.bin\`, even if local install path is \`mods/actual-mod.jar\`.
+6. Stream downloads to a separate temp path. Verify exact expected byte length and SHA-256 **before promoting to cache/install**. Reject untrusted redirects and unsupported protocols. Use retries, backoff and bounded concurrency.
+7. Offline: only launch a previously installed, locally verified signed snapshot. Do not silently accept downgraded untrusted catalog, expired policy, different Minecraft/loader or unexpected files.
 
-## Suggested endpoints
+Do not use GitHub's \`latest\` release endpoint as the Selection release selection; it is not pinned per target/channel.
 
-`GET /v1/selection/catalog`
+## Canonical files
 
-- Response: `catalog/current.json` bytes with headers `X-TFL-Key-Id` and `X-TFL-Signature-Ed25519` (base64 of 64-byte signature over raw response bytes).
-- Cache may use ETag, but a response is trusted only after signature verification.
-- No draft or internal-only channel is exposed to an unauthorized requester.
+- \`schemas/catalog.v2.schema.json\`: catalog (signed static branch file)
+- \`schemas/manifest.v2.schema.json\`: single target's immutable release
+- \`catalog/catalog.template.json\`: **template only**, zero published channels
+- \`drafts/*.json\`: **unpublished design placeholders**
+- \`releases/<targetId>/<release>.json\`: locally versioned published manifest, accompanied by \`.json.sig\`
 
-`GET /v1/selection/manifests/{targetId}/{release}/{channel}`
+Published \`manifest.json\` bytes must be byte-for-byte identical to the \`releases/...json\` file. Channel promotions only move signed catalog pointers. One immutable release can be promoted \`dev -> beta -> stable\` without changing manifest bytes.
 
-- Returns raw bytes of an immutable, published manifest, with the same signature headers.
-- Caller checks manifest raw SHA-256 against the signed catalog pointer.
-- Rejects revoked release/unknown target/invalid entitlement; never serve arbitrary filesystem paths.
+## Manifest v2 fields
 
-`POST /v1/selection/download-tickets`
+\`packId=tfl-selection\`, \`selectionMode=locked\`, \`targetId\`, \`release\`, \`minecraft.version\`, \`minecraft.loader\`, \`minecraft.loaderVersion\`, \`minecraft.javaMajor\`, \`minecraft.bootstrap\`, minimum launcher version, file list. Every file gives local relative path, kind, exact bytes, sha256, release asset name, install policy, license/provenance.
 
-Example request:
+- No per-user optional \`features\`.
+- No \`mrpack_url\`, third-party network delivery modes, Modrinth project ID or mutable upstream latest dependency.
+- \`installPolicy=managed\`: exact official asset, verified before launch.
+- \`installPolicy=seed-if-absent\`: defaults/user-editable config; do not overwrite user changes. **Mods always managed.**
+- \`noticesAsset\`: archive of license/copyright notices, verified and exposed in UI.
+- \`correspondingSourceAsset\`: GPL/LGPL release source snapshot; verified and downloadable but not loaded as a mod.
 
-```json
-{
-  "targetId": "mc-1.8.9-ornithe",
-  "release": "1.0.0",
-  "channel": "stable",
-  "artifactIds": ["tfl-core"]
-}
-```
+## Selection specific instance lifecycle
 
-Example response *shape* (illustrative, **not a valid download ticket**):
+- A Selection profile has a **persistent identity**: \`profileKind=tfl-selection\`, \`targetId\`, chosen channel, installed release, lockfile with exact manifest hash, verified file hashes and last-good snapshot.
+- Never reinterpret normal existing instances as Selection. Migrate only on explicit, validated conversion.
+- Before game start: ensure pinned loader + Java, check pack integrity, reconcile managed mods, quarantine unknown mods, launch. On any failure preserve last good snapshot and visible error.
+- Never use current \`install_modpack_from_url\` / community .mrpack paths for official Selection.
+- No background 'latest' dependency resolution in Selection.
+- Restrict add/remove/update/duplicate/export/import/open-folder operations for Selection at **backend command/service** level. Do not rely solely on hiding buttons.
+- User saves/settings unaffected, no censorship of user choices outside the official Selection profile.
+- Revalidation must be efficient: cached SHA-256 and metadata may assist, but security decisions cannot rely solely on timestamps.
+- Ensure dynamic injection (e.g. first-party MP Guard JAR) is either pinned and in manifest for supported targets or explicitly excluded from the locked profile; do not introduce unmanaged mods at launch.
 
-```json
-{
-  "tickets": [
-    {
-      "artifactId": "tfl-core",
-      "url": "https://<presigned-object-url>",
-      "expiresAt": "2030-01-01T00:05:00Z"
-    }
-  ]
-}
-```
+## Rust/Tauri client states
 
-- Server authenticates/authorizes access to the **specific published release and asset IDs** before issuing URLs. Must not accept unrestricted object keys from the caller.
-- URLs are ephemeral bearer credentials, held in memory only, never logged or saved in lock files.
-- Client retries by requesting new tickets if expired, validates redirects/HTTPS and verifies SHA-256 and bytes after download.
-- `upstream` files do not require tickets; use `delivery.url` subject to provenance rules.
+\`not-installed -> resolving -> downloading -> verifying -> staged -> installed -> launching\`.
+On error transition to \`repair-needed\` or \`rollback-ready\`; never leave partially swapped \`mods/\`.
+Emit progress events (files, bytes, integrity, repair, crash), support cancellation and recovery after crashes.
 
-## Manifest contract
+## Threat model (light protection, not DRM)
 
-`schemas/manifest.v1.schema.json` is authoritative. Top-level fields:
-- `targetId` binds the exact Minecraft version + loader combination; `minecraft.javaMajor` selects the required runtime.
-- `release` is immutable and can be promoted among channels only by producing an appropriate signed channel manifest or channel-independent release contract in a subsequent schema revision.
-- `features` declares optional mod groups; files may reference `featureId`.
-- `files` carries install-relative path, exact sha256, byte size, kind, policy and source rights.
-- `installPolicy=managed`: update only after making backups for potential user edits. `seed-if-absent`: write default if path does not exist.
-- `delivery.mode=private-object`: request ephemeral URL from server using the approved artifact ID. Object key is content-addressed but not a credential.
-- `delivery.mode=upstream`: download only from validated HTTPS, verify exact hash/bytes and respect official source terms.
+- Keep TFL managed assets under application-data directories, outside traditional user-managed \`.minecraft/mods\`.
+- Content-addressed cache and neutral release asset names deter casual identification, without affecting performance.
+- No in-memory JAR decryption, compression-on-every-launch, anti-debugging or fragile classloader hacks.
+- Root/OS users can read their local JARs and reconstruct the pack. No false claim of unextractability.
 
-**Important:** do not infer a loader installer, Java runtime or library set solely from the mod manifest. Loader/bootstrap artifact acquisition is a separate launcher concern and must be pinned/tested per target.
+## Signature rotation and rollback policy
 
-## Errors and behavior
-
-- Invalid catalog signature, malformed manifest, hash mismatch, unsafe path, incompatible Java, revoked asset or unauthorized request: **fail closed** (do not install).
-- Interrupted download: resume via HTTP Range only if the source supports it and the final SHA-256 is verified.
-- Offline: launch only an already installed, locally verified and permitted snapshot. Do not claim an offline update succeeded.
-- Failed update: leave current snapshot untouched; surface an actionable error and retain previous known-good version.
-
-## Integration boundary
-
-Do not modify TFL Core or launcher code in this repository. Their maintainers implement the published `schemaVersion=1` contract once agreed. Incompatible changes increment `schemaVersion` and are tested against real launcher builds.
+Launcher ships an active set of trusted Ed25519 public keys (with identifiers in its code). A new signing key is introduced through a signed launcher update before old key retirement. Catalog signature should be verified against only explicitly trusted keys. A rollback release is allowed through a newly signed catalog pointer to an **already signed** immutable release; prevent involuntary replay of older cached catalogs by persisting last-seen catalog generation/sequence once this is added to the schema, while preserving documented offline-launch behavior. v2 does not yet include a monotonic sequence field: **do not advertise replay resistance as implemented**.

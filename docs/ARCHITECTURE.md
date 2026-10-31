@@ -1,58 +1,81 @@
-# Architecture — TFL Selection distribution
+# Architecture — locked Selection, GitHub-only distribution
 
-## Scope / ownership
+## Decisions (2026-10-31)
 
-- **TFL Client Launcher**: public application, login/session handling, manifest verification, download engine and isolated installations.
-- **TFL Core**: independently built first-party mod and its own source repository/release process.
-- **TFL Selection**: this **private** repository, selection manifests, third-party licensing records, compatibility matrix, release review.
-- **TFL Distribution Service**: a separate, not-yet-implemented backend controlling manifest delivery and issuing short-lived access to private object storage.
-- **Blob storage**: e.g. Cloudflare R2 (private bucket) or a compatible securely operated object store. Binary files must **not** be checked into Git.
+The user-selected behavior is **A: TFLives decides every mod**. Selection is a dedicated first-party Minecraft product, not a generic user-editable modpack. Version families are **1.8.9 / Ornithe Gen2** and **modern / Fabric** (first modern draft 26.3).
 
-A private GitHub repository is an authoring store, not an endpoint the open-source launcher should clone. Never ship reusable GitHub credentials, R2 secrets, or signing private keys with a public executable.
+**Do not require VPS, Modrinth, R2, GitHub user authentication or private API keys at runtime.**
 
-## Initial target matrix
+### Roles
 
-| Target ID | Minecraft | Loader | Runtime (initial working assumption) |
-| --- | --- | --- | --- |
-| `mc-1.8.9-ornithe` | 1.8.9 | Ornithe Gen2 | Java 25 |
-| `mc-26.3-fabric` | 26.3 | Fabric | Java 25 |
+\`\`\`text
+TFLClientSelection (PRIVATE, this repository)
+  curated drafts / manifests / license evidence / tests / approval
+       |
+       | controlled publisher (future GitHub App scoped to distro repo)
+       v
+TFLSelectionDistribution (PUBLIC, future separate GitHub repo)
+  catalog/current.json + catalog/current.json.sig (static Git branch)
+  GitHub Release: selection-<targetId>-v<version>
+     manifest.json + manifest.json.sig
+     sha256-<digest>.bin  [each owned/redistributable mod, config, etc.]
+     notices-<digest>.zip [third-party license notices]
+     source-<digest>.zip  [GPL/LGPL complete corresponding source]
+       |
+       | ordinary public HTTPS, no account/token
+       v
+TFLClient (PUBLIC, Rust/Tauri launcher)
+  pinned signing key -> catalog verification -> pinned release
+  verify manifest signature + digest -> cache -> staged install
+  launch exact Minecraft/loader/TFL Core build from manifest
+\`\`\`
 
-Before first publish, test exact Java and loader versions against the **actual** bootable environment. Selection records `javaMajor` in each manifest; it does not claim all mods are compatible.
+Selection is **not** responsible for Minecraft base game assets, Mojang auth or Java runtime distribution; these remain TFLClient responsibilities. The no-Modrinth requirement applies to **Selection's curated mod set**, not a promise of zero external services for a fresh Minecraft install.
 
-## Objects and versioning
+### Why GitHub Releases, not JAR files in Git history
 
-- Drafts: `drafts/<target>.json` (never deployable).
-- Immutable releases: `releases/<target>/<release>/<channel>.json`.
-- Detached signature of raw release bytes: `<release-manifest-path>.sig` (Ed25519, base64; key ID conveyed by trusted distribution metadata).
-- Channel pointer: `catalog/current.json`, referencing the release manifest *and exact SHA-256 of raw manifest bytes*.
-- Published catalog must itself be signed before serving. `catalog/catalog.template.json` has deliberately **no active channels**.
-- Binary objects: `sha256/<first-two-hex>/<full-sha256>` in private storage. Content-addressed and immutable.
-- `delivery.mode=upstream`: launcher downloads from a specific, trusted HTTPS official endpoint when redistribution is not approved. SHA-256/size are still mandatory.
+Every replaced JAR would inflate repository history and be directly visible. Use **one immutable Release asset per binary**, with content-addressed filenames and SHA-256 digests in manifests. Third-party author deletes/renames a Modrinth version? It does **not** break our already-mirrored approved asset. A TFL GitHub Release being unavailable remains a GitHub platform dependency, accepted for this design.
 
-Release versions identify a snapshot; the channel pointer is mutable. Promote a candidate by changing a channel pointer, **not** by editing a published manifest or overwriting blobs.
+A public repository's release assets and catalog are discoverable. A neutral repo name/asset filenames are **not access control**. We keep authoring repository private to reduce casual discovery of internal plans. Users can still inspect the launcher's downloads, filesystem and process.
 
-## Installation algorithm (must be implemented in Launcher)
+### Closed versus user data
 
-1. Request **signed** catalog; verify Ed25519 against a public key pinned by the launcher. Reject unknown keys and invalid signatures.
-2. Resolve target + channel to immutable release. Fetch exact manifest bytes, verify digest from catalog, then its detached signature; check schema, launcher minimum version and target/loader/runtime compatibility.
-3. Determine enabled features and platform. Validate all relative paths before resolving under the isolated instance directory; reject traversal, symlinks, case-insensitive collisions and Windows reserved names. Do not follow links out of instance.
-4. Diff against `installed-manifest.lock` and verified local file hashes; trust neither filenames nor timestamps alone.
-5. Reuse hash-verified cache at `cache/blobs/sha256/...`. For missing private objects request ephemeral download tickets; for upstream downloads use only trusted HTTPS sources and inspect redirects against SSRF/local network targets.
-6. Download to unique temp files, enforce limits and timeouts, stream SHA-256 and byte count, then promote to content-addressed cache only when verified.
-7. Build/stage the new managed snapshot **outside** the live mods directory; copy/hardlink verified artifacts as appropriate. Seed-only config must preserve existing user files.
-8. Stop Minecraft and atomically switch the target managed set, using a journal and last-known-good snapshot. A partial failed update must never leave a half-installed pack.
-9. Mark install successful only after an integrity pass. Offer repair, rollback, per-channel pinning and offline launch of an already installed verified snapshot.
+- **Immutable/managed:** selected mod set, loader bootstrap selection, required generated pack files.
+- **Mutable player data:** saves, screenshots, options, keybindings, account data, logs; do not erase or copy into release.
+- TFL Client must never show 'install mod', 'add local mods', 'update mod', 'remove mod', 'import .mrpack' or 'export modpack' operations **for a Selection profile**.
+- Enforcement must be on Rust command/service boundaries, not only hidden frontend controls.
+- Extra \`mods/\` files are diagnosed and quarantined with a recoverable record (no silent deletion). Official managed files are repaired against signed manifest before launch.
+- Player modifications to Minecraft options remain allowed; user saves never overwritten.
 
-Store logs without secrets, signed download URLs or bearer tokens. Preserve user-added files: never recursively purge `mods/` or `config/`; only remove paths known to be managed by the previous verified lock after backup/conflict handling. Do not overwrite user edits to an owned managed path silently.
+### Practical file layout on player PC
 
-## Distribution strategies
+TFLClient controls the exact OS-specific application-data root.
 
-**Preferred:** private object storage with short-lived presigned GETs issued by a backend *after* entitlement/access checks. R2 is a candidate, not a currently configured resource.
+\`\`\`text
+<TFL_CLIENT_DATA>/
+  cache/selection/blobs/sha256/<digest>   # verified, stable local cache
+  selection/profiles/<targetId>/          # instance metadata & player data
+    saves/ screenshots/ options.txt/ config-user/
+  selection/runtime/<targetId>/           # ephemeral/managed loader-visible files
+    mods/*.jar
+    config/*                  # managed config; seed-if-absent if user-editable
+  selection/snapshots/<targetId>/         # last-known-good release + lockfile
+\`\`\`
 
-**Alternative:** authenticated file gateway on the existing VPS with HTTP Range, throttling and observability. This has server bandwidth and operations trade-offs; it still must not expose static private credentials.
+Runtime filesystem locations are obscured from **normal instance UI**, but actual JARs remain readable once loaded. This is light organization, not DRM. On supported Fabric versions, custom mods directory may be possible, but must be verified; for Ornithe do **not** assume an equivalent exists. Prefer normal loader-visible paths within a private application-data root to unreliable bytecode/encrypted-memory tricks.
 
-**Third-party assets:** official upstream HTTPS URLs where redistribution is not permitted, respecting project rules and source integrity.
+### Dependencies and security boundary
 
-## What privacy means (and does not mean)
+Selection does not support arbitrary mods. That does not mean other **normal** launcher instances lose Modrinth, .mrpack, import/export or user-installed mods. Only the official Selection profile is locked.
 
-The manifest repository, release decisions, source scripts and unpublished builds can remain private. **All files actually delivered to a user's PC are extractable**. Access control, packaging, encrypted transit or opaque paths cannot make them permanently secret from a legitimate user. Do not add DRM-like measures that falsely promise otherwise.
+Both signed raw catalog and manifest need pinned Ed25519 keys and SHA-256 over exact manifest bytes. Local cache is content-addressed, only verified files can be installed. Download SHA validation without trusted signatures is insufficient.
+
+Bootstrap loader version is **pinned**. For Ornithe Gen2, launcher integration is new work; a \`loaderVersion\` field in JSON does not make boot support appear.
+
+### No secret client credentials
+
+A public, open-source client must never contain GitHub PAT, release-write token, signing **private** key or GitHub App private key. A narrow GitHub App token may be generated inside a trusted release publisher, after protected approval, and restricted to the public distribution repository. There is **no** app-level API service required at launch.
+
+### Permanent protocol, evolution allowed
+
+Keep manifest \`schemaVersion=2\` backwards compatible for this generation. If the protocol ever needs a breaking change, introduce v3 with launcher compatibility gates; do not silently mutate v2 fields or overwrite published releases. "Permanent architecture" means stable responsibilities and invariants, not forbidding future bug fixes/security improvements.

@@ -21,7 +21,7 @@
 
 ## Design constraints for publisher
 
-GitHub Actions in private authoring repo must not have write access to the publication repo on untrusted PRs. A future dedicated publisher triggered by **manual approval** in a protected GitHub Actions Environment may use a short-lived repository-scoped `GITHUB_TOKEN` with `contents: write`; the signing key must remain an environment secret unavailable to PRs. Neither the launcher nor published catalog contains those credentials.
+GitHub Actions on pull requests must have **read-only** permissions. A publisher is a separate protected manual workflow in this same public repository, never triggered by an untrusted pull request. A future dedicated publisher triggered by **manual approval** in a protected GitHub Actions Environment may use a short-lived repository-scoped `GITHUB_TOKEN` with `contents: write`; the signing key must remain an environment secret unavailable to PRs. Neither the launcher nor published catalog contains those credentials.
 
 Do not add auto-publish workflow until protected signing keys exist and the first release's legal and loader approvals are complete.
 

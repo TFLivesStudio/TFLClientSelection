@@ -12,7 +12,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_SCHEMA = ROOT / "schemas/manifest.v2.schema.json"
 CATALOG_SCHEMA = ROOT / "schemas/catalog.v2.schema.json"
-DISTRIBUTION = "TFLivesStudio/TFLSelectionDistribution"
+DISTRIBUTION = "TFLivesStudio/TFLClientSelection"
 KIND_ROOT = {
     "mod": "mods", "config": "config", "resourcepack": "resourcepacks",
     "shaderpack": "shaderpacks", "asset": "assets", "datapack": "datapacks",

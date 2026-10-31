@@ -27,7 +27,7 @@
 ## Version/release invariants
 - Drafts: `drafts/*.json`; never treated as downloadable.
 - Published manifest: `releases/<targetId>/<release>.json`; immutable forever.
-- Release tag: `selection-<targetId>-v<release>` in public distribution repo.
+- Release tag: `selection-<targetId>-v<release>` in this repository's public GitHub Releases.
 - Asset JAR names in release: `sha256-<64 lowercase hex>.bin`, installed under exact local `mods/*.jar` paths.
 - Signed `catalog/current.json` points to immutable release; **channel promotion edits catalog only**.
 - No user-selectable optional features/variants inside one release manifest.

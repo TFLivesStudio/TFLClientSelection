@@ -2,8 +2,7 @@
 
 ## Existing state
 
-- Private authoring repo: **TFLClientSelection**, created.
-- Public distribution repo: **TFLSelectionDistribution**, **NOT CREATED**.
+- Public source-of-truth and distribution repo: **TFLClientSelection**, exists; all manifests, review docs, catalog files, signatures and GitHub Release binaries live here.
 - No JAR binaries or source archives uploaded yet.
 - No active published channel. Drafts are not a release.
 - No signing key, signature service or production release publisher installed yet.
@@ -15,16 +14,16 @@
 3. **Build compliance bundle**: include per-artifact full license notices and GPL/LGPL corresponding source archives. Archive each source tree with required build scripts and modifications, not just a GitHub link. Record exact sha/bytes.
 4. **Produce release manifest**: copy validated draft to `releases/<targetId>/<release>.json`; set status=published only after real binary evidence, loader boot tests and approval. Pin `loaderVersion` and `javaMajor`. Publish `sha256-<digest>.bin` assets; `manifest.json` and `manifest.json.sig`, `notices-<sha>.zip`, and necessary `source-<sha>.zip`.
 5. **Sign** exact UTF-8 manifest and catalog bytes offline or in protected CI using Ed25519. Do not expose keys to untrusted PR workflows. Verify signatures using pinned public key in launcher integration tests.
-6. **Upload immutable Release** to public distribution GitHub repository with tag `selection-<targetId>-v<release>`. Verify HTTP-fetched Release assets against recorded hash/length.
-7. **Publish channel pointer**: increment the monotonic `generation` and edit `catalog/current.json`; re-sign `catalog/current.json.sig` in a single verified commit in distribution repository. This is the only mutable routing entry. Promotion stable/beta/dev points to the same signed immutable release; do not edit old manifest bytes.
+6. **Upload immutable Release** to this existing public GitHub repository with tag `selection-<targetId>-v<release>`. Verify HTTP-fetched Release assets against recorded hash/length.
+7. **Publish channel pointer**: increment the monotonic `generation` and edit `catalog/current.json`; re-sign `catalog/current.json.sig` in a single verified commit in the same repository. This is the only mutable routing entry. Promotion stable/beta/dev points to the same signed immutable release; do not edit old manifest bytes.
 8. **Smoke test from TFL Client** on Windows/Linux/macOS where supported; verify launch, unknown-mod quarantine, offline cached launch, interrupted update, rollback, incompatible loader and corrupted blob.
 9. **Retain** all signed releases and source archives while supported installs depend on them; do not rewrite or delete historical assets casually.
 
 ## Design constraints for publisher
 
-GitHub Actions in private authoring repo must not have write access to the publication repo on untrusted PRs. A future dedicated publisher triggered by a protected **manual approval** may use a GitHub App with least-privilege contents permissions scoped to only `TFLSelectionDistribution`. Neither the launcher nor published catalog contains those credentials.
+GitHub Actions in private authoring repo must not have write access to the publication repo on untrusted PRs. A future dedicated publisher triggered by **manual approval** in a protected GitHub Actions Environment may use a short-lived repository-scoped `GITHUB_TOKEN` with `contents: write`; the signing key must remain an environment secret unavailable to PRs. Neither the launcher nor published catalog contains those credentials.
 
-Do not add auto-publish workflow until distribution repo and protected signing keys exist and the first release's legal and loader approvals are complete.
+Do not add auto-publish workflow until protected signing keys exist and the first release's legal and loader approvals are complete.
 
 ## QA gates
 

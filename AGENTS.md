@@ -6,7 +6,7 @@
 - Selection is **not** community modpack discovery and is **not** a .mrpack installer.
 - All selected third-party mod JARs are hosted in **TFL-managed public GitHub Release assets** only after rights and source checks. No Modrinth fallback.
 - No dependency on TFLives VPS, custom API, R2, reusable private GitHub tokens or user GitHub accounts.
-- This private repository is authoring/source-of-truth; published binary repository is separate and public.
+- This public repository is the source-of-truth **and** GitHub Releases distribution home; the official Selection client reads releases here.
 
 ## Safety and licensing
 - **Never** commit JARs, tokens, private keys, paid/commercial assets or unlicensed binaries to Git history.

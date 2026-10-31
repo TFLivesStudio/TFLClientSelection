@@ -9,13 +9,12 @@ The user-selected behavior is **A: TFLives decides every mod**. Selection is a d
 ### Roles
 
 ```text
-TFLClientSelection (PRIVATE, this repository)
+TFLClientSelection (PUBLIC, this ONE repository)
   curated drafts / manifests / license evidence / tests / approval
        |
-       | controlled publisher (future GitHub App scoped to distro repo)
+       | protected/manual publish workflow (same repo, future)
        v
-TFLSelectionDistribution (PUBLIC, future separate GitHub repo)
-  catalog/current.json + catalog/current.json.sig (static Git branch)
+  catalog/current.json + catalog/current.json.sig (static Git main branch)
   GitHub Release: selection-<targetId>-v<version>
      manifest.json + manifest.json.sig
      sha256-<digest>.bin  [each owned/redistributable mod, config, etc.]
@@ -36,7 +35,7 @@ Selection is **not** responsible for Minecraft base game assets, Mojang auth or 
 
 Every replaced JAR would inflate repository history and be directly visible. Use **one immutable Release asset per binary**, with content-addressed filenames and SHA-256 digests in manifests. Third-party author deletes/renames a Modrinth version? It does **not** break our already-mirrored approved asset. A TFL GitHub Release being unavailable remains a GitHub platform dependency, accepted for this design.
 
-A public repository's release assets and catalog are discoverable. A neutral repo name/asset filenames are **not access control**. We keep authoring repository private to reduce casual discovery of internal plans. Users can still inspect the launcher's downloads, filesystem and process.
+This public repository's code, release assets and catalog are discoverable. A neutral repo name/asset filenames are **not access control**. The source-of-truth repository is also public; drafts, scripts and release metadata are accessible. Do not treat repository naming as an access control. Users can still inspect the launcher's downloads, filesystem and process.
 
 ### Closed versus user data
 
@@ -74,7 +73,7 @@ Bootstrap loader version is **pinned**. For Ornithe Gen2, launcher integration i
 
 ### No secret client credentials
 
-A public, open-source client must never contain GitHub PAT, release-write token, signing **private** key or GitHub App private key. A narrow GitHub App token may be generated inside a trusted release publisher, after protected approval, and restricted to the public distribution repository. There is **no** app-level API service required at launch.
+A public, open-source client must never contain GitHub PAT, release-write token, signing **private** key or GitHub App private key. A protected release workflow in this repository can use GitHub Actions' short-lived `GITHUB_TOKEN` with narrowly scoped `contents: write` for publication; only approved jobs receive signing secrets. PR jobs remain `contents: read`. There is **no** app-level API service required at launch.
 
 ### Permanent protocol, evolution allowed
 

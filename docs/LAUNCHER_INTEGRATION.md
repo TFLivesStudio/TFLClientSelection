@@ -86,7 +86,7 @@ Names are **proposals**, not existing files. Avoid duplicating existing HTTP/aqu
 
 ### Phase L4 — release and operations
 
-1. Implement separate signing/publishing pipeline with protected approval and a scoped GitHub App on future distro repo.
+1. Implement separate signing/publishing pipeline with protected approval and a scoped GitHub App on same TFLClientSelection repository.
 2. Build release asset and source-bundle validation and mirror compliance copies.
 3. Introduce channel pinning, beta/dev policy, rollback catalog pointers, key rotation, minimum client version.
 4. Validate full Windows/Linux/macOS installs and nightly cold start/download failure recovery.

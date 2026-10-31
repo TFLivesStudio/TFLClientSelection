@@ -92,7 +92,7 @@
       ],
       "properties": {
         "repository": {
-          "const": "TFLivesStudio/TFLSelectionDistribution"
+          "const": "TFLivesStudio/TFLClientSelection"
         },
         "tag": {
           "type": "string",

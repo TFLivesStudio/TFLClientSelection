@@ -1,0 +1,60 @@
+name: Stage reviewed Audit 5 optimizer draft
+on:
+  workflow_dispatch:
+    inputs:
+      native_acceptance_run:
+        description: 'Comma-separated Core acceptance run IDs; all six rows must pass for identical production content'
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: audit5-optimizer-draft
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: write
+    env:
+      CORE_SHA: 9038e613d0b50712691a9755abfadc3f0f461e74
+      ACCEPTANCE_RUN: ${{ inputs.native_acceptance_run }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '25'}
+      - uses: gradle/actions/setup-gradle@v4
+      - run: python -m pip install -r requirements-dev.txt
+      - uses: actions/checkout@v6
+        with:
+          repository: TFLivesStudio/TFLClientMOD
+          ref: 9038e613d0b50712691a9755abfadc3f0f461e74
+          fetch-depth: 0
+          path: core
+          persist-credentials: false
+      - name: Require all six native rows with identical production and fixture content
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python core/tools/verification/check_native_acceptance.py --runs "$ACCEPTANCE_RUN" --output native-acceptance.json
+      - name: Reproduce binaries, complete sources and exact draft asset layout
+        run: |
+          python scripts/validate_manifests.py
+          python -m unittest discover -s tests -v
+          python core/tools/integrations/build_optimizers.py --workspace "$RUNNER_TEMP/upstream"
+          python core/tools/integrations/package_sources.py --upstream "$RUNNER_TEMP/upstream" --output "$RUNNER_TEMP/sources"
+          python scripts/stage_optimizer_candidates.py --core core --upstream "$RUNNER_TEMP/upstream" --sources "$RUNNER_TEMP/sources" --output staged
+      - name: Stage in this repository, never publish or promote the signed catalog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp native-acceptance.json staged/NATIVE-ACCEPTANCE.json
+          tag=$(python -c 'import json;print(json.load(open("drafts/mc-1.8.9-ornithe.json"))["distribution"]["tag"])')
+          if gh release view "$tag" >/dev/null 2>&1; then
+            test "$(gh release view "$tag" --json isDraft --jq .isDraft)" = true
+            gh release upload "$tag" staged/* --clobber
+          else
+            gh release create "$tag" staged/* --draft --prerelease --latest=false --target "$GITHUB_SHA" --title 'Audit 5 — independent optimizer review' --notes-file docs/AUDIT5_REVIEW.md
+          fi

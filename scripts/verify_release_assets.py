@@ -54,14 +54,20 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--assets", required=True, type=Path)
+    parser.add_argument("--draft", action="store_true", help="Verify staged draft bytes without certifying publication or launcher readiness")
     args = parser.parse_args()
     from validate_manifests import MANIFEST_SCHEMA
     try:
         manifest = load_json(args.manifest)
         schema = load_json(MANIFEST_SCHEMA)
-        errors = validate_manifest(manifest, schema, f"releases/{manifest['targetId']}/{manifest['release']}.json")
-        if manifest.get("status") != "published":
+        location = f"drafts/{args.manifest.name}" if args.draft else f"releases/{manifest['targetId']}/{manifest['release']}.json"
+        errors = validate_manifest(manifest, schema, location)
+        if args.draft and manifest.get("status") != "draft":
+            errors.append("--draft requires an explicitly draft manifest")
+        if not args.draft and manifest.get("status") != "published":
             errors.append("not a published manifest: staging cannot certify a draft")
+        if "noticesAsset" not in manifest:
+            errors.append("staged assets require a per-mod notices ZIP, including drafts")
         if errors:
             raise ValueError("; ".join(errors))
         staging = args.assets.resolve(strict=True)
@@ -79,7 +85,7 @@ def main() -> int:
     except (OSError, KeyError, ValueError) as exc:
         print(f"FAILED: {exc}", file=sys.stderr)
         return 1
-    print(f"OK: all release assets, GPL source snapshots and per-mod notices present and hashed locally")
+    print("OK: draft bytes, corresponding sources and notices verified; publication and launcher readiness NOT certified" if args.draft else "OK: all release assets, GPL source snapshots and per-mod notices present and hashed locally")
     return 0
 
 

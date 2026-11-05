@@ -2,13 +2,71 @@
   "schemaVersion": 2,
   "packId": "tfl-selection",
   "targetId": "mc-1.8.9-ornithe",
-  "release": "0.0.0-dev.0",
+  "release": "0.4.0-audit.5-rc.1",
   "status": "draft",
   "selectionMode": "locked",
   "minecraft": {
     "version": "1.8.9",
     "loader": "ornithe-gen2",
-    "javaMajor": 25
+    "javaMajor": 25,
+    "loaderVersion": "0.19.5",
+    "bootstrap": "launcher-pinned-ornithe"
   },
-  "files": []
+  "files": [
+    {
+      "id": "zirconium",
+      "kind": "mod",
+      "path": "mods/Zirconium-0.2.0+mc1.8.9.tfl.1.jar",
+      "installPolicy": "managed",
+      "assetName": "sha256-0d68e0a99a14b72d586e106e7b2835c2f8a20cfc78782db9b2aceb91dc13ae1f.bin",
+      "sha256": "0d68e0a99a14b72d586e106e7b2835c2f8a20cfc78782db9b2aceb91dc13ae1f",
+      "bytes": 619211,
+      "origin": {
+        "project": "Zirconium-Ornithe",
+        "projectVersion": "0.2.0+mc1.8.9.tfl.1",
+        "sourceRepository": "https://github.com/Coccocoahelper/Zirconium-Ornithe",
+        "sourceRevision": "d687019623a153e03a9210e05b3eea0d33059cf7",
+        "licenseSpdx": "LGPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/Coccocoahelper/Zirconium-Ornithe/blob/d687019623a153e03a9210e05b3eea0d33059cf7/LICENSE",
+        "redistributionBasis": "open-source-license",
+        "correspondingSourceAsset": {
+          "assetName": "source-379c002fe8a222e4d2da3f8c205e37c510fd269b5697a7eef96d067a1981459b.zip",
+          "sha256": "379c002fe8a222e4d2da3f8c205e37c510fd269b5697a7eef96d067a1981459b",
+          "bytes": 99479
+        }
+      }
+    },
+    {
+      "id": "starlight",
+      "kind": "mod",
+      "path": "mods/starlight-1.0.0+1.8.9.jar",
+      "installPolicy": "managed",
+      "assetName": "sha256-4d572d90d1bdd27c747b0fd03295ae47c232e3500dbea3a93bde35903b4500c8.bin",
+      "sha256": "4d572d90d1bdd27c747b0fd03295ae47c232e3500dbea3a93bde35903b4500c8",
+      "bytes": 73503,
+      "origin": {
+        "project": "Legacy-Starlight",
+        "projectVersion": "1.0.0+1.8.9",
+        "sourceRepository": "https://github.com/Polyfrost/Legacy-Starlight",
+        "sourceRevision": "ed5214d0f9ff787a43aafd915c31c793620ef280",
+        "licenseSpdx": "GPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/Polyfrost/Legacy-Starlight/blob/ed5214d0f9ff787a43aafd915c31c793620ef280/LICENSE",
+        "redistributionBasis": "open-source-license",
+        "correspondingSourceAsset": {
+          "assetName": "source-6588389735a259bcc16a44b15e3014132c7ccdf6a9940d6a107231cf900b7825.zip",
+          "sha256": "6588389735a259bcc16a44b15e3014132c7ccdf6a9940d6a107231cf900b7825",
+          "bytes": 114629
+        }
+      }
+    }
+  ],
+  "distribution": {
+    "repository": "TFLivesStudio/TFLClientSelection",
+    "tag": "selection-mc-1.8.9-ornithe-v0.4.0-audit.5-rc.1"
+  },
+  "noticesAsset": {
+    "assetName": "notices-25aa898548ece7b1ca39c4e5bdca104b2172aeed39f73ec3909dc4a76541f02c.zip",
+    "sha256": "25aa898548ece7b1ca39c4e5bdca104b2172aeed39f73ec3909dc4a76541f02c",
+    "bytes": 27475
+  }
 }

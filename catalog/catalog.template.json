@@ -7,13 +7,19 @@
       "targetId": "mc-1.8.9-ornithe",
       "minecraftVersion": "1.8.9",
       "loader": "ornithe-gen2",
-      "channels": {}
+      "channels": {},
+      "displayName": "TFL Selection 1.8.9",
+      "summary": "Minecraft 1.8.9 · Ornithe Gen2 · Java 25",
+      "sortOrder": 1
     },
     {
       "targetId": "mc-26.3-fabric",
       "minecraftVersion": "26.3",
       "loader": "fabric",
-      "channels": {}
+      "channels": {},
+      "displayName": "TFL Selection 26.3",
+      "summary": "Minecraft 26.3 · Fabric · Java 25",
+      "sortOrder": 2
     }
   ],
   "generation": 0

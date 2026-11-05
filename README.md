@@ -7,6 +7,7 @@ This is the **public source-of-truth** for TFL Selection, the official Minecraft
 - **Locked Selection**: TFLives chooses the entire mod set. The launcher must not offer user-installed, removed, updated or overridden mods inside Selection.
 - **No Modrinth in the Selection install/update path.** Each approved third-party mod binary is mirrored and pinned by SHA-256 in TFL-controlled GitHub Releases.
 - **No VPS, API server or R2 required** for the distribution design.
+- **Auto-discovery:** newly published compatible Minecraft versions and updates to any Selection modpack appear through the signed catalog, **without publishing a new launcher build** for routine pack-content changes.
 - **No .mrpack** for official Selection. Existing normal launcher instances and their capabilities are a separate product mode.
 - Players can alter Minecraft settings and keep worlds/saves, but not the managed mod selection.
 - Files delivered to the player remain inspectable; the goal is modest friction against casual copying, not unbreakable DRM.
@@ -31,6 +32,8 @@ This repository currently contains **drafts only**. No mods, source snapshots, s
 - [Architecture and release design](docs/ARCHITECTURE.md)
 - [Exact release contract](docs/LAUNCHER_CONTRACT.md)
 - [Launcher code audit and integration plan](docs/LAUNCHER_INTEGRATION.md)
+- [Prism Launcher ZIP import and cleanup](docs/PRISM_IMPORT.md)
+- [Dynamic catalog discovery and updates](docs/AUTOMATIC_CATALOG_AND_UPDATES.md)
 - [File layout and release operations](docs/RELEASE_PROCESS.md)
 - [Licensing and security policy](docs/SECURITY_AND_LICENSING.md)
 - [Target compatibility / inventory plan](docs/SELECTION_MATRIX.md)

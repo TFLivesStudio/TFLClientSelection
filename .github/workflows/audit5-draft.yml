@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
     env:
-      CORE_SHA: 0d12b77a19f1fd8389cc189625b3af574e94a90a
+      CORE_SHA: f0d367186bd1b5623fc9fb2abca6547591ce5940
       ACCEPTANCE_RUN: ${{ inputs.native_acceptance_run }}
     steps:
       - uses: actions/checkout@v6
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           repository: TFLivesStudio/TFLClientMOD
-          ref: 0d12b77a19f1fd8389cc189625b3af574e94a90a
+          ref: f0d367186bd1b5623fc9fb2abca6547591ce5940
           fetch-depth: 0
           path: core
           persist-credentials: false

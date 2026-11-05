@@ -6,14 +6,14 @@ Public repository: https://github.com/TFLivesStudio/TFLClient, current `main` at
 
 | Observed code | Actual behavior / gap | Selection integration |
 | --- | --- | --- |
-| `src-tauri/src/commands/tfl_selection.rs` | `get_tfl_selection()` searches public org repos tagged `tfl-modpack`, reads `tfl-modpack.json` through GitHub API and expects `mrpack_url`. Only Vanilla/Fabric/Forge/NeoForge/Quilt in list. | Replace **official Selection** discovery with hardcoded/trusted signed catalog endpoint + fixed target IDs. No Github topic search, no .mrpack, no community contributions to official catalog. |
+| `src-tauri/src/commands/tfl_selection.rs` | `get_tfl_selection()` searches public org repos tagged `tfl-modpack`, reads `tfl-modpack.json` through GitHub API and expects `mrpack_url`. Only Vanilla/Fabric/Forge/NeoForge/Quilt in list. | Replace **official Selection** discovery with a pinned/trusted signed catalog endpoint and **dynamically enumerated published target IDs**. No Github topic search, no .mrpack, no community contributions to official catalog. |
 | `src-tauri/src/commands/modpacks.rs` | `install_modpack_from_url` uses `cubrinth::mrpack::install_mrpack`. `update_community_modpack` compares .mrpack URLs; integrity function primarily checks files exist. | Keep for normal modpacks only. Build new **Selection-specific** release installer: signed manifests, binary-by-binary SHA, snapshot/rollback, repair. |
 | `src-tauri/src/services/instance_manager.rs` | `LoaderKind` enum lacks Ornithe; `resolve_loader` resolves latest Fabric loader, stores regular instances; `InstanceData` lacks official profile identity. | Add `profile_kind: Normal | TflSelection`, `target_id`, `channel`, `installed_release`, `manifest_digest`, `last_known_good`. Add OrnitheGen2 bootstrap path; never resolve latest loader for Selection. |
 | `src-tauri/src/services/launcher.rs` | `ensure_downloaded` handles vanilla/Fabric/Forge/NeoForge/Quilt; Java selected by `aqua::infer_java_version(&data.mc_version)`. Launch uses regular instance directory. | Before launch, perform manifest integrity/repair; respect pinned `minecraft.javaMajor` and `loaderVersion` for official Selection; add Ornithe bootstrap, isolated runtime path. |
 | `src-tauri/src/services/launcher.rs` | `inject_mp_guard` copies an additional first-party JAR into `mods` for cracked/offline accounts and fails soft if unavailable. | For locked Selection, either include **exact** guard artifact with version-specific hash in signed manifest, or explicitly avoid injection for that profile. No untracked mods at launch. |
 | `src-tauri/src/commands/content.rs` | Offers `install_mod`, `remove_mod`, `set_mod_enabled`, `update_all_mods`, `add_local_mod_files`, `remove_duplicate_mods`. | Add backend authorization guard for every operation that mutates a Selection profile; leave normal launcher instances unchanged. |
 | `src-tauri/src/commands/instance.rs` | Offers duplicate, open instance folder, rename and delete commands. | Limit open-folder/export/duplicate for Selection; optionally allow delete after normal user confirmation (must not erase saves silently). Rename display label only, do not alter trusted profile identity. |
-| `src/lib/components/library/TflSelection.svelte` | Allows selecting a compatible **normal instance** or creating one; then calls `installModpackFromUrl`. | Redesign to a fixed official Selection **version selector** (1.8.9, 26.3, future); channel opt-in gated; install/repair/update/launch states. No user mod selection. |
+| `src/lib/components/library/TflSelection.svelte` | Allows selecting a compatible **normal instance** or creating one; then calls `installModpackFromUrl`. | Redesign to an official Selection **catalog-driven version selector** (1.8.9, 26.3 and future targets automatically); channel opt-in gated; install/repair/update/launch states. No user mod selection. |
 | `src/lib/types/types.ts` + `src/lib/api/modpacks.ts` | TFL Selection types depend on `mrpack_url`; API exposes `get_tfl_selection`. | Introduce strict typed v2 catalog/manifest status and new invoke commands. Remove .mrpack linkage only from official Selection path. |
 | `src-tauri/src/lib.rs` | Registers Tauri commands for normal instance/content and existing modpacks. | Register new Selection commands and ensure old mutation paths cannot target official Selection profiles. |
 | `crates/aqua/src/downloaders/fabric.rs` | Fabric batch resolution/download already exists. | Reuse underlying downloader where appropriate but **pin** exact loader version for Selection instead of resolving latest. |
@@ -60,7 +60,7 @@ Names are **proposals**, not existing files. Avoid duplicating existing HTTP/aqu
 
 ### Phase L1 — trust and catalog
 
-1. New Rust v2 types with size limits and strict field rejection.
+1. New Rust v2 types with size limits and strict field rejection. Render new target entries directly from signed `catalog.targets`, not a hardcoded array.
 2. Fetch static signed GitHub public catalog from trusted pinned repo/path.
 3. Verify Ed25519 signature before accepting target/channel or generating asset URLs.
 4. Fetch immutable manifest and verify signed digest.

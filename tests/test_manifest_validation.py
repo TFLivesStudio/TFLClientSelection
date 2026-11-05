@@ -50,6 +50,19 @@ class Contracts(unittest.TestCase):
         x["generation"] = 1
         self.assertEqual(validate_catalog(x, CATALOG), [])
 
+    def test_catalog_can_add_another_fabric_version_without_schema_change(self):
+        x = copy.deepcopy(load_json(ROOT / "catalog" / "catalog.template.json"))
+        x["targets"].append({
+            "targetId": "mc-26.4-fabric",
+            "minecraftVersion": "26.4",
+            "loader": "fabric",
+            "displayName": "TFL Selection 26.4",
+            "summary": "New version discovered dynamically",
+            "sortOrder": 3,
+            "channels": {},
+        })
+        self.assertEqual(validate_catalog(x, CATALOG), [])
+
     def test_owned_or_oss_mod(self):
         x = copy.deepcopy(DRAFT)
         x["files"] = [artifact()]

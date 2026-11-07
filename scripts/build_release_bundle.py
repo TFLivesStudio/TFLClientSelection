@@ -148,8 +148,9 @@ def build(zip_file: Path, inventory_path: Path, approval_path: Path, notices_dir
                 if not path.is_file() or path.is_symlink():
                     continue
                 rel = path.relative_to(defaults_dir).as_posix()
-                require(rel.startswith("config/") and ".." not in rel.split("/"),
-                        "only reviewed config/ defaults may be published")
+                if not rel.startswith("config/"):
+                    continue  # README and other documentation are not installable defaults
+                require(".." not in rel.split("/"), "unsafe default configuration path")
                 raw = path.read_bytes()
                 require(0 < len(raw) < 1024 * 1024, "configuration too large")
                 digest = sha256_bytes(raw)

@@ -34,7 +34,7 @@ This repository contains drafts and **metadata-only Prism 1.8.9 import inventory
 - [Launcher code audit and integration plan](docs/LAUNCHER_INTEGRATION.md)
 - [Prism Launcher ZIP import and cleanup](docs/PRISM_IMPORT.md)
 - [Minecraft 1.8.9 real Prism ZIP import audit](docs/MC1_8_9_PRISM_IMPORT_REVIEW.md)
-- [Pinned original-author GitHub Releases — 6 verified, 5 pending](docs/MIXED_GITHUB_RELEASE_DELIVERY.md)
+- [Pinned original-author GitHub Releases — 5 public verified, 6 TFL assets needed](docs/MIXED_GITHUB_RELEASE_DELIVERY.md)
 - [Rights approval template](licensing/approvals.mc-1.8.9-ornithe.template.json)
 - [Guarded release builder](scripts/build_release_bundle.py), [Ed25519 signer](scripts/selection_sign.py), [catalog promotion](scripts/selection_promote.py), [GitHub Release publisher](scripts/publish_approved_release.py)
 - [Privacy-safe reviewed defaults for 1.8.9](defaults/mc-1.8.9-ornithe/config)
@@ -54,3 +54,9 @@ python -m unittest discover -s tests -v
 ```
 
 The pinned-schema and path validation CI is a **first gate only**, not legal clearance or proof the binaries exist and boot. Release publication will require additional manual and automated checks.
+
+**Important (2026-11-07):** TFL Core source repository is **private**, so its original Release cannot serve public users. TFL Selection must mirror its exact first-party GPL-3.0 JAR **and** corresponding source; only five author-hosted public assets remain (Argentum/Extras/Cera, Sarcio and OSL).
+
+## Complete the exact 1.8.9 public beta
+
+[Spanish step-by-step publication instructions](docs/PUBLICAR_TFL_SELECTION_189.md): one manual draft workflow, attach **six unchanged binary JAR assets + original private TFL Core source archive**, verify-only workflow, configure one Ed25519 Actions secret, and finish signed beta. The **five** original GitHub Release mods are never mirrored. Signed catalog is not active before all checks and approvals pass.

@@ -235,16 +235,10 @@
         "project": "tflcore",
         "projectVersion": "0.5.0-visual-preview.1",
         "sourceRepository": "https://github.com/TFLivesStudio/TFLClientMOD",
-        "sourceRevision": "17aa9c84d07b435a63aae8ebddc078263af3552d",
+        "sourceRevision": "PENDING-PRIVATE-SOURCE-ZIP",
         "licenseSpdx": "GPL-3.0-only",
         "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientMOD",
         "redistributionBasis": "open-source-license"
-      },
-      "download": {
-        "kind": "github-release",
-        "repository": "TFLivesStudio/TFLClientMOD",
-        "tag": "v0.5.0-visual-preview.1",
-        "asset": "tflcore-1.8.9-0.5.0-visual-preview.1.jar"
       }
     }
   ]

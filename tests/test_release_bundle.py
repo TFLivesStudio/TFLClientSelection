@@ -181,8 +181,8 @@ class ReleaseBundle(unittest.TestCase):
         lock = load_json(ROOT / "inventory/github-release-lock.mc-1.8.9-ornithe.json")
         inv = load_json(ROOT / "inventory/mc-1.8.9-ornithe-2026-11-07.json")
         by_id = {m["id"]: m for m in inv["mods"]}
-        self.assertEqual(len(lock["verified"]), 6)
-        self.assertEqual(len(lock["pending"]), 5)
+        self.assertEqual(len(lock["verified"]), 5)
+        self.assertEqual(len(lock["pending"]), 6)
         for upstream in lock["verified"]:
             source = by_id[upstream["id"]]
             self.assertEqual((upstream["sha256"], upstream["bytes"]),

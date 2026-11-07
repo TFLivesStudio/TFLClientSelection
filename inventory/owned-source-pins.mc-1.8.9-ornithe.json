@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "targetId": "mc-1.8.9-ornithe",
+  "release": "0.1.0-preview.1",
+  "tag": "selection-mc-1.8.9-ornithe-v0.1.0-preview.1",
+  "sourceBuildNote": "Commit pins identify version-matching sources; the build revision must be reviewed against the prebuilt JAR. Do not substitute or rebuild any binary during publication.",
+  "assets": {
+    "amplio": {
+      "repo": "jonathanthxd/amplio",
+      "commit": "deadbad272d6c0febcebd8e70a3ad0107b5a0915",
+      "license": "MIT",
+      "licensePath": "LICENSE",
+      "nativeNotice": "META-INF/licenses/NVIDIA-DLSS.txt",
+      "version": "0.1.1+1.8.9"
+    },
+    "legacy-lwjgl3": {
+      "repo": "moehreag/legacy-lwjgl3",
+      "commit": "ef78e7daee3c1d05638c85485250e380a4babe18",
+      "license": "LGPL-2.1-only",
+      "licensePath": "LICENSE",
+      "version": "1.4.10"
+    },
+    "lucerna": {
+      "repo": "jonathanthxd/lucerna",
+      "commit": "45f3fcde3620c3e94e8e0fe3ef4cafe56944ce40",
+      "license": "LGPL-3.0-only",
+      "licensePath": "LICENSE",
+      "version": "0.1.5-tfl.2"
+    },
+    "pulse": {
+      "repo": "QuicksilverMC/Pulse",
+      "commit": "1d202b831157e843b1961b1216a542585b838985",
+      "license": "GPL-3.0-only",
+      "licensePath": "LICENSE",
+      "version": "1.0.0"
+    },
+    "soundfix": {
+      "repo": "moehreag/soundfix",
+      "commit": "5be5da21d4eb55479266591f53fdb05986dc6da7",
+      "license": "LGPL-3.0-only",
+      "licensePath": "src/main/resources/fabric.mod.json",
+      "version": "1.1.0+mc1.8.9"
+    },
+    "tflcore": {
+      "repo": "TFLivesStudio/TFLClientMOD",
+      "commit": "17aa9c84d07b435a63aae8ebddc078263af3552d",
+      "license": "GPL-3.0-only",
+      "version": "0.5.0-visual-preview.1",
+      "privateSourceAsset": "tflcore-source.zip",
+      "privateSourceSha256": "3d19f304eccc6e239fcfc36303d742b83e00165533ca037cc760360910ce0c11",
+      "privateSourceBytes": 136468685
+    }
+  }
+}

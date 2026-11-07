@@ -110,7 +110,7 @@ def main() -> int:
         for err in errs:
             print("LOCK INVALID:", err, file=sys.stderr)
         return 1
-    print(f"OK: 11 original mods, 6 author-hosted pinned GitHub assets, 5 pending TFL-hosted binaries. "
+    print(f"OK: 11 original mods, 5 author-hosted pinned GitHub assets, 6 pending TFL-hosted binaries. "
           f"{'Online hashes verified.' if args.online else 'Local lock only.'}")
     return 0
 

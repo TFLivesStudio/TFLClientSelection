@@ -33,7 +33,7 @@ Selection is **not** responsible for Minecraft base game assets, Mojang auth or 
 
 ### Why GitHub Releases, not JAR files in Git history
 
-Every replaced JAR would inflate repository history and be directly visible. Use **one immutable Release asset per binary**, with content-addressed filenames and SHA-256 digests in manifests. Third-party author deletes/renames a Modrinth version? It does **not** break our already-mirrored approved asset. A TFL GitHub Release being unavailable remains a GitHub platform dependency, accepted for this design.
+Every replaced JAR would inflate repository history and be directly visible. The final delivery is hybrid: direct pinned original-author GitHub Releases are supported, alongside TFL-hosted assets where permitted. Use **one immutable Release asset per binary**, with content-addressed filenames and SHA-256 digests in manifests. Third-party author deletes/renames a Modrinth version? It does **not** break our already-mirrored approved asset. A TFL GitHub Release being unavailable remains a GitHub platform dependency, accepted for this design.
 
 This public repository's code, release assets and catalog are discoverable. A neutral repo name/asset filenames are **not access control**. The source-of-truth repository is also public; drafts, scripts and release metadata are accessible. Do not treat repository naming as an access control. Users can still inspect the launcher's downloads, filesystem and process.
 
@@ -78,3 +78,7 @@ A public, open-source client must never contain GitHub PAT, release-write token,
 ### Permanent protocol, evolution allowed
 
 Keep manifest `schemaVersion=2` backwards compatible for this generation. If the protocol ever needs a breaking change, introduce v3 with launcher compatibility gates; do not silently mutate v2 fields or overwrite published releases. "Permanent architecture" means stable responsibilities and invariants, not forbidding future bug fixes/security improvements.
+
+## Mixed GitHub Release delivery (2026-11-07)
+
+The sole signed catalog stays in `TFLClientSelection`, but **mod asset hosts may be their original GitHub author**. For `files[].download`, the launcher resolves pinned `github-release` repository/tag/asset; otherwise it reads TFL Selection's own Release. Verified content-addressed cache and SHA-256 apply equally to both. The three ARR mods Argentum, Extras and Cera are not mirrored. See [mixed delivery](MIXED_GITHUB_RELEASE_DELIVERY.md). No Modrinth or unsanctioned URL fallback.

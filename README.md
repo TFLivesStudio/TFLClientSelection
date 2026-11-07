@@ -5,7 +5,7 @@ This is the **public source-of-truth** for TFL Selection, the official Minecraft
 - Minecraft **1.8.9**: **Ornithe Gen2** (independent bootstrap integration required in the launcher).
 - Modern Minecraft: **Fabric**, starting with the **26.3** target.
 - **Locked Selection**: TFLives chooses the entire mod set. The launcher must not offer user-installed, removed, updated or overridden mods inside Selection.
-- **No Modrinth in the Selection install/update path.** Each approved third-party mod binary is mirrored and pinned by SHA-256 in TFL-controlled GitHub Releases.
+- **No Modrinth in the Selection install/update path.** Author-hosted, pinned GitHub Releases can serve rights-restricted mods directly; remaining redistributable JARs use TFL-controlled GitHub Releases. Every file is pinned by SHA-256.
 - **No VPS, API server or R2 required** for the distribution design.
 - **Auto-discovery:** newly published compatible Minecraft versions and updates to any Selection modpack appear through the signed catalog, **without publishing a new launcher build** for routine pack-content changes.
 - **No .mrpack** for official Selection. Existing normal launcher instances and their capabilities are a separate product mode.
@@ -34,6 +34,7 @@ This repository contains drafts and **metadata-only Prism 1.8.9 import inventory
 - [Launcher code audit and integration plan](docs/LAUNCHER_INTEGRATION.md)
 - [Prism Launcher ZIP import and cleanup](docs/PRISM_IMPORT.md)
 - [Minecraft 1.8.9 real Prism ZIP import audit](docs/MC1_8_9_PRISM_IMPORT_REVIEW.md)
+- [Pinned original-author GitHub Releases — 6 verified, 5 pending](docs/MIXED_GITHUB_RELEASE_DELIVERY.md)
 - [Rights approval template](licensing/approvals.mc-1.8.9-ornithe.template.json)
 - [Guarded release builder](scripts/build_release_bundle.py), [Ed25519 signer](scripts/selection_sign.py), [catalog promotion](scripts/selection_promote.py), [GitHub Release publisher](scripts/publish_approved_release.py)
 - [Privacy-safe reviewed defaults for 1.8.9](defaults/mc-1.8.9-ornithe/config)

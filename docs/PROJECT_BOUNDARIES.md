@@ -15,3 +15,5 @@
 The same public repo contains source-of-truth metadata, CI and GitHub Releases. It is not a secret store. Downloads of these Release assets need no user GitHub account or VPS.
 
 Do not confuse official TFL Selection (closed, curated) with TFL Core (in-game mod features), generic community modpacks or the launcher itself.
+
+**Mixed GitHub delivery:** Some official binary files are served by original authors (exact pinned GitHub Releases), others by TFL Selection Releases. TFL signs the immutable manifest describing both; the launcher downloads and verifies each SHA-256. No Modrinth or TFL-owned rehost of rights-restricted Argentum/Extras/Cera.

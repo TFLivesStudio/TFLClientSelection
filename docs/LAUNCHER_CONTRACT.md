@@ -66,3 +66,9 @@ Emit progress events (files, bytes, integrity, repair, crash), support cancellat
 ## Signature rotation and rollback policy
 
 Launcher ships an active set of trusted Ed25519 public keys (with identifiers in its code). A new signing key is introduced through a signed launcher update before old key retirement. Catalog signature should be verified against only explicitly trusted keys. A rollback release is allowed through a newly signed catalog pointer to an **already signed** immutable release; prevent involuntary replay of older cached catalogs by persisting last-seen catalog generation/sequence once this is added to the schema, while preserving documented offline-launch behavior. v2 now includes a signed monotonic `generation`; **launcher replay protection is still pending implementation and testing**.
+
+## GitHub-only external author assets (v2 extension)
+
+`files[].download` is **optional**. If present, it must be `{ "kind": "github-release", "repository": "Owner/Repo", "tag": "immutable-tag", "asset": "exact-jar-name.jar" }`. The launcher builds `https://github.com/<repository>/releases/download/<tag>/<asset>` with safe URL encoding and strictly validated identifier characters, never arbitrary download URLs or GitHub `latest`. If absent, it uses the current TFL Selection Release's `assetName=sha256-<sha>.bin`. Regardless of source, compare exact `files[].bytes` and `files[].sha256` from the **signed** manifest before promoting a cache blob. Cache identity is hash, not filename, URL or repository. Legitimate GitHub asset CDN redirects must remain HTTPS.
+
+**1.8.9 first target:** 6 upstream exact GitHub Release assets, 5 planned TFL-owned assets; current draft must not be announced as published. Details: [mixed delivery](MIXED_GITHUB_RELEASE_DELIVERY.md).

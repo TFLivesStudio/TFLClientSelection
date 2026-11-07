@@ -2,7 +2,7 @@
 
 ## Legal baseline
 
-User preference is to host **all selected mod binaries ourselves** in GitHub Releases and never fetch Selection mods from Modrinth. This is feasible only after verification that every chosen JAR may legally be redistributed. A source repository's existence or public visibility does **not** automatically grant redistribution rights.
+User preference is **no Modrinth dependency**, with exact assets from original-author GitHub Releases whenever the author restricts redistribution, and TFL-hosted GitHub Releases for independently redistributable approved mods. A source repository's existence or public visibility does **not** automatically grant redistribution rights.
 
 Each binary must record exact project, version, upstream source repository, immutable commit/tag, **version-appropriate license evidence**, SHA-256, exact bytes and release asset name. Before publication, manually verify that the downloadable JAR and its bundled assets/dependencies fall within the applicable license.
 
@@ -16,9 +16,9 @@ License notices available to players (verified `notices-<sha>.zip`) remain publi
 
 ### Actual 1.8.9 Argentum monorepo exception
 
-The official `QuicksilverMC/argentum` **README explicitly states `All Rights Reserved`** for Argentum, with a narrow note that the *bundled Celeritas JAR* remains LGPLv3. The code's GitHub visibility, `/extras` and `/cera` subdirectories, and LGPL licensing of upstream Celeritas **do not automatically extend to the author's independent changes**. These three imported exact binaries require author-granted redistribution permission or replacement by an independently licensed/reimplemented alternative. A future source-derived replacement must be treated as a **new** mod build with its own version/SHA and fresh compatibility tests, not deceptively repackaged as the original.
+The official `QuicksilverMC/argentum` **README explicitly states `All Rights Reserved`** for Argentum, with a narrow note that the *bundled Celeritas JAR* remains LGPLv3. The code's GitHub visibility, `/extras` and `/cera` subdirectories, and LGPL licensing of upstream Celeritas **do not automatically extend to the author's independent changes**. These three imported exact binaries **may now be downloaded directly from the original QuicksilverMC/Argentum v1.0.2 GitHub Release** with an exact digest pinned by signed TFL manifest; redistribution by TFL still requires author permission. A future source-derived replacement must be treated as a **new** mod build with its own version/SHA and fresh compatibility tests, not deceptively repackaged as the original.
 
-Actual Amplio 0.1.1 JAR bundles a NVIDIA release/runtime DLL and extracts it at startup. Its redistribution must comply with the **NVIDIA RTX SDK license**, including any third-party notices, rather than assuming the mod's MIT declaration applies to that DLL. The release builder requires separate evidence for bundled native binaries.
+Actual Amplio 0.1.1 JAR bundles a NVIDIA release/runtime DLL and extracts it at startup. Its redistribution must comply with the **NVIDIA RTX SDK license**, including any third-party notices, rather than assuming the mod's MIT declaration applies to that DLL. If TFL itself hosts Amplio's JAR, the release builder requires separate evidence for its bundled native binaries. A future verified exact original-author release may supply the JAR directly instead, with its original author responsible for that distribution.
 
 ### Special case: TFL Core provenance
 

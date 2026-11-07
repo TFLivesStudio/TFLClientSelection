@@ -25,3 +25,7 @@
 5. Complete signed release manifest v2, notices/source bundles, real boot tests, content-addressed GitHub Release assets, signed catalog publication. Normal pack changes will be discovered dynamically without rebuilding the launcher.
 
 **Do not publish the 11 binary assets while these gates remain unresolved.**
+
+## Resolution update — 2026-11-07
+
+The exact GitHub Release assets for **Argentum 1.0.2, Argentum Extras 1.0.2 and Cera 1.0.2** exist under `QuicksilverMC/Argentum` `v1.0.2` with SHA-256 matching the Prism ZIP byte for byte. The plan now uses the **author's assets directly**, without TFL redistribution, so no separate author mirroring permission is needed for these three files. Sarcio, OSL and TFL Core's exact assets also match GitHub Releases. Five other JARs remain without a verified exact GitHub Release; this 11-mod pack is still not a signed public release. See [mixed delivery](MIXED_GITHUB_RELEASE_DELIVERY.md).

@@ -12,13 +12,13 @@ El paquete del propietario se conserva **sin modificar versiones, nombres de ins
 
 ## Instrucciones exactas al propietario (Windows)
 
-### 1. Crear un borrador desde GitHub Actions
+### 1. Abrir el borrador que ya creé
 
-Visita [TFL Selection 1.8.9 - publish exact signed release](https://github.com/TFLivesStudio/TFLClientSelection/actions/workflows/publish-selection-189.yml). Pulsa **Run workflow** en la rama **main**, con task = **create-draft**. El workflow creará el borrador privado de Release (no una Release pública).
+**El workflow de GitHub ya creó el borrador automáticamente y su ejecución finalizó con éxito.** Abre [la Release en borrador TFL Selection 1.8.9](https://github.com/TFLivesStudio/TFLClientSelection/releases/tag/untagged-4a4f69c3a1b08af7c4b4) y pulsa **Edit**. No necesitas ejecutar `create-draft` otra vez. Si el enlace no abre, entra en el repositorio → **Releases** → **Drafts** y busca la tag `selection-mc-1.8.9-ornithe-v0.1.0-preview.1`.
 
 ### 2. Adjuntar siete archivos exactos
 
-Descarga el `TFLSelection_189_SIX_EXACT_ASSETS_UPLOAD_KIT.zip` preparado en esta conversación. Extráelo y adjunta a la Release **los seis archivos `sha256-*.bin`**, no el ZIP ni los archivos de texto.
+Descarga el `TFLSelection_189_SIX_EXACT_ASSETS_UPLOAD_KIT.zip` preparado en esta conversación. Son **seis archivos de aproximadamente 159 MiB en total**, por lo que su subida puede requerir unos minutos según tu conexión. Extráelo y adjunta a la Release **los seis archivos `sha256-*.bin`**, no el ZIP ni los archivos de texto.
 
 **El séptimo archivo** es `tflcore-source.zip`: accede al [Release privado TFL Core v0.5.0-visual-preview.1](https://github.com/TFLivesStudio/TFLClientMOD/releases/tag/v0.5.0-visual-preview.1), descarga **`tflcore-source.zip`** y añádelo al mismo borrador. SHA-256 esperado `3d19f304eccc6e239fcfc36303d742b83e00165533ca037cc760360910ce0c11`, tamaño **136468685 bytes**. El workflow rechazará otra versión.
 

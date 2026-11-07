@@ -25,7 +25,7 @@ This repository and release data are public. Never disguise a public repo to imp
 
 ## Status
 
-This repository currently contains **drafts only**. No mods, source snapshots, signature keys, published catalogs or launchable packs have been uploaded. The release publishing workflow and launcher integration remain to be implemented; public GitHub Release assets will be hosted **right here**.
+This repository contains drafts and **metadata-only Prism 1.8.9 import inventory**; no active releases. No mods, source snapshots, signature keys, published catalogs or launchable packs have been uploaded. The release publishing workflow and launcher integration remain to be implemented; public GitHub Release assets will be hosted **right here**.
 
 ## Docs
 
@@ -33,6 +33,7 @@ This repository currently contains **drafts only**. No mods, source snapshots, s
 - [Exact release contract](docs/LAUNCHER_CONTRACT.md)
 - [Launcher code audit and integration plan](docs/LAUNCHER_INTEGRATION.md)
 - [Prism Launcher ZIP import and cleanup](docs/PRISM_IMPORT.md)
+- [Minecraft 1.8.9 real Prism ZIP import audit](docs/MC1_8_9_PRISM_IMPORT_REVIEW.md)
 - [Dynamic catalog discovery and updates](docs/AUTOMATIC_CATALOG_AND_UPDATES.md)
 - [File layout and release operations](docs/RELEASE_PROCESS.md)
 - [Licensing and security policy](docs/SECURITY_AND_LICENSING.md)

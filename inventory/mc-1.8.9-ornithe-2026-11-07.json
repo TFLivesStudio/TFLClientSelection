@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "kind": "review-only-prism-import",
+  "status": "NOT_PUBLISHED",
+  "targetId": "mc-1.8.9-ornithe",
+  "sourceZipSha256": "bf00be902da7b53221368b584dd747b8f13f43a7e7ffe3b934d375843daf67d7",
+  "importedAt": "2026-11-07",
+  "minecraft": {
+    "version": "1.8.9",
+    "loader": "ornithe-gen2",
+    "loaderVersion": "0.20.1",
+    "javaMajor": 25,
+    "notes": "Ornithe uses Fabric Loader + Gen2 mappings"
+  },
+  "mods": [
+    {
+      "id": "amplio",
+      "version": "0.1.1+1.8.9",
+      "filename": "amplio-0.1.1+1.8.9.jar",
+      "installPath": "mods/amplio-0.1.1+1.8.9.jar",
+      "sha256": "05d18d7760d8c855fc33e32e3c8b3026c8217d5a1c05a768a5769c8c7c83315f",
+      "bytes": 62789068,
+      "assetName": "sha256-05d18d7760d8c855fc33e32e3c8b3026c8217d5a1c05a768a5769c8c7c83315f.bin",
+      "declaredLicense": "MIT",
+      "licenseReview": "REVIEW_BUNDLED_NVIDIA_DLL",
+      "redistributionApproved": false
+    },
+    {
+      "id": "argentum",
+      "version": "1.0.2",
+      "filename": "argentum-1.0.2.jar",
+      "installPath": "mods/argentum-1.0.2.jar",
+      "sha256": "6fb5074f2b302562b5676d56beaf1ef0811ddbca71d584b566400701e1118674",
+      "bytes": 1775007,
+      "assetName": "sha256-6fb5074f2b302562b5676d56beaf1ef0811ddbca71d584b566400701e1118674.bin",
+      "declaredLicense": null,
+      "licenseReview": "BLOCKED_RIGHTS",
+      "redistributionApproved": false
+    },
+    {
+      "id": "argentum-extras",
+      "version": "1.0.2",
+      "filename": "argentum-extras-1.0.2.jar",
+      "installPath": "mods/argentum-extras-1.0.2.jar",
+      "sha256": "2dd9786718768a9bda8928367ada50bac866c94c5ee3929161a2c8a6a2a147f1",
+      "bytes": 55074,
+      "assetName": "sha256-2dd9786718768a9bda8928367ada50bac866c94c5ee3929161a2c8a6a2a147f1.bin",
+      "declaredLicense": null,
+      "licenseReview": "BLOCKED_RIGHTS",
+      "redistributionApproved": false
+    },
+    {
+      "id": "cera",
+      "version": "1.0.2",
+      "filename": "cera-1.0.2.jar",
+      "installPath": "mods/cera-1.0.2.jar",
+      "sha256": "a509b62e92099cdbd3e88b445b4180b04f75bbe848297a96d7db0862ef67b3f2",
+      "bytes": 512531,
+      "assetName": "sha256-a509b62e92099cdbd3e88b445b4180b04f75bbe848297a96d7db0862ef67b3f2.bin",
+      "declaredLicense": null,
+      "licenseReview": "BLOCKED_RIGHTS",
+      "redistributionApproved": false
+    },
+    {
+      "id": "legacy-lwjgl3",
+      "version": "1.4.10",
+      "filename": "legacy-lwjgl3-1.4.10.jar",
+      "installPath": "mods/legacy-lwjgl3-1.4.10.jar",
+      "sha256": "cfcdb312c96bf47e8224c2f3c0dc53d3d7a28e7ad73d69e8d09c0a4400412e9e",
+      "bytes": 17618306,
+      "assetName": "sha256-cfcdb312c96bf47e8224c2f3c0dc53d3d7a28e7ad73d69e8d09c0a4400412e9e.bin",
+      "declaredLicense": "LGPL-2.1-only",
+      "licenseReview": "SOURCE_AND_NOTICES",
+      "redistributionApproved": false
+    },
+    {
+      "id": "lucerna",
+      "version": "0.1.5-tfl.2",
+      "filename": "lucerna-0.1.5-tfl.2.jar",
+      "installPath": "mods/lucerna-0.1.5-tfl.2.jar",
+      "sha256": "7f9d396861998b2ea8562379e22320a4547a2b5cc18567d97d2dd042ed42e451",
+      "bytes": 2025688,
+      "assetName": "sha256-7f9d396861998b2ea8562379e22320a4547a2b5cc18567d97d2dd042ed42e451.bin",
+      "declaredLicense": "LGPL-3.0-only",
+      "licenseReview": "SOURCE_AND_NOTICES",
+      "redistributionApproved": false
+    },
+    {
+      "id": "osl",
+      "version": "0.22.2",
+      "filename": "ornithe-standard-libraries-0.22.2.jar",
+      "installPath": "mods/ornithe-standard-libraries-0.22.2.jar",
+      "sha256": "02d55f63cd767be27c35682de3271b25aeb0af701b8b3b23d0f03a0ac9ed619f",
+      "bytes": 5386281,
+      "assetName": "sha256-02d55f63cd767be27c35682de3271b25aeb0af701b8b3b23d0f03a0ac9ed619f.bin",
+      "declaredLicense": "Apache-2.0",
+      "licenseReview": "LICENSE_NOTICES",
+      "redistributionApproved": false
+    },
+    {
+      "id": "pulse",
+      "version": "1.0.0",
+      "filename": "pulse-1.0.0.jar",
+      "installPath": "mods/pulse-1.0.0.jar",
+      "sha256": "dd0f25fbfb2c45c0c616bf18a7e692c936e997aa5c9601b7632af5293000d9db",
+      "bytes": 5814491,
+      "assetName": "sha256-dd0f25fbfb2c45c0c616bf18a7e692c936e997aa5c9601b7632af5293000d9db.bin",
+      "declaredLicense": "GPL-3.0-only",
+      "licenseReview": "SOURCE_AND_NOTICES",
+      "redistributionApproved": false
+    },
+    {
+      "id": "sarcio",
+      "version": "1.1.1",
+      "filename": "Sarcio-1.1.1.jar",
+      "installPath": "mods/Sarcio-1.1.1.jar",
+      "sha256": "c6a94c0ed23a40e9471efe3391282370d005d45efff05b8e708c5ecfc3b77a7c",
+      "bytes": 3214925,
+      "assetName": "sha256-c6a94c0ed23a40e9471efe3391282370d005d45efff05b8e708c5ecfc3b77a7c.bin",
+      "declaredLicense": "LGPL-3.0-or-later",
+      "licenseReview": "SOURCE_AND_NOTICES",
+      "redistributionApproved": false
+    },
+    {
+      "id": "soundfix",
+      "version": "1.1.0+mc1.8.9",
+      "filename": "soundfix-1.1.0+mc1.8.9.jar",
+      "installPath": "mods/soundfix-1.1.0+mc1.8.9.jar",
+      "sha256": "2da5334d7816325a582ed47afe11be393a1958e263b324f19b9590ff0bde32da",
+      "bytes": 85414,
+      "assetName": "sha256-2da5334d7816325a582ed47afe11be393a1958e263b324f19b9590ff0bde32da.bin",
+      "declaredLicense": "LGPL-3.0",
+      "licenseReview": "SOURCE_AND_NOTICES",
+      "redistributionApproved": false
+    },
+    {
+      "id": "tflcore",
+      "version": "0.5.0-visual-preview.1",
+      "filename": "tflcore-1.8.9-0.5.0-visual-preview.1.jar",
+      "installPath": "mods/tflcore-1.8.9-0.5.0-visual-preview.1.jar",
+      "sha256": "c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041",
+      "bytes": 78333017,
+      "assetName": "sha256-c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041.bin",
+      "declaredLicense": "GPL-3.0-only",
+      "licenseReview": "SOURCE_AND_NOTICES",
+      "redistributionApproved": false
+    }
+  ],
+  "shadersPendingSeparateReview": 6,
+  "excludedData": [
+    "maps",
+    "terrain cache",
+    "mod remapping cache with Mojang jars",
+    "usercache",
+    "servers.dat",
+    "options",
+    "crash logs",
+    "personal waypoints"
+  ],
+  "warnings": [
+    "Argentum, Argentum Extras and Cera are shown ARR on public project listings; no distribution rights established",
+    "Amplio embeds a separate NVIDIA nvngx_dlss.dll (~59MB) under native windows; MIT metadata alone does not establish DLL redistribution rights",
+    "GPL and LGPL artifacts need precise corresponding source and notices",
+    "No Prism-to-TFL Client boot has been tested; do not publish"
+  ]
+}

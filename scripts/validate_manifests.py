@@ -23,9 +23,9 @@ WINDOWS_RESERVED = {"con", "prn", "aux", "nul", *(f"com{i}" for i in range(1, 10
 OPEN_SOURCE_REVIEWED = {
     "MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "ISC",
     "GPL-3.0-only", "GPL-3.0-or-later", "LGPL-3.0-only",
-    "LGPL-3.0-or-later", "MPL-2.0", "CC0-1.0",
+    "LGPL-3.0-or-later", "LGPL-2.1-only", "LGPL-2.1-or-later", "MPL-2.0", "CC0-1.0",
 }
-SOURCE_REQUIRED = {"GPL-3.0-only", "GPL-3.0-or-later", "LGPL-3.0-only", "LGPL-3.0-or-later"}
+SOURCE_REQUIRED = {"GPL-3.0-only", "GPL-3.0-or-later", "LGPL-3.0-only", "LGPL-3.0-or-later", "LGPL-2.1-only", "LGPL-2.1-or-later"}
 
 
 def load_json(path: Path) -> dict:

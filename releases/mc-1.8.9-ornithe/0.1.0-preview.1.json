@@ -1,0 +1,389 @@
+{
+  "schemaVersion": 2,
+  "packId": "tfl-selection",
+  "targetId": "mc-1.8.9-ornithe",
+  "release": "0.1.0-preview.1",
+  "status": "published",
+  "selectionMode": "locked",
+  "publishedAt": "2026-11-07T21:34:57.343550+00:00",
+  "minimumLauncherVersion": "0.1.0",
+  "minecraft": {
+    "version": "1.8.9",
+    "loader": "ornithe-gen2",
+    "loaderVersion": "0.20.1",
+    "javaMajor": 25,
+    "bootstrap": "launcher-pinned-ornithe"
+  },
+  "distribution": {
+    "repository": "TFLivesStudio/TFLClientSelection",
+    "tag": "selection-mc-1.8.9-ornithe-v0.1.0-preview.1"
+  },
+  "files": [
+    {
+      "id": "amplio",
+      "kind": "mod",
+      "path": "mods/amplio-0.1.1+1.8.9.jar",
+      "sha256": "05d18d7760d8c855fc33e32e3c8b3026c8217d5a1c05a768a5769c8c7c83315f",
+      "bytes": 62789068,
+      "assetName": "sha256-05d18d7760d8c855fc33e32e3c8b3026c8217d5a1c05a768a5769c8c7c83315f.bin",
+      "installPolicy": "managed",
+      "origin": {
+        "project": "amplio",
+        "projectVersion": "0.1.1+1.8.9",
+        "sourceRepository": "https://github.com/jonathanthxd/amplio",
+        "sourceRevision": "deadbad272d6c0febcebd8e70a3ad0107b5a0915",
+        "licenseSpdx": "MIT",
+        "licenseEvidenceUrl": "https://github.com/jonathanthxd/amplio/blob/deadbad272d6c0febcebd8e70a3ad0107b5a0915/LICENSE",
+        "redistributionBasis": "open-source-license"
+      }
+    },
+    {
+      "id": "argentum",
+      "kind": "mod",
+      "path": "mods/argentum-1.0.2.jar",
+      "sha256": "6fb5074f2b302562b5676d56beaf1ef0811ddbca71d584b566400701e1118674",
+      "bytes": 1775007,
+      "assetName": "sha256-6fb5074f2b302562b5676d56beaf1ef0811ddbca71d584b566400701e1118674.bin",
+      "installPolicy": "managed",
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Argentum",
+        "tag": "v1.0.2",
+        "asset": "argentum-1.0.2.jar"
+      },
+      "origin": {
+        "project": "argentum",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "https://github.com/QuicksilverMC/Argentum",
+        "sourceRevision": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+        "licenseSpdx": "LicenseRef-Upstream-All-Rights-Reserved",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Argentum/blob/main/README.md",
+        "redistributionBasis": "upstream-direct"
+      }
+    },
+    {
+      "id": "argentum-extras",
+      "kind": "mod",
+      "path": "mods/argentum-extras-1.0.2.jar",
+      "sha256": "2dd9786718768a9bda8928367ada50bac866c94c5ee3929161a2c8a6a2a147f1",
+      "bytes": 55074,
+      "assetName": "sha256-2dd9786718768a9bda8928367ada50bac866c94c5ee3929161a2c8a6a2a147f1.bin",
+      "installPolicy": "managed",
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Argentum",
+        "tag": "v1.0.2",
+        "asset": "argentum-extras-1.0.2.jar"
+      },
+      "origin": {
+        "project": "argentum-extras",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "https://github.com/QuicksilverMC/Argentum",
+        "sourceRevision": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+        "licenseSpdx": "LicenseRef-Upstream-All-Rights-Reserved",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Argentum/blob/main/README.md",
+        "redistributionBasis": "upstream-direct"
+      }
+    },
+    {
+      "id": "cera",
+      "kind": "mod",
+      "path": "mods/cera-1.0.2.jar",
+      "sha256": "a509b62e92099cdbd3e88b445b4180b04f75bbe848297a96d7db0862ef67b3f2",
+      "bytes": 512531,
+      "assetName": "sha256-a509b62e92099cdbd3e88b445b4180b04f75bbe848297a96d7db0862ef67b3f2.bin",
+      "installPolicy": "managed",
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Argentum",
+        "tag": "v1.0.2",
+        "asset": "cera-1.0.2.jar"
+      },
+      "origin": {
+        "project": "cera",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "https://github.com/QuicksilverMC/Argentum",
+        "sourceRevision": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+        "licenseSpdx": "LicenseRef-Upstream-All-Rights-Reserved",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Argentum/blob/main/README.md",
+        "redistributionBasis": "upstream-direct"
+      }
+    },
+    {
+      "id": "legacy-lwjgl3",
+      "kind": "mod",
+      "path": "mods/legacy-lwjgl3-1.4.10.jar",
+      "sha256": "cfcdb312c96bf47e8224c2f3c0dc53d3d7a28e7ad73d69e8d09c0a4400412e9e",
+      "bytes": 17618306,
+      "assetName": "sha256-cfcdb312c96bf47e8224c2f3c0dc53d3d7a28e7ad73d69e8d09c0a4400412e9e.bin",
+      "installPolicy": "managed",
+      "origin": {
+        "project": "legacy-lwjgl3",
+        "projectVersion": "1.4.10",
+        "sourceRepository": "https://github.com/moehreag/legacy-lwjgl3",
+        "sourceRevision": "ef78e7daee3c1d05638c85485250e380a4babe18",
+        "licenseSpdx": "LGPL-2.1-only",
+        "licenseEvidenceUrl": "https://github.com/moehreag/legacy-lwjgl3/blob/ef78e7daee3c1d05638c85485250e380a4babe18/LICENSE",
+        "redistributionBasis": "open-source-license",
+        "correspondingSourceAsset": {
+          "assetName": "source-8ec17dd4fba82b039efaf9690f0cbdab8257ae5416056996bdfedd3a0043dd1d.zip",
+          "sha256": "8ec17dd4fba82b039efaf9690f0cbdab8257ae5416056996bdfedd3a0043dd1d",
+          "bytes": 378569
+        }
+      }
+    },
+    {
+      "id": "lucerna",
+      "kind": "mod",
+      "path": "mods/lucerna-0.1.5-tfl.2.jar",
+      "sha256": "7f9d396861998b2ea8562379e22320a4547a2b5cc18567d97d2dd042ed42e451",
+      "bytes": 2025688,
+      "assetName": "sha256-7f9d396861998b2ea8562379e22320a4547a2b5cc18567d97d2dd042ed42e451.bin",
+      "installPolicy": "managed",
+      "origin": {
+        "project": "lucerna",
+        "projectVersion": "0.1.5-tfl.2",
+        "sourceRepository": "https://github.com/jonathanthxd/lucerna",
+        "sourceRevision": "45f3fcde3620c3e94e8e0fe3ef4cafe56944ce40",
+        "licenseSpdx": "LGPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/jonathanthxd/lucerna/blob/45f3fcde3620c3e94e8e0fe3ef4cafe56944ce40/LICENSE",
+        "redistributionBasis": "open-source-license",
+        "correspondingSourceAsset": {
+          "assetName": "source-c4946348b09e18730667b63d2104442695110edd2dbe1a99b120139aad813c4b.zip",
+          "sha256": "c4946348b09e18730667b63d2104442695110edd2dbe1a99b120139aad813c4b",
+          "bytes": 571072
+        }
+      }
+    },
+    {
+      "id": "osl",
+      "kind": "mod",
+      "path": "mods/ornithe-standard-libraries-0.22.2.jar",
+      "sha256": "02d55f63cd767be27c35682de3271b25aeb0af701b8b3b23d0f03a0ac9ed619f",
+      "bytes": 5386281,
+      "assetName": "sha256-02d55f63cd767be27c35682de3271b25aeb0af701b8b3b23d0f03a0ac9ed619f.bin",
+      "installPolicy": "managed",
+      "download": {
+        "kind": "github-release",
+        "repository": "OrnitheMC/ornithe-standard-libraries",
+        "tag": "v0.22.2",
+        "asset": "ornithe-standard-libraries-0.22.2.jar"
+      },
+      "origin": {
+        "project": "osl",
+        "projectVersion": "0.22.2",
+        "sourceRepository": "https://github.com/OrnitheMC/ornithe-standard-libraries",
+        "sourceRevision": "28bfa5e9ed4915932658c21b5c1bcb084fdd9c5d",
+        "licenseSpdx": "Apache-2.0",
+        "licenseEvidenceUrl": "https://github.com/OrnitheMC/ornithe-standard-libraries",
+        "redistributionBasis": "open-source-license"
+      }
+    },
+    {
+      "id": "pulse",
+      "kind": "mod",
+      "path": "mods/pulse-1.0.0.jar",
+      "sha256": "dd0f25fbfb2c45c0c616bf18a7e692c936e997aa5c9601b7632af5293000d9db",
+      "bytes": 5814491,
+      "assetName": "sha256-dd0f25fbfb2c45c0c616bf18a7e692c936e997aa5c9601b7632af5293000d9db.bin",
+      "installPolicy": "managed",
+      "origin": {
+        "project": "pulse",
+        "projectVersion": "1.0.0",
+        "sourceRepository": "https://github.com/QuicksilverMC/Pulse",
+        "sourceRevision": "1d202b831157e843b1961b1216a542585b838985",
+        "licenseSpdx": "GPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Pulse/blob/1d202b831157e843b1961b1216a542585b838985/LICENSE",
+        "redistributionBasis": "open-source-license",
+        "correspondingSourceAsset": {
+          "assetName": "source-0a72e506ef712aba6fbc9251d98284e89829d40a76019ae0eaefbdf8d3284a46.zip",
+          "sha256": "0a72e506ef712aba6fbc9251d98284e89829d40a76019ae0eaefbdf8d3284a46",
+          "bytes": 901572
+        }
+      }
+    },
+    {
+      "id": "sarcio",
+      "kind": "mod",
+      "path": "mods/Sarcio-1.1.1.jar",
+      "sha256": "c6a94c0ed23a40e9471efe3391282370d005d45efff05b8e708c5ecfc3b77a7c",
+      "bytes": 3214925,
+      "assetName": "sha256-c6a94c0ed23a40e9471efe3391282370d005d45efff05b8e708c5ecfc3b77a7c.bin",
+      "installPolicy": "managed",
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Sarcio",
+        "tag": "v1.1.1",
+        "asset": "Sarcio-1.1.1.jar"
+      },
+      "origin": {
+        "project": "sarcio",
+        "projectVersion": "1.1.1",
+        "sourceRepository": "https://github.com/QuicksilverMC/Sarcio",
+        "sourceRevision": "00acf08e49383b0f8042f21db352ee84f0ebd3dd",
+        "licenseSpdx": "LGPL-3.0-or-later",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Sarcio",
+        "redistributionBasis": "open-source-license"
+      }
+    },
+    {
+      "id": "soundfix",
+      "kind": "mod",
+      "path": "mods/soundfix-1.1.0+mc1.8.9.jar",
+      "sha256": "2da5334d7816325a582ed47afe11be393a1958e263b324f19b9590ff0bde32da",
+      "bytes": 85414,
+      "assetName": "sha256-2da5334d7816325a582ed47afe11be393a1958e263b324f19b9590ff0bde32da.bin",
+      "installPolicy": "managed",
+      "origin": {
+        "project": "soundfix",
+        "projectVersion": "1.1.0+mc1.8.9",
+        "sourceRepository": "https://github.com/moehreag/soundfix",
+        "sourceRevision": "5be5da21d4eb55479266591f53fdb05986dc6da7",
+        "licenseSpdx": "LGPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/moehreag/soundfix/blob/5be5da21d4eb55479266591f53fdb05986dc6da7/src/main/resources/fabric.mod.json",
+        "redistributionBasis": "open-source-license",
+        "correspondingSourceAsset": {
+          "assetName": "source-758d0406eb075a39e9e66c95f2a624d04dfb20201764453ef5e3d9d28230dfbd.zip",
+          "sha256": "758d0406eb075a39e9e66c95f2a624d04dfb20201764453ef5e3d9d28230dfbd",
+          "bytes": 100699
+        }
+      }
+    },
+    {
+      "id": "tflcore",
+      "kind": "mod",
+      "path": "mods/tflcore-1.8.9-0.5.0-visual-preview.1.jar",
+      "sha256": "c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041",
+      "bytes": 78333017,
+      "assetName": "sha256-c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041.bin",
+      "installPolicy": "managed",
+      "origin": {
+        "project": "tflcore",
+        "projectVersion": "0.5.0-visual-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientMOD",
+        "sourceRevision": "17aa9c84d07b435a63aae8ebddc078263af3552d",
+        "licenseSpdx": "GPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientMOD/releases/tag/v0.5.0-visual-preview.1",
+        "redistributionBasis": "open-source-license",
+        "correspondingSourceAsset": {
+          "assetName": "source-3d19f304eccc6e239fcfc36303d742b83e00165533ca037cc760360910ce0c11.zip",
+          "sha256": "3d19f304eccc6e239fcfc36303d742b83e00165533ca037cc760360910ce0c11",
+          "bytes": 136468685
+        }
+      }
+    },
+    {
+      "id": "tfl-default-config-amplio.properties",
+      "kind": "config",
+      "path": "config/amplio.properties",
+      "sha256": "de803a0dc6bcada188580e3ddb53aa4b6578c9e9f5c1893a0bf715cf998fcf7c",
+      "bytes": 59,
+      "assetName": "sha256-de803a0dc6bcada188580e3ddb53aa4b6578c9e9f5c1893a0bf715cf998fcf7c.bin",
+      "installPolicy": "seed-if-absent",
+      "origin": {
+        "project": "TFL Selection curated defaults",
+        "projectVersion": "0.1.0-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "sourceRevision": "47bea4006442d431c242864e375d95d6112d2de5",
+        "licenseSpdx": "LicenseRef-TFLives-Proprietary",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "redistributionBasis": "owned"
+      }
+    },
+    {
+      "id": "tfl-default-config-argentum.json",
+      "kind": "config",
+      "path": "config/argentum.json",
+      "sha256": "01d00cfff0b4aade967cbe03c758f8b4dd7a93016fbc0cd76e287febbdb2732b",
+      "bytes": 1012,
+      "assetName": "sha256-01d00cfff0b4aade967cbe03c758f8b4dd7a93016fbc0cd76e287febbdb2732b.bin",
+      "installPolicy": "seed-if-absent",
+      "origin": {
+        "project": "TFL Selection curated defaults",
+        "projectVersion": "0.1.0-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "sourceRevision": "47bea4006442d431c242864e375d95d6112d2de5",
+        "licenseSpdx": "LicenseRef-TFLives-Proprietary",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "redistributionBasis": "owned"
+      }
+    },
+    {
+      "id": "tfl-default-config-cera.json",
+      "kind": "config",
+      "path": "config/cera.json",
+      "sha256": "dd727ab0f0b896f5d85dbc1993b7e3fbd31d9ef6e7d11fb0bb0e5b28b131d454",
+      "bytes": 469,
+      "assetName": "sha256-dd727ab0f0b896f5d85dbc1993b7e3fbd31d9ef6e7d11fb0bb0e5b28b131d454.bin",
+      "installPolicy": "seed-if-absent",
+      "origin": {
+        "project": "TFL Selection curated defaults",
+        "projectVersion": "0.1.0-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "sourceRevision": "47bea4006442d431c242864e375d95d6112d2de5",
+        "licenseSpdx": "LicenseRef-TFLives-Proprietary",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "redistributionBasis": "owned"
+      }
+    },
+    {
+      "id": "tfl-default-config-lucerna.properties",
+      "kind": "config",
+      "path": "config/lucerna.properties",
+      "sha256": "b4e2371b47ca0ffef797355a0afef751e0b4294124f423ab70eccbd02e703f85",
+      "bytes": 134,
+      "assetName": "sha256-b4e2371b47ca0ffef797355a0afef751e0b4294124f423ab70eccbd02e703f85.bin",
+      "installPolicy": "seed-if-absent",
+      "origin": {
+        "project": "TFL Selection curated defaults",
+        "projectVersion": "0.1.0-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "sourceRevision": "47bea4006442d431c242864e375d95d6112d2de5",
+        "licenseSpdx": "LicenseRef-TFLives-Proprietary",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "redistributionBasis": "owned"
+      }
+    },
+    {
+      "id": "tfl-default-config-pulse-config.json",
+      "kind": "config",
+      "path": "config/pulse/config.json",
+      "sha256": "78c6e628bdf40ee6bec5868a672a6fba05e166028555780cc02b435bc46a8ae8",
+      "bytes": 34,
+      "assetName": "sha256-78c6e628bdf40ee6bec5868a672a6fba05e166028555780cc02b435bc46a8ae8.bin",
+      "installPolicy": "seed-if-absent",
+      "origin": {
+        "project": "TFL Selection curated defaults",
+        "projectVersion": "0.1.0-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "sourceRevision": "47bea4006442d431c242864e375d95d6112d2de5",
+        "licenseSpdx": "LicenseRef-TFLives-Proprietary",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "redistributionBasis": "owned"
+      }
+    },
+    {
+      "id": "tfl-default-config-sarcio.json",
+      "kind": "config",
+      "path": "config/sarcio.json",
+      "sha256": "18d42a6b7a23f0aef15494de661a27e49e9d7854d42d2ae28d4979eda899853a",
+      "bytes": 92,
+      "assetName": "sha256-18d42a6b7a23f0aef15494de661a27e49e9d7854d42d2ae28d4979eda899853a.bin",
+      "installPolicy": "seed-if-absent",
+      "origin": {
+        "project": "TFL Selection curated defaults",
+        "projectVersion": "0.1.0-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "sourceRevision": "47bea4006442d431c242864e375d95d6112d2de5",
+        "licenseSpdx": "LicenseRef-TFLives-Proprietary",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientSelection",
+        "redistributionBasis": "owned"
+      }
+    }
+  ],
+  "noticesAsset": {
+    "assetName": "notices-f5a7bab88111a646f97bd84fc5c73dceff28dcd99e5b6b66282a865a2d93053f.zip",
+    "sha256": "f5a7bab88111a646f97bd84fc5c73dceff28dcd99e5b6b66282a865a2d93053f",
+    "bytes": 101282
+  }
+}

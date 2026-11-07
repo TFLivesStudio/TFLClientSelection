@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "packId": "tfl-selection",
+  "distributionRepository": "TFLivesStudio/TFLClientSelection",
+  "targets": [
+    {
+      "targetId": "mc-1.8.9-ornithe",
+      "minecraftVersion": "1.8.9",
+      "loader": "ornithe-gen2",
+      "channels": {
+        "beta": {
+          "release": "0.1.0-preview.1",
+          "tag": "selection-mc-1.8.9-ornithe-v0.1.0-preview.1",
+          "manifestSha256": "f0806d39879c5f625634d27530f2577bcc2e15cfc10d639d5ba202d031a6e155"
+        }
+      },
+      "displayName": "TFL Selection 1.8.9",
+      "summary": "Minecraft 1.8.9 · Ornithe Gen2 · Java 25",
+      "sortOrder": 1
+    },
+    {
+      "targetId": "mc-26.3-fabric",
+      "minecraftVersion": "26.3",
+      "loader": "fabric",
+      "channels": {},
+      "displayName": "TFL Selection 26.3",
+      "summary": "Minecraft 26.3 · Fabric · Java 25",
+      "sortOrder": 2
+    }
+  ],
+  "generation": 1
+}

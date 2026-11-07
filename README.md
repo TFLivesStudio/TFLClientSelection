@@ -56,3 +56,7 @@ python -m unittest discover -s tests -v
 The pinned-schema and path validation CI is a **first gate only**, not legal clearance or proof the binaries exist and boot. Release publication will require additional manual and automated checks.
 
 **Important (2026-11-07):** TFL Core source repository is **private**, so its original Release cannot serve public users. TFL Selection must mirror its exact first-party GPL-3.0 JAR **and** corresponding source; only five author-hosted public assets remain (Argentum/Extras/Cera, Sarcio and OSL).
+
+## Complete the exact 1.8.9 public beta
+
+[Spanish step-by-step publication instructions](docs/PUBLICAR_TFL_SELECTION_189.md): one manual draft workflow, attach **six unchanged binary JAR assets + original private TFL Core source archive**, verify-only workflow, configure one Ed25519 Actions secret, and finish signed beta. The **five** original GitHub Release mods are never mirrored. Signed catalog is not active before all checks and approvals pass.

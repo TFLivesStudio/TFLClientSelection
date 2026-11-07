@@ -250,7 +250,8 @@
                 "enum": [
                   "owned",
                   "open-source-license",
-                  "explicit-permission"
+                  "explicit-permission",
+                  "upstream-direct"
                 ]
               },
               "permissionEvidenceUrl": {
@@ -281,6 +282,33 @@
                     "maximum": 2147483647
                   }
                 }
+              }
+            }
+          },
+          "download": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "repository",
+              "tag",
+              "asset"
+            ],
+            "properties": {
+              "kind": {
+                "const": "github-release"
+              },
+              "repository": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+              },
+              "tag": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.+-]{0,119}$"
+              },
+              "asset": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.+-]{0,199}$"
               }
             }
           }

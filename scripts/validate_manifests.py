@@ -101,6 +101,8 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
         if target == "mc-26.3-fabric" and (minecraft.get("version") != "26.3" or minecraft.get("loader") != "fabric"):
             errors.append("Fabric target mismatch")
         if status == "published":
+            if not data.get("files"):
+                errors.append("cannot publish a manifest with no mods")
             expected = "launcher-pinned-ornithe" if minecraft.get("loader") == "ornithe-gen2" else "launcher-pinned-fabric"
             if minecraft.get("bootstrap") != expected:
                 errors.append("bootstrap strategy must match pinned loader")
@@ -133,6 +135,37 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
         if not isinstance(origin, dict):
             continue
         basis, license_id = origin.get("redistributionBasis"), origin.get("licenseSpdx")
+        delivery = entry.get("download")
+        if delivery is not None:
+            if not isinstance(delivery, dict) or delivery.get("kind") != "github-release":
+                errors.append(f"{fid}: unsupported download mechanism")
+                continue
+            repo = delivery.get("repository", "")
+            tag = delivery.get("tag", "")
+            asset = delivery.get("asset", "")
+            if not all(isinstance(x, str) and x and "/" not in x and "\\" not in x
+                       for x in (tag, asset)):
+                errors.append(f"{fid}: unsafe GitHub Release tag or asset")
+            if not safe_https("https://github.com/" + repo):
+                errors.append(f"{fid}: invalid GitHub release repository")
+            # The exact repository must be the source recorded in the signed manifest.
+            src = urlsplit(str(origin.get("sourceRepository", "")))
+            if (src.scheme != "https" or src.hostname != "github.com"
+                    or "/".join(src.path.strip("/").split("/")[:2]).casefold() != repo.casefold()):
+                errors.append(f"{fid}: download repository does not match exact GitHub source provenance")
+        if status == "published" and str(origin.get("sourceRevision", "")).upper().startswith("PENDING"):
+            errors.append(f"{fid}: source build provenance not yet verified")
+        if basis == "upstream-direct":
+            if delivery is None:
+                errors.append(f"{fid}: upstream-direct requires pinned GitHub Release download")
+            if fid in ("argentum", "argentum-extras", "cera") and (
+                    not isinstance(delivery, dict)
+                    or delivery.get("repository", "").lower() != "quicksilvermc/argentum"):
+                errors.append(f"{fid}: ARR upstream must be served only from official QuicksilverMC/Argentum")
+            if license_id != "LicenseRef-Upstream-All-Rights-Reserved":
+                errors.append(f"{fid}: upstream-direct requires accurate non-redistributable license designation")
+        if license_id == "LicenseRef-Upstream-All-Rights-Reserved" and basis != "upstream-direct":
+            errors.append(f"{fid}: ARR binary may not be rehosted by Selection" )
         if basis == "open-source-license" and license_id not in OPEN_SOURCE_REVIEWED:
             errors.append(f"{fid}: SPDX license not yet reviewed; do not publish")
         if basis == "explicit-permission" and not origin.get("permissionEvidenceUrl"):
@@ -142,7 +175,7 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
         for key in ("sourceRepository", "licenseEvidenceUrl", "permissionEvidenceUrl"):
             if key in origin and not safe_https(origin[key]):
                 errors.append(f"{fid}: origin.{key} must be safe HTTPS")
-        if license_id in SOURCE_REQUIRED and not isinstance(origin.get("correspondingSourceAsset"), dict):
+        if delivery is None and license_id in SOURCE_REQUIRED and not isinstance(origin.get("correspondingSourceAsset"), dict) and (status == "published" or not str(origin.get("sourceRevision", "")).upper().startswith("PENDING")):
             errors.append(f"{fid}: GPL/LGPL requires mirrored corresponding source archive")
         if license_id in SOURCE_REQUIRED and isinstance(origin.get("correspondingSourceAsset"), dict):
             source = origin["correspondingSourceAsset"]

@@ -52,3 +52,7 @@ A securely approved publish action can automate every step after validation; *wr
 ## Implementation state
 
 This document is the **design contract**. The current TFL Client implementation (`src-tauri/src/commands/tfl_selection.rs`) still searches community repositories by GitHub topic and consumes `.mrpack` URLs. It must be replaced by a signed, dynamic catalog consumer; no claim of end-to-end integration until a separate launcher PR and tests pass.
+
+## Per-asset upstream GitHub Releases
+
+The catalog and all Selection release manifests remain signed and published by TFLives. Manifest v2 permits an optional `github-release` download source on a file for immutable official author assets. New files, changed author tags or replacement of a deleted author asset require a **new signed Selection release** after checksum verification; never follow the original project's `latest` tag and never fetch from Modrinth. The launcher must cache verified blobs regardless of host.

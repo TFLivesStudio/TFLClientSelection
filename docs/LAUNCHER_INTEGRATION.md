@@ -114,3 +114,7 @@ Names are **proposals**, not existing files. Avoid duplicating existing HTTP/aqu
 ## Important: scope of this repository
 
 These tasks are tracked **here** as cross-repository requirements, but the actual Rust/Svelte implementation belongs in TFLClient. **No launcher code has been changed by this Selection PR.** Do not say "integrated" until a separate launcher PR and real boot QA are completed.
+
+## Six author-hosted, five TFL-hosted 1.8.9 assets
+
+The v2 manifest adds an optional exact `files[].download` for `github-release` from original authors; the same SHA-256 verification, immutable cache, anti-modification policy and signed manifest apply. Six exact matches (Argentum, Extras, Cera, Sarcio, OSL and TFL Core) were verified on GitHub as of 2026-11-07. Five others have **no verified exact GitHub Release asset**, so the target is still a draft. See [mixed delivery](MIXED_GITHUB_RELEASE_DELIVERY.md). Do not reintroduce Modrinth or any unverified fallback.

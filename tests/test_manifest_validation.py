@@ -63,6 +63,27 @@ class Contracts(unittest.TestCase):
         })
         self.assertEqual(validate_catalog(x, CATALOG), [])
 
+    def test_ARR_only_from_official_release(self):
+        x = copy.deepcopy(DRAFT)
+        f = artifact("LicenseRef-Upstream-All-Rights-Reserved", "upstream-direct")
+        f["id"] = "argentum"
+        f["origin"]["sourceRepository"] = "https://github.com/QuicksilverMC/Argentum"
+        f["origin"]["licenseEvidenceUrl"] = "https://github.com/QuicksilverMC/Argentum/blob/main/README.md"
+        f["download"] = {"kind": "github-release", "repository": "QuicksilverMC/Argentum",
+                         "tag": "v1.0.2", "asset": "argentum-1.0.2.jar"}
+        x["files"] = [f]
+        self.assertEqual(validate_manifest(x, SCHEMA), [])
+        f["download"]["repository"] = "OtherOrg/Argentum"
+        self.assertTrue(validate_manifest(x, SCHEMA))
+        f["download"]["repository"] = "QuicksilverMC/Argentum"
+        f.pop("download")
+        self.assertTrue(validate_manifest(x, SCHEMA))
+
+    def test_no_ARR_rehosting(self):
+        x = copy.deepcopy(DRAFT)
+        x["files"] = [artifact("LicenseRef-Upstream-All-Rights-Reserved", "open-source-license")]
+        self.assertTrue(validate_manifest(x, SCHEMA))
+
     def test_owned_or_oss_mod(self):
         x = copy.deepcopy(DRAFT)
         x["files"] = [artifact()]

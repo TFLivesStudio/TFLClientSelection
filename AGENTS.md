@@ -4,7 +4,7 @@
 - Official TFL Selection is **locked**. User may set Minecraft settings and keep worlds/screenshots/saves, but may not modify the curated mods via launcher or add personal ones to the Selection profile.
 - 1.8.9 uses **Ornithe Gen2** and target 26.3 uses **Fabric**. Never substitute Fabric for Ornithe or guess launcher bootstrap support.
 - Selection is **not** community modpack discovery and is **not** a .mrpack installer.
-- All selected third-party mod JARs are hosted in **TFL-managed public GitHub Release assets** only after rights and source checks. No Modrinth fallback.
+- Every mod is pinned to a SHA-256. Six official binary assets for 1.8.9 now download from **exact original-author GitHub Releases**; never mirror Argentum/Extras/Cera without express permission. Other redistributable mod JARs belong in TFL-owned GitHub Releases after license/source review. **No Modrinth fallback.**
 - No dependency on TFLives VPS, custom API, R2, reusable private GitHub tokens or user GitHub accounts.
 - This public repository is the source-of-truth **and** GitHub Releases distribution home; the official Selection client reads releases here.
 
@@ -28,8 +28,9 @@
 ## Version/release invariants
 - Drafts: `drafts/*.json`; never treated as downloadable.
 - Published manifest: `releases/<targetId>/<release>.json`; immutable forever.
+- Optional `files[].download` points to an exact signed/verified original-author GitHub Release asset (repository/tag/asset); absent delivery means TFL's own release. Never accept arbitrary URLs or a latest resolver.
 - Release tag: `selection-<targetId>-v<release>` in this repository's public GitHub Releases.
-- Asset JAR names in release: `sha256-<64 lowercase hex>.bin`, installed under exact local `mods/*.jar` paths.
+- TFL-owned JAR asset names in release: `sha256-<64 lowercase hex>.bin`, installed under exact local `mods/*.jar` paths.
 - Signed `catalog/current.json` points to immutable release; **channel promotion edits catalog only**.
 - No user-selectable optional features/variants inside one release manifest.
 - Run `python scripts/validate_manifests.py` and `python -m unittest discover -s tests -v`; verify GitHub Actions.

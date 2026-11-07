@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "packId": "tfl-selection",
+  "targetId": "mc-1.8.9-ornithe",
+  "source": "2026-11-07 verified Prism ZIP and GitHub Release API",
+  "status": "partial-ready-not-published",
+  "policy": "All release downloads are immutable tag+asset references pinned to exact SHA256 and byte length. No Modrinth or latest resolver.",
+  "verified": [
+    {
+      "id": "argentum",
+      "version": "1.0.2",
+      "sha256": "6fb5074f2b302562b5676d56beaf1ef0811ddbca71d584b566400701e1118674",
+      "bytes": 1775007,
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Argentum",
+        "tag": "v1.0.2",
+        "asset": "argentum-1.0.2.jar"
+      },
+      "sourceCommit": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+      "origin": {
+        "project": "argentum",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "https://github.com/QuicksilverMC/Argentum",
+        "sourceRevision": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+        "licenseSpdx": "LicenseRef-Upstream-All-Rights-Reserved",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Argentum/blob/main/README.md",
+        "redistributionBasis": "upstream-direct"
+      }
+    },
+    {
+      "id": "argentum-extras",
+      "version": "1.0.2",
+      "sha256": "2dd9786718768a9bda8928367ada50bac866c94c5ee3929161a2c8a6a2a147f1",
+      "bytes": 55074,
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Argentum",
+        "tag": "v1.0.2",
+        "asset": "argentum-extras-1.0.2.jar"
+      },
+      "sourceCommit": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+      "origin": {
+        "project": "argentum-extras",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "https://github.com/QuicksilverMC/Argentum",
+        "sourceRevision": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+        "licenseSpdx": "LicenseRef-Upstream-All-Rights-Reserved",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Argentum/blob/main/README.md",
+        "redistributionBasis": "upstream-direct"
+      }
+    },
+    {
+      "id": "cera",
+      "version": "1.0.2",
+      "sha256": "a509b62e92099cdbd3e88b445b4180b04f75bbe848297a96d7db0862ef67b3f2",
+      "bytes": 512531,
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Argentum",
+        "tag": "v1.0.2",
+        "asset": "cera-1.0.2.jar"
+      },
+      "sourceCommit": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+      "origin": {
+        "project": "cera",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "https://github.com/QuicksilverMC/Argentum",
+        "sourceRevision": "bea2b0db491e9acf1899a94e1b6571cdb0a82443",
+        "licenseSpdx": "LicenseRef-Upstream-All-Rights-Reserved",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Argentum/blob/main/README.md",
+        "redistributionBasis": "upstream-direct"
+      }
+    },
+    {
+      "id": "osl",
+      "version": "0.22.2",
+      "sha256": "02d55f63cd767be27c35682de3271b25aeb0af701b8b3b23d0f03a0ac9ed619f",
+      "bytes": 5386281,
+      "download": {
+        "kind": "github-release",
+        "repository": "OrnitheMC/ornithe-standard-libraries",
+        "tag": "v0.22.2",
+        "asset": "ornithe-standard-libraries-0.22.2.jar"
+      },
+      "sourceCommit": "28bfa5e9ed4915932658c21b5c1bcb084fdd9c5d",
+      "origin": {
+        "project": "osl",
+        "projectVersion": "0.22.2",
+        "sourceRepository": "https://github.com/OrnitheMC/ornithe-standard-libraries",
+        "sourceRevision": "28bfa5e9ed4915932658c21b5c1bcb084fdd9c5d",
+        "licenseSpdx": "Apache-2.0",
+        "licenseEvidenceUrl": "https://github.com/OrnitheMC/ornithe-standard-libraries",
+        "redistributionBasis": "open-source-license"
+      }
+    },
+    {
+      "id": "sarcio",
+      "version": "1.1.1",
+      "sha256": "c6a94c0ed23a40e9471efe3391282370d005d45efff05b8e708c5ecfc3b77a7c",
+      "bytes": 3214925,
+      "download": {
+        "kind": "github-release",
+        "repository": "QuicksilverMC/Sarcio",
+        "tag": "v1.1.1",
+        "asset": "Sarcio-1.1.1.jar"
+      },
+      "sourceCommit": "00acf08e49383b0f8042f21db352ee84f0ebd3dd",
+      "origin": {
+        "project": "sarcio",
+        "projectVersion": "1.1.1",
+        "sourceRepository": "https://github.com/QuicksilverMC/Sarcio",
+        "sourceRevision": "00acf08e49383b0f8042f21db352ee84f0ebd3dd",
+        "licenseSpdx": "LGPL-3.0-or-later",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Sarcio",
+        "redistributionBasis": "open-source-license"
+      }
+    },
+    {
+      "id": "tflcore",
+      "version": "0.5.0-visual-preview.1",
+      "sha256": "c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041",
+      "bytes": 78333017,
+      "download": {
+        "kind": "github-release",
+        "repository": "TFLivesStudio/TFLClientMOD",
+        "tag": "v0.5.0-visual-preview.1",
+        "asset": "tflcore-1.8.9-0.5.0-visual-preview.1.jar"
+      },
+      "sourceCommit": "17aa9c84d07b435a63aae8ebddc078263af3552d",
+      "origin": {
+        "project": "tflcore",
+        "projectVersion": "0.5.0-visual-preview.1",
+        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientMOD",
+        "sourceRevision": "17aa9c84d07b435a63aae8ebddc078263af3552d",
+        "licenseSpdx": "GPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientMOD",
+        "redistributionBasis": "open-source-license"
+      }
+    }
+  ],
+  "pending": [
+    {
+      "id": "amplio",
+      "version": "0.1.1+1.8.9",
+      "sha256": "05d18d7760d8c855fc33e32e3c8b3026c8217d5a1c05a768a5769c8c7c83315f",
+      "bytes": 62789068,
+      "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
+      "reason": "No exact 0.1.1 GitHub Release; v0.1.0, v0.1.2 and v0.1.3 are different bytes; bundled NVIDIA native must be reviewed"
+    },
+    {
+      "id": "legacy-lwjgl3",
+      "version": "1.4.10",
+      "sha256": "cfcdb312c96bf47e8224c2f3c0dc53d3d7a28e7ad73d69e8d09c0a4400412e9e",
+      "bytes": 17618306,
+      "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
+      "reason": "No GitHub Release with exact 1.4.10 SHA; upstream has Maven repository requiring digest verification"
+    },
+    {
+      "id": "lucerna",
+      "version": "0.1.5-tfl.2",
+      "sha256": "7f9d396861998b2ea8562379e22320a4547a2b5cc18567d97d2dd042ed42e451",
+      "bytes": 2025688,
+      "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
+      "reason": "No official 0.1.5-tfl.2 GitHub Release of exact bytes; TFL-specific build from local ZIP"
+    },
+    {
+      "id": "pulse",
+      "version": "1.0.0",
+      "sha256": "dd0f25fbfb2c45c0c616bf18a7e692c936e997aa5c9601b7632af5293000d9db",
+      "bytes": 5814491,
+      "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
+      "reason": "No GitHub Release with exact 1.0.0 JAR; needs TFL hosting or verified fixed upstream artifact"
+    },
+    {
+      "id": "soundfix",
+      "version": "1.1.0+mc1.8.9",
+      "sha256": "2da5334d7816325a582ed47afe11be393a1958e263b324f19b9590ff0bde32da",
+      "bytes": 85414,
+      "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
+      "reason": "No GitHub Release with exact 1.1.0+mc1.8.9 JAR"
+    }
+  ]
+}

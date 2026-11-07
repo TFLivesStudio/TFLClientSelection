@@ -10,7 +10,7 @@
 ## Target lifecycle
 
 1. **Curate** exactly compatible mod versions per Minecraft/loader target; freeze their Git commit, license, jar bytes, SHA-256 and notices/source obligations.
-2. **Import approved JARs** from an upstream build or reproducible local build into temporary protected staging **outside Git history**. Repeatable build preferred. Do not depend on Modrinth at install time.
+2. **Import approved JARs or verify exact author-hosted GitHub Releases** from an upstream build or reproducible local build into temporary protected staging **outside Git history**. Repeatable build preferred. Do not depend on Modrinth at install time.
 3. **Build compliance bundle**: include per-artifact full license notices and GPL/LGPL corresponding source archives. Archive each source tree with required build scripts and modifications, not just a GitHub link. Record exact sha/bytes.
 4. **Produce release manifest**: copy validated draft to `releases/<targetId>/<release>.json`; set status=published only after real binary evidence, loader boot tests and approval. Pin `loaderVersion` and `javaMajor`. Publish `sha256-<digest>.bin` assets; `manifest.json` and `manifest.json.sig`, `notices-<sha>.zip`, and necessary `source-<sha>.zip`.
 5. **Sign** exact UTF-8 manifest and catalog bytes offline or in protected CI using Ed25519. Do not expose keys to untrusted PR workflows. Verify signatures using pinned public key in launcher integration tests.
@@ -56,3 +56,7 @@ Both commands **fail closed** if licenses, notices, source or JAR digests are in
 GitHub Releases supports up to **1,000 assets per release** and **2 GiB per asset** (official docs); if we approach limits, bundle items deterministically while preserving per-file hash metadata and incremental behavior. These are future scaling considerations, not a reason to introduce a VPS.
 
 https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases
+
+## Actual 1.8.9 mixed distribution status
+
+As of 2026-11-07 six exact mod binaries are confirmed from the original GitHub Release authors, with GitHub-reported SHA-256 and lengths matching Prism: Argentum, Extras, Cera, OSL, Sarcio and TFL Core. **Five JARs are still not remotely available via verified exact GitHub Release URLs**, so no signed public target channel is active. `scripts/check_upstream_lock.py --online` rechecks the original six at publication time. The release builder automatically excludes upstream-delivered JARs from TFL upload assets, and requires full licensing/corresponding-source evidence for TFL-hosted files. See [mixed delivery](MIXED_GITHUB_RELEASE_DELIVERY.md).

@@ -63,3 +63,7 @@ python -m unittest discover -s tests -v
 The local candidate builder `scripts/build_release_bundle.py` accepts `--upstream-lock` (defaults to the reviewed six-asset file), **skips redistributing the six source-hosted JARs**, and requires license/source/native approval for every remaining TFL-hosted binary. The existing manual publisher only publishes after a complete passing candidate plus signed QA record. A client/Java25/Ornithe Gen2 launch still requires actual integration tests.
 
 **Next goal:** provide authenticated publication of the five remaining redistributable assets, build/source notices, sign first complete Release, and only then promote a catalog channel. Never promote the current partial draft.
+
+## Exact fork sources and licensing verified
+
+Lucerna is maintained in `jonathanthxd/lucerna`, branch `work/tfl-far-terrain-shader-stability`, whose `gradle.properties` declares `0.1.5-tfl.2`. Amplio is in `jonathanthxd/amplio` (`0.1.1`). The correct licenses are **Lucerna LGPL-3.0, Amplio MIT, Pulse GPL-3.0, Legacy LWJGL3 LGPL-2.1, SoundFix LGPL-3.0 declared in mod metadata**. See [exact source and publication closure](MC1_8_9_SOURCE_RELEASE_CLOSURE.md).

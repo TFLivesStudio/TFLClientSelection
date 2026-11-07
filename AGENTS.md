@@ -4,7 +4,7 @@
 - Official TFL Selection is **locked**. User may set Minecraft settings and keep worlds/screenshots/saves, but may not modify the curated mods via launcher or add personal ones to the Selection profile.
 - 1.8.9 uses **Ornithe Gen2** and target 26.3 uses **Fabric**. Never substitute Fabric for Ornithe or guess launcher bootstrap support.
 - Selection is **not** community modpack discovery and is **not** a .mrpack installer.
-- Every mod is pinned to a SHA-256. Six official binary assets for 1.8.9 now download from **exact original-author GitHub Releases**; never mirror Argentum/Extras/Cera without express permission. Other redistributable mod JARs belong in TFL-owned GitHub Releases after license/source review. **No Modrinth fallback.**
+- Every mod is pinned to a SHA-256. Five public upstream binary assets for 1.8.9 download from **exact original-author GitHub Releases**; never mirror Argentum/Extras/Cera without express permission. Other redistributable mod JARs belong in TFL-owned GitHub Releases after license/source review. **No Modrinth fallback.**
 - No dependency on TFLives VPS, custom API, R2, reusable private GitHub tokens or user GitHub accounts.
 - This public repository is the source-of-truth **and** GitHub Releases distribution home; the official Selection client reads releases here.
 

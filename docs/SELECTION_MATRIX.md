@@ -39,4 +39,4 @@ Record: project URL, source commit, mod version, exact Minecraft target, loader,
 
 ### Delivery source check (2026-11-07)
 
-**Six exact original GitHub Release matches**: Argentum, Argentum Extras, Cera, Sarcio, OSL, TFL Core. **Five pending TFL assets**: Amplio 0.1.1, Legacy LWJGL3 1.4.10, Lucerna 0.1.5-tfl.2, Pulse 1.0.0 and SoundFix 1.1.0. Original JARs remain unchanged. See [mixed delivery](MIXED_GITHUB_RELEASE_DELIVERY.md).
+**Five public exact original GitHub Release matches**: Argentum, Argentum Extras, Cera, Sarcio, OSL. **Six TFL-owned release assets required**: Amplio 0.1.1, Legacy LWJGL3 1.4.10, Lucerna 0.1.5-tfl.2, Pulse 1.0.0, SoundFix 1.1.0 and first-party TFL Core 0.5.0-visual-preview.1 (private original repository). Original JARs remain unchanged. See [mixed delivery](MIXED_GITHUB_RELEASE_DELIVERY.md).

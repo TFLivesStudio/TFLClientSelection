@@ -14,10 +14,10 @@ The owner's Prism ZIP contains exactly six mods still missing a public **exact-h
 
 ## Immediate next operation: prepare author-verified artifacts for publication
 
-1. Preserve **all six original JARs** exactly as exported. Available in the owner's chat private staging archive `TFLSelection_189_PENDIENTES_PARA_RELEASE_PRIVADO.zip`, each stored as `assets/sha256-<original-digest>.bin` (name is required by the v2 manifest).
+1. Preserve **all six original JARs** exactly as exported. Available in the owner's chat private staging archive `TFLSelection_189_SIX_EXACT_ASSETS_UPLOAD_KIT.zip`, each stored as `sha256-<original-digest>.bin` at archive root (name is required by the v2 manifest).
 2. Identify the matching source revision for each built JAR, and prepare a ZIP of complete corresponding source + license notices for each GPL/LGPL JAR. Use the user's two forks as candidates; their *branch version strings alone are not sufficient* proof.
 3. For Amplio, check NVIDIA DLSS runtime distribution terms and notices for the exact bundled binary. A MIT project license alone does not license embedded third-party binaries.
-4. Publish only the **five** approved content-addressed binaries and necessary `source-<digest>.zip`/`notices-<digest>.zip` in an immutable **TFL Selection** GitHub Release. The six author-hosted JARs are already pinned by official GitHub Release tag/name/digest and are **not mirrored**.
+4. Publish only the **six** approved content-addressed binaries and necessary `source-<digest>.zip`/`notices-<digest>.zip` in an immutable **TFL Selection** GitHub Release. The five publicly author-hosted JARs are already pinned by official GitHub Release tag/name/digest and are **not mirrored**.
 5. Use the guarded builder/publisher scripts under `scripts/` to generate/verify the exact signed manifest with Ed25519. Generate/manage the private key via a protected trusted environment, never commit it.
 6. Verify all 11 remote URLs, sigs, hashes and byte lengths; then publish the signed catalog channel (initially **beta/preview**, not stable) with incremented `generation`.
 7. **Separate launcher integration:** installation cannot be considered end-to-end tested until TFL Client supports Ornithe Gen2 Java 25, both GitHub delivery types, signature validation, offline cache and rollback. The launcher work itself is a separate tracked issue.

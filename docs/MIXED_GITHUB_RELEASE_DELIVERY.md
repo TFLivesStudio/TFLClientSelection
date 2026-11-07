@@ -20,11 +20,11 @@ All five assets were verified against **exact sizes and GitHub's reported SHA-25
 | cera-1.0.2.jar | same | Author-only, All Rights Reserved |
 | ornithe-standard-libraries-0.22.2.jar | [OrnitheMC OSL v0.22.2](https://github.com/OrnitheMC/ornithe-standard-libraries/releases/tag/v0.22.2) | Original release |
 | Sarcio-1.1.1.jar | [QuicksilverMC/Sarcio v1.1.1](https://github.com/QuicksilverMC/Sarcio/releases/tag/v1.1.1) | Original release |
-| tflcore-1.8.9-0.5.0-visual-preview.1.jar | [TFL Core v0.5.0-visual-preview.1](https://github.com/TFLivesStudio/TFLClientMOD/releases/tag/v0.5.0-visual-preview.1) | First-party separate repo |
+| tflcore-1.8.9-0.5.0-visual-preview.1.jar | [Private TFL Core v0.5.0-visual-preview.1](https://github.com/TFLivesStudio/TFLClientMOD/releases/tag/v0.5.0-visual-preview.1) | **Public TFL Selection Release** required; original repo is private |
 
 The matching signed manifest still defines **local installed names** such as `mods/argentum-1.0.2.jar`. An optional `files[].download` field provides `kind=github-release`, `repository`, `tag`, and `asset`. If `download` is absent, the asset is expected under **this** TFL Selection Release, named `sha256-<hash>.bin`.
 
-## Exactly six original JARs do NOT have matching verified GitHub Release assets
+## Exactly six original JARs need hosting by TFL Selection (five without matching public Release and private TFL Core)
 
 | JAR from Prism | Resolution required |
 | --- | --- |

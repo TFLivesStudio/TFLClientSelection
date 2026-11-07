@@ -124,7 +124,7 @@ def build(zip_file: Path, inventory_path: Path, approval_path: Path, notices_dir
                     src = sources_dir / (mod_id + ".zip")
                     require(src.is_file() and not src.is_symlink(), f"{mod_id}: corresponding source ZIP required")
                     with zipfile.ZipFile(src) as z:
-                        require(z.testzip() is None and any(f.filename.endswith((".java", ".kt")) for f in z.infolist()),
+                        require(z.testzip() is None and any(f.filename.endswith((".java", ".kt", ".c", ".cpp", ".h", ".hpp")) for f in z.infolist()),
                                 f"{mod_id}: corresponding source ZIP is invalid/incomplete")
                     sh, size = sha256_file(src)
                     file_name = f"source-{sh}.zip"
@@ -148,8 +148,9 @@ def build(zip_file: Path, inventory_path: Path, approval_path: Path, notices_dir
                 if not path.is_file() or path.is_symlink():
                     continue
                 rel = path.relative_to(defaults_dir).as_posix()
-                require(rel.startswith("config/") and ".." not in rel.split("/"),
-                        "only reviewed config/ defaults may be published")
+                if not rel.startswith("config/"):
+                    continue  # README/documentation in defaults directory is not a runtime asset
+                require(".." not in rel.split("/"), "unsafe default configuration path")
                 raw = path.read_bytes()
                 require(0 < len(raw) < 1024 * 1024, "configuration too large")
                 digest = sha256_bytes(raw)

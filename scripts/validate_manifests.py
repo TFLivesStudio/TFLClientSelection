@@ -174,7 +174,7 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
         for key in ("sourceRepository", "licenseEvidenceUrl", "permissionEvidenceUrl"):
             if key in origin and not safe_https(origin[key]):
                 errors.append(f"{fid}: origin.{key} must be safe HTTPS")
-        if status == "published" and delivery is None and license_id in SOURCE_REQUIRED and not isinstance(origin.get("correspondingSourceAsset"), dict):
+        if delivery is None and license_id in SOURCE_REQUIRED and not isinstance(origin.get("correspondingSourceAsset"), dict) and (status == "published" or not str(origin.get("sourceRevision", "")).upper().startswith("PENDING")):
             errors.append(f"{fid}: GPL/LGPL requires mirrored corresponding source archive")
         if license_id in SOURCE_REQUIRED and isinstance(origin.get("correspondingSourceAsset"), dict):
             source = origin["correspondingSourceAsset"]

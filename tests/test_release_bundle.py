@@ -15,7 +15,7 @@ from zipfile import ZipFile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from build_release_bundle import build, load_approvals
-from validate_manifests import SOURCE_REQUIRED
+from validate_manifests import SOURCE_REQUIRED, load_json
 from verify_release_assets import verify_notices, verify_one
 
 MOD_IDS = ["amplio", "argentum", "argentum-extras", "cera", "legacy-lwjgl3",

@@ -43,6 +43,8 @@ def verify_notices(staging: Path, manifest: dict, errors: list[str]) -> None:
                 if name.startswith("/") or "\\" in name or ".." in Path(name).parts:
                     errors.append(f"unsafe license archive path: {name}")
             for entry in manifest["files"]:
+                if entry.get("download", {}).get("kind") == "github-release":
+                    continue  # Upstream origin retains its own license/attribution
                 expected = f"licenses/{entry['id']}.txt"
                 if expected not in names:
                     errors.append(f"license notice missing for {entry['id']} ({expected})")
@@ -68,6 +70,8 @@ def main() -> int:
         if not staging.is_dir():
             raise ValueError("assets path must be a directory")
         for entry in manifest["files"]:
+            if entry.get("download", {}).get("kind") == "github-release":
+                continue  # Served by author, never duplicated into TFL's GitHub Release
             verify_one(entry, staging, entry["id"], errors)
             source = entry["origin"].get("correspondingSourceAsset")
             if source:

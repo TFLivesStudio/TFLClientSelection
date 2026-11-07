@@ -129,6 +129,19 @@ class ReleaseBundle(unittest.TestCase):
                 verify_one(entry, out / "assets", entry["id"], failures)
             self.assertEqual(failures, [])
 
+
+    def test_reviewed_six_upstream_mods_have_no_TFL_mirror(self):
+        lock = load_json(ROOT / "inventory/github-release-lock.mc-1.8.9-ornithe.json")
+        inv = load_json(ROOT / "inventory/mc-1.8.9-ornithe-2026-11-07.json")
+        by_id = {m["id"]: m for m in inv["mods"]}
+        self.assertEqual(len(lock["verified"]), 6)
+        self.assertEqual(len(lock["pending"]), 5)
+        for upstream in lock["verified"]:
+            source = by_id[upstream["id"]]
+            self.assertEqual((upstream["sha256"], upstream["bytes"]),
+                             (source["sha256"], source["bytes"]))
+            self.assertEqual(upstream["download"]["asset"], source["filename"])
+
     def test_no_approvals_file(self):
         with tempfile.TemporaryDirectory() as td:
             with self.assertRaises((ValueError, OSError)):

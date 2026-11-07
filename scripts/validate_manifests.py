@@ -101,6 +101,8 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
         if target == "mc-26.3-fabric" and (minecraft.get("version") != "26.3" or minecraft.get("loader") != "fabric"):
             errors.append("Fabric target mismatch")
         if status == "published":
+            if not data.get("files"):
+                errors.append("cannot publish a manifest with no mods")
             expected = "launcher-pinned-ornithe" if minecraft.get("loader") == "ornithe-gen2" else "launcher-pinned-fabric"
             if minecraft.get("bootstrap") != expected:
                 errors.append("bootstrap strategy must match pinned loader")
@@ -150,6 +152,8 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
             expected_src = f"https://github.com/{repo}".lower()
             if isinstance(origin.get("sourceRepository"), str) and not origin["sourceRepository"].lower().rstrip("/").startswith(expected_src):
                 errors.append(f"{fid}: download repository does not match source provenance")
+        if status == "published" and str(origin.get("sourceRevision", "")).upper().startswith("PENDING"):
+            errors.append(f"{fid}: source build provenance not yet verified")
         if basis == "upstream-direct":
             if delivery is None:
                 errors.append(f"{fid}: upstream-direct requires pinned GitHub Release download")

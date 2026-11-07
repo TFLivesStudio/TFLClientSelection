@@ -59,13 +59,20 @@ def load_approvals(path: Path) -> dict:
 
 def build(zip_file: Path, inventory_path: Path, approval_path: Path, notices_dir: Path,
           sources_dir: Path, defaults_dir: Path, output_dir: Path, release: str,
-          min_launcher: str, include_defaults: bool = True) -> dict:
+          min_launcher: str, include_defaults: bool = True,
+          upstream_lock: Path | None = None) -> dict:
     require(re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?", release) is not None,
             "invalid release version")
     inventory = load_json(inventory_path)
     require(inventory.get("targetId") == "mc-1.8.9-ornithe", "wrong target")
     approvals = load_approvals(approval_path)
     items = inventory["mods"]
+    external = {}
+    if upstream_lock:
+        source = load_json(upstream_lock)
+        require(source.get("targetId") == inventory["targetId"], "upstream lock target mismatch")
+        external = {item["id"]: item for item in source["verified"]}
+        require(len(external) == len(source["verified"]), "duplicate upstream mod ID")
     require(len(items) == 11, "expected exactly the reviewed 11-mod selection")
     require(set(approvals) == {mod["id"] for mod in items}, "approval IDs must match all official mods")
     require(not output_dir.exists() or not any(output_dir.iterdir()), "output must be empty")
@@ -78,6 +85,27 @@ def build(zip_file: Path, inventory_path: Path, approval_path: Path, notices_dir
             for item in items:
                 mod_id, approval = item["id"], approvals[item["id"]]
                 require(ID_PATTERN.fullmatch(mod_id) is not None, "invalid mod ID")
+                if mod_id in external:
+                    pinned = external[mod_id]
+                    require(pinned["sha256"] == item["sha256"]
+                            and pinned["bytes"] == item["bytes"]
+                            and pinned["version"] == item["version"],
+                            f"{mod_id}: upstream asset does not match original Prism ZIP")
+                    with source.open("minecraft/mods/" + item["filename"]) as stream:
+                        contents = stream.read(512 * 1024 * 1024 + 1)
+                    require(len(contents) == item["bytes"]
+                            and sha256_bytes(contents) == item["sha256"],
+                            f"{mod_id}: imported ZIP does not match pinned hash")
+                    delivery = pinned["download"]
+                    require(delivery["asset"] == item["filename"],
+                            f"{mod_id}: GitHub Release name not exact")
+                    manifest_files.append({
+                        "id": mod_id, "kind": "mod", "path": item["installPath"],
+                        "sha256": item["sha256"], "bytes": item["bytes"],
+                        "assetName": item["assetName"], "installPolicy": "managed",
+                        "download": delivery, "origin": pinned["origin"],
+                    })
+                    continue  # The upstream author serves this binary; TFL does not mirror it.
                 require(approval.get("status") == "approved",
                         f"{mod_id}: redistribution permission has not been verified")
                 origin = approval.get("origin")
@@ -204,6 +232,8 @@ def main():
     p.add_argument("--inventory", type=Path,
                    default=ROOT / "inventory/mc-1.8.9-ornithe-2026-11-07.json")
     p.add_argument("--approvals", type=Path, required=True)
+    p.add_argument("--upstream-lock", type=Path,
+                   default=ROOT / "inventory/github-release-lock.mc-1.8.9-ornithe.json")
     p.add_argument("--notices", type=Path, required=True)
     p.add_argument("--sources", type=Path, required=True)
     p.add_argument("--defaults", type=Path,
@@ -215,7 +245,7 @@ def main():
     try:
         manifest = build(args.prism, args.inventory, args.approvals, args.notices,
                          args.sources, args.defaults, args.output, args.release,
-                         args.minimum_launcher_version)
+                         args.minimum_launcher_version, upstream_lock=args.upstream_lock)
     except (ValueError, OSError, KeyError, zipfile.BadZipFile) as exc:
         print(f"RELEASE BLOCKED: {exc}", file=sys.stderr)
         return 1

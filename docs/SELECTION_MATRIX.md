@@ -7,14 +7,12 @@
 
 Java 25 for both targets is a **planning input** from prior client work, not verified here. Official Minecraft 1.8.9 normally uses an older Java runtime, and Ornithe Gen2/Legacy LWJGL3/Argentum setup must be tested in the actual launcher before pinning 25. The published manifest must reflect the Java runtime that truly boots every selected mod.
 
-## Target 1.8.9 — review queue, not a confirmed mod list
+## Target 1.8.9 — ZIP imported, Release blocked
 
-- TFL Core (Ornithe Gen2 build), version/commit/hash missing
-- Ornithe Gen2 bootstrap support (not implemented in current launcher)
-- OSL modules (review exact needed modules and licenses)
-- Argentum renderer (review compatibility/rights)
-- Legacy LWJGL3 integration (review launcher bootstrap; not necessarily a mod JAR)
-- Additional PvP and FPS mods: **not chosen or validated yet**
+- **11 verified active JARs** imported from Prism ZIP 2026-11-07; SHA-256 and versions recorded in [inventory](inventory/mc-1.8.9-ornithe-2026-11-07.json).
+- Fabric Loader 0.20.1 on **Ornithe Gen2**; Java **25**; TFL Core **0.5.0-visual-preview.1**; Lucerna **0.1.5-tfl.2**.
+- These exact mods remain selected. Licenses for Argentum, Argentum Extras, Cera, and the bundled NVIDIA DLL in Amplio require authorization/review.
+- **Not a launchable release.** No binary/public catalog/signature published. See [import audit](MC1_8_9_PRISM_IMPORT_REVIEW.md).
 
 ## Target 26.3 — candidate inventory registered (not an install manifest)
 

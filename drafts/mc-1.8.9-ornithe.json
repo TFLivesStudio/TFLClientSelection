@@ -8,7 +8,9 @@
   "minecraft": {
     "version": "1.8.9",
     "loader": "ornithe-gen2",
-    "javaMajor": 25
+    "loaderVersion": "0.20.1",
+    "javaMajor": 25,
+    "bootstrap": "launcher-pinned-ornithe"
   },
   "files": []
 }

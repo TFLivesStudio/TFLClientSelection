@@ -34,6 +34,8 @@ This repository contains drafts and **metadata-only Prism 1.8.9 import inventory
 - [Launcher code audit and integration plan](docs/LAUNCHER_INTEGRATION.md)
 - [Prism Launcher ZIP import and cleanup](docs/PRISM_IMPORT.md)
 - [Minecraft 1.8.9 real Prism ZIP import audit](docs/MC1_8_9_PRISM_IMPORT_REVIEW.md)
+- [Rights approval template](licensing/approvals.mc-1.8.9-ornithe.template.json)
+- [Guarded release builder](scripts/build_release_bundle.py), [Ed25519 signer](scripts/selection_sign.py), [catalog promotion](scripts/selection_promote.py)
 - [Dynamic catalog discovery and updates](docs/AUTOMATIC_CATALOG_AND_UPDATES.md)
 - [File layout and release operations](docs/RELEASE_PROCESS.md)
 - [Licensing and security policy](docs/SECURITY_AND_LICENSING.md)

@@ -11,7 +11,7 @@ Java 25 for both targets is a **planning input** from prior client work, not ver
 
 - **11 verified active JARs** imported from Prism ZIP 2026-11-07; SHA-256 and versions recorded in [inventory](inventory/mc-1.8.9-ornithe-2026-11-07.json).
 - Fabric Loader 0.20.1 on **Ornithe Gen2**; Java **25**; TFL Core **0.5.0-visual-preview.1**; Lucerna **0.1.5-tfl.2**.
-- These exact mods remain selected. Licenses for Argentum, Argentum Extras, Cera, and the bundled NVIDIA DLL in Amplio require authorization/review.
+- These exact mods remain selected. Argentum monorepo's README explicitly says **All Rights Reserved** for its original changes (Celeritas bundled remains LGPLv3); Extras/Cera are same monorepo without a separate redistributable grant. NVIDIA DLSS embedded in Amplio requires SDK-license compliance review.
 - **Not a launchable release.** No binary/public catalog/signature published. See [import audit](MC1_8_9_PRISM_IMPORT_REVIEW.md).
 
 ## Target 26.3 — candidate inventory registered (not an install manifest)

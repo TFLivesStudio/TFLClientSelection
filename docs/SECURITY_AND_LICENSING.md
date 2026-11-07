@@ -14,6 +14,12 @@ Each binary must record exact project, version, upstream source repository, immu
 
 License notices available to players (verified `notices-<sha>.zip`) remain public alongside the binaries. GPL source archives are public and readable. You cannot make GPL sources secretly proprietary by renaming the assets.
 
+### Actual 1.8.9 Argentum monorepo exception
+
+The official `QuicksilverMC/argentum` **README explicitly states `All Rights Reserved`** for Argentum, with a narrow note that the *bundled Celeritas JAR* remains LGPLv3. The code's GitHub visibility, `/extras` and `/cera` subdirectories, and LGPL licensing of upstream Celeritas **do not automatically extend to the author's independent changes**. These three imported exact binaries require author-granted redistribution permission or replacement by an independently licensed/reimplemented alternative. A future source-derived replacement must be treated as a **new** mod build with its own version/SHA and fresh compatibility tests, not deceptively repackaged as the original.
+
+Actual Amplio 0.1.1 JAR bundles a NVIDIA release/runtime DLL and extracts it at startup. Its redistribution must comply with the **NVIDIA RTX SDK license**, including any third-party notices, rather than assuming the mod's MIT declaration applies to that DLL. The release builder requires separate evidence for bundled native binaries.
+
 ### Special case: TFL Core provenance
 
 TFL Core must be reviewed for inherited licenses from any forked upstream code or assets (e.g. TRS-derived components), plus its dependencies; do **not** mark the whole Core as proprietary merely because TFLives maintains its current repository.

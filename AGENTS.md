@@ -13,6 +13,7 @@
 - No release or redistribution without reviewing the actual version's license. MIT usually requires notice, GPL/LGPL requires corresponding source availability and notices; other licenses need their own review. The *repo being public* does not grant rights.
 - Maintain version-accurate source archives for GPL/LGPL as part of **our own release**, not only upstream links.
 - No claim that files installed on user machines cannot be extracted.
+- Upstream Argentum README states All Rights Reserved (except Celeritas LGPLv3), including same-monorepo Extras/Cera without separate permission: never publish their JARs without exact-version author permission or independently licensed replacements. Amplio embeds NVIDIA DLL; review its own distribution terms.
 - Signed catalog and exact bytes of manifest validated against pinned Ed25519 public key in launcher. Hashes alone are not trust authentication.
 - Do not auto-publish from pull requests and do not expose signing secrets to untrusted code.
 - Installation MUST reject path traversal, collisions, symlinks, out-of-bounds writes, invalid hashes, malicious redirects, and unexpected extra mods.

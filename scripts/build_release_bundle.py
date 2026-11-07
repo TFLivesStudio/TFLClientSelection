@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import sys
 import zipfile
 
@@ -155,13 +156,17 @@ def build(zip_file: Path, inventory_path: Path, approval_path: Path, notices_dir
                 name = f"sha256-{digest}.bin"
                 (staged / name).write_bytes(raw)
                 ident = "tfl-default-" + re.sub(r"[^a-z0-9._-]", "-", rel.lower())[:92]
+                notices[ident] = (b"TFL Selection curated configuration default.\n"
+                                  b"Copyright TFLives / licensed only as source configuration.\n")
                 manifest_files.append({"id": ident, "kind": "config", "path": rel,
                                        "sha256": digest, "bytes": len(raw), "assetName": name,
                                        "installPolicy": "seed-if-absent",
                                        "origin": {"project": "TFL Selection curated defaults",
                                                   "projectVersion": release,
                                                   "sourceRepository": "https://github.com/TFLivesStudio/TFLClientSelection",
-                                                  "sourceRevision": release,
+                                                  "sourceRevision": subprocess.check_output(
+                                                      ["git", "-C", str(ROOT), "rev-parse", "HEAD"],
+                                                      text=True).strip(),
                                                   "licenseSpdx": "LicenseRef-TFLives-Proprietary",
                                                   "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientSelection",
                                                   "redistributionBasis": "owned"}})

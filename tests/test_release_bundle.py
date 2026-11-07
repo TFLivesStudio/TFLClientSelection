@@ -119,7 +119,9 @@ class ReleaseBundle(unittest.TestCase):
                              out, "1.0.0", "0.1.0")
             self.assertEqual(sum(x["kind"] == "mod" for x in manifest["files"]), 11)
             self.assertEqual(sum(x["kind"] == "config" for x in manifest["files"]), 1)
-            self.assertEqual(len(list((out / "assets").glob("source-*.zip"))), 2)
+            self.assertEqual(sum("correspondingSourceAsset" in x["origin"] for x in manifest["files"]), 2)
+            # Two identical source archives intentionally share one content-addressed blob.
+            self.assertEqual(len(list((out / "assets").glob("source-*.zip"))), 1)
             failures = []
             verify_notices(out / "assets", manifest, failures)
             self.assertEqual(failures, [])

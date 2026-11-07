@@ -1,6 +1,10 @@
 name: TFL Selection 1.8.9 - publish exact signed release
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-selection-189.yml'
   workflow_dispatch:
     inputs:
       task:
@@ -27,7 +31,7 @@ permissions:
 
 jobs:
   create-draft:
-    if: inputs.task == 'create-draft'
+    if: github.event_name == 'push' || inputs.task == 'create-draft'
     runs-on: ubuntu-latest
     steps:
       - name: Create immutable-tag DRAFT Release, without publishing
@@ -38,8 +42,8 @@ jobs:
           TAG="selection-mc-1.8.9-ornithe-v0.1.0-preview.1"
           REPO="TFLivesStudio/TFLClientSelection"
           if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
-            echo "::error::This draft/tag already exists. Do not overwrite."
-            exit 1
+            echo "The exact draft/tag already exists; no change made." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
           gh release create "$TAG" --repo "$REPO" \
             --target "${GITHUB_SHA}" --draft \

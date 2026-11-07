@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "description": "Human-review gate. Never set approved without exact-version rights evidence. A public GitHub repo alone is not authorization.",
+  "mods": {
+    "amplio": {
+      "status": "pending",
+      "origin": {
+        "project": "amplio",
+        "projectVersion": "0.1.1+1.8.9",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "MIT",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "REVIEW_BUNDLED_NVIDIA_DLL"
+    },
+    "argentum": {
+      "status": "pending",
+      "origin": {
+        "project": "argentum",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "explicit-permission",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "BLOCKED_RIGHTS"
+    },
+    "argentum-extras": {
+      "status": "pending",
+      "origin": {
+        "project": "argentum-extras",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "explicit-permission",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "BLOCKED_RIGHTS"
+    },
+    "cera": {
+      "status": "pending",
+      "origin": {
+        "project": "cera",
+        "projectVersion": "1.0.2",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "explicit-permission",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "BLOCKED_RIGHTS"
+    },
+    "legacy-lwjgl3": {
+      "status": "pending",
+      "origin": {
+        "project": "legacy-lwjgl3",
+        "projectVersion": "1.4.10",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "LGPL-2.1-only",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "SOURCE_AND_NOTICES"
+    },
+    "lucerna": {
+      "status": "pending",
+      "origin": {
+        "project": "lucerna",
+        "projectVersion": "0.1.5-tfl.2",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "LGPL-3.0-only",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "SOURCE_AND_NOTICES"
+    },
+    "osl": {
+      "status": "pending",
+      "origin": {
+        "project": "osl",
+        "projectVersion": "0.22.2",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "Apache-2.0",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "LICENSE_NOTICES"
+    },
+    "pulse": {
+      "status": "pending",
+      "origin": {
+        "project": "pulse",
+        "projectVersion": "1.0.0",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "GPL-3.0-only",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "SOURCE_AND_NOTICES"
+    },
+    "sarcio": {
+      "status": "pending",
+      "origin": {
+        "project": "sarcio",
+        "projectVersion": "1.1.1",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "LGPL-3.0-or-later",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "SOURCE_AND_NOTICES"
+    },
+    "soundfix": {
+      "status": "pending",
+      "origin": {
+        "project": "soundfix",
+        "projectVersion": "1.1.0+mc1.8.9",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "LGPL-3.0",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "SOURCE_AND_NOTICES"
+    },
+    "tflcore": {
+      "status": "pending",
+      "origin": {
+        "project": "tflcore",
+        "projectVersion": "0.5.0-visual-preview.1",
+        "sourceRepository": "",
+        "sourceRevision": "",
+        "licenseSpdx": "GPL-3.0-only",
+        "licenseEvidenceUrl": "",
+        "redistributionBasis": "open-source-license",
+        "permissionEvidenceUrl": ""
+      },
+      "nativeClearance": {},
+      "reviewNotes": "SOURCE_AND_NOTICES"
+    }
+  }
+}

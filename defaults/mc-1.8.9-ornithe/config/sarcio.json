@@ -1,0 +1,5 @@
+{
+  "releaseCrashReserve": true,
+  "disableRealms": true,
+  "persistentKeybindings": true
+}

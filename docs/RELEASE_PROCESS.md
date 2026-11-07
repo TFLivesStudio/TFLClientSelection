@@ -23,7 +23,26 @@
 
 GitHub Actions on pull requests must have **read-only** permissions. A publisher is a separate protected manual workflow in this same public repository, never triggered by an untrusted pull request. A future dedicated publisher triggered by **manual approval** in a protected GitHub Actions Environment may use a short-lived repository-scoped `GITHUB_TOKEN` with `contents: write`; the signing key must remain an environment secret unavailable to PRs. Neither the launcher nor published catalog contains those credentials.
 
-Do not add auto-publish workflow until protected signing keys exist and the first release's legal and loader approvals are complete.
+Release preparation and local signing tooling are now provided as **scripts**, but no signing key is installed, no binaries are published, and there is no unattended public release publisher. Automatic channel discovery happens for already approved **signed** releases; it does **not** imply any arbitrary source commit publishes JARs.
+
+## Repeatable publishing commands (after rights review and boot QA)
+
+The latest native Prism export is used as byte-for-byte input; every JAR is checked against the committed inventory. Unapproved assets cannot be staged by the release builder. First create a private directory containing:
+
+- `approvals.json`: a completed copy of `licensing/approvals.mc-1.8.9-ornithe.template.json`, with **documented authorization** for every mod and bundled native library. `status=approved` is an attestation from a reviewer, never a substitute for real permission.
+- `notices/<mod-id>.txt`: full license/copyright notices for each mod.
+- `sources/<mod-id>.zip`: corresponding source with build scripts at the precise revision, for LGPL/GPL artifacts.
+- Original Prism ZIP, already SHA-256 pinned by inventory.
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python scripts/build_release_bundle.py --prism 'TFL Client 1.8.9.zip' --approvals approvals.json --notices notices --sources sources --output dist/selection-189 --release 1.0.0 --minimum-launcher-version 0.1.0
+python scripts/verify_release_assets.py --manifest dist/selection-189/manifest.json --assets dist/selection-189/assets
+```
+
+Both commands **fail closed** if licenses, notices, source or JAR digests are invalid. The output is only a **local candidate**. The publisher must sign the raw manifest, upload all files from `assets/` plus `manifest.json` and its `.sig` into an immutable GitHub Release, verify download hashes, and only then sign and publish a new catalog generation. The signature key is created and managed locally or in a protected publishing environment; see `scripts/selection_sign.py` and `scripts/selection_promote.py`.
+
+**Do not run a public upload of the 11 current JARs** until the ARR and NVIDIA rights review, complete corresponding sources and required boot QA have succeeded.
 
 ## QA gates
 

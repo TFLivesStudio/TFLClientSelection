@@ -1,0 +1,19 @@
+{
+  "better_grass": "FANCY",
+  "connected_textures": "FANCY",
+  "dynamic_lights": "FANCY",
+  "natural_textures": true,
+  "animated_textures": true,
+  "custom_colors": true,
+  "custom_lightmaps": true,
+  "random_entities": true,
+  "custom_sky": true,
+  "custom_guis": true,
+  "custom_items": true,
+  "optifine_cosmetics": true,
+  "emissive_textures": true,
+  "custom_block_layers": true,
+  "custom_loading_screens": true,
+  "custom_panorama": true,
+  "hd_fonts": true
+}

@@ -146,7 +146,15 @@
       "sha256": "05d18d7760d8c855fc33e32e3c8b3026c8217d5a1c05a768a5769c8c7c83315f",
       "bytes": 62789068,
       "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
-      "reason": "No exact 0.1.1 GitHub Release; v0.1.0, v0.1.2 and v0.1.3 are different bytes; bundled NVIDIA native must be reviewed"
+      "reason": "No exact 0.1.1 GitHub Release; v0.1.0, v0.1.2 and v0.1.3 are different bytes; bundled NVIDIA native must be reviewed",
+      "sourceCandidate": {
+        "repository": "https://github.com/jonathanthxd/amplio",
+        "branch": "main",
+        "commitCandidate": "deadbad272d6c0febcebd8e70a3ad0107b5a0915",
+        "declaredLicense": "MIT",
+        "licenseEvidenceUrl": "https://github.com/jonathanthxd/amplio/blob/main/LICENSE",
+        "notes": "Fork main gradle.properties declares 0.1.1, exact jar-to-commit build provenance still unverified; NVIDIA DLL is embedded"
+      }
     },
     {
       "id": "legacy-lwjgl3",
@@ -154,7 +162,15 @@
       "sha256": "cfcdb312c96bf47e8224c2f3c0dc53d3d7a28e7ad73d69e8d09c0a4400412e9e",
       "bytes": 17618306,
       "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
-      "reason": "No GitHub Release with exact 1.4.10 SHA; upstream has Maven repository requiring digest verification"
+      "reason": "No GitHub Release with exact 1.4.10 SHA; upstream has Maven repository requiring digest verification",
+      "sourceCandidate": {
+        "repository": "https://github.com/moehreag/legacy-lwjgl3",
+        "branch": "ornithe-multi",
+        "commitCandidate": null,
+        "declaredLicense": "LGPL-2.1-only",
+        "licenseEvidenceUrl": "https://github.com/moehreag/legacy-lwjgl3/blob/ornithe-multi/LICENSE",
+        "notes": "Explicit root LICENSE is GNU Lesser GPL v2.1, not ordinary GPL; exact 1.4.10 jar build revision not identified"
+      }
     },
     {
       "id": "lucerna",
@@ -162,7 +178,15 @@
       "sha256": "7f9d396861998b2ea8562379e22320a4547a2b5cc18567d97d2dd042ed42e451",
       "bytes": 2025688,
       "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
-      "reason": "No official 0.1.5-tfl.2 GitHub Release of exact bytes; TFL-specific build from local ZIP"
+      "reason": "No official 0.1.5-tfl.2 GitHub Release of exact bytes; TFL-specific build from local ZIP",
+      "sourceCandidate": {
+        "repository": "https://github.com/jonathanthxd/lucerna",
+        "branch": "work/tfl-far-terrain-shader-stability",
+        "commitCandidate": "45f3fcde3620c3e94e8e0fe3ef4cafe56944ce40",
+        "declaredLicense": "LGPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/jonathanthxd/lucerna/blob/work/tfl-far-terrain-shader-stability/LICENSE",
+        "notes": "Branch gradle.properties declares 0.1.5-tfl.2, but jar-to-source provenance is still unverified"
+      }
     },
     {
       "id": "pulse",
@@ -170,7 +194,15 @@
       "sha256": "dd0f25fbfb2c45c0c616bf18a7e692c936e997aa5c9601b7632af5293000d9db",
       "bytes": 5814491,
       "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
-      "reason": "No GitHub Release with exact 1.0.0 JAR; needs TFL hosting or verified fixed upstream artifact"
+      "reason": "No GitHub Release with exact 1.0.0 JAR; needs TFL hosting or verified fixed upstream artifact",
+      "sourceCandidate": {
+        "repository": "https://github.com/QuicksilverMC/Pulse",
+        "branch": "main",
+        "commitCandidate": null,
+        "declaredLicense": "GPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Pulse/blob/main/LICENSE",
+        "notes": "Root LICENSE GNU GPL v3; exact 1.0.0 jar build revision not verified"
+      }
     },
     {
       "id": "soundfix",
@@ -178,7 +210,15 @@
       "sha256": "2da5334d7816325a582ed47afe11be393a1958e263b324f19b9590ff0bde32da",
       "bytes": 85414,
       "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
-      "reason": "No GitHub Release with exact 1.1.0+mc1.8.9 JAR"
+      "reason": "No GitHub Release with exact 1.1.0+mc1.8.9 JAR",
+      "sourceCandidate": {
+        "repository": "https://github.com/moehreag/soundfix",
+        "branch": "ornithe/1.8.9",
+        "commitCandidate": null,
+        "declaredLicense": "LGPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/moehreag/soundfix/blob/ornithe/1.8.9/src/main/resources/fabric.mod.json",
+        "notes": "No root LICENSE in inspected branch; fabric.mod.json declares LGPL-3.0 (not GPL-3.0); corresponding source license evidence/notice still must be packaged"
+      }
     }
   ]
 }

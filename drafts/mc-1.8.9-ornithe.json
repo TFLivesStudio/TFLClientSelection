@@ -24,10 +24,10 @@
       "origin": {
         "project": "amplio",
         "projectVersion": "0.1.1+1.8.9",
-        "sourceRepository": "https://github.com/Z1xus/amplio",
+        "sourceRepository": "https://github.com/jonathanthxd/amplio",
         "sourceRevision": "PENDING-EXACT-BUILD",
         "licenseSpdx": "MIT",
-        "licenseEvidenceUrl": "https://github.com/Z1xus/amplio",
+        "licenseEvidenceUrl": "https://github.com/jonathanthxd/amplio/blob/main/LICENSE",
         "redistributionBasis": "open-source-license"
       }
     },
@@ -117,7 +117,7 @@
         "sourceRepository": "https://github.com/moehreag/legacy-lwjgl3",
         "sourceRevision": "PENDING-EXACT-BUILD",
         "licenseSpdx": "LGPL-2.1-only",
-        "licenseEvidenceUrl": "https://github.com/moehreag/legacy-lwjgl3",
+        "licenseEvidenceUrl": "https://github.com/moehreag/legacy-lwjgl3/blob/ornithe-multi/LICENSE",
         "redistributionBasis": "open-source-license"
       }
     },
@@ -132,10 +132,10 @@
       "origin": {
         "project": "lucerna",
         "projectVersion": "0.1.5-tfl.2",
-        "sourceRepository": "https://github.com/Z1xus/lucerna",
+        "sourceRepository": "https://github.com/jonathanthxd/lucerna",
         "sourceRevision": "PENDING-EXACT-BUILD",
         "licenseSpdx": "LGPL-3.0-only",
-        "licenseEvidenceUrl": "https://github.com/Z1xus/lucerna",
+        "licenseEvidenceUrl": "https://github.com/jonathanthxd/lucerna/blob/work/tfl-far-terrain-shader-stability/LICENSE",
         "redistributionBasis": "open-source-license"
       }
     },
@@ -177,7 +177,7 @@
         "sourceRepository": "https://github.com/QuicksilverMC/Pulse",
         "sourceRevision": "PENDING-EXACT-BUILD",
         "licenseSpdx": "GPL-3.0-only",
-        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Pulse",
+        "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Pulse/blob/main/LICENSE",
         "redistributionBasis": "open-source-license"
       }
     },
@@ -219,7 +219,7 @@
         "sourceRepository": "https://github.com/moehreag/soundfix",
         "sourceRevision": "PENDING-EXACT-BUILD",
         "licenseSpdx": "LGPL-3.0-only",
-        "licenseEvidenceUrl": "https://github.com/moehreag/soundfix",
+        "licenseEvidenceUrl": "https://github.com/moehreag/soundfix/blob/ornithe/1.8.9/src/main/resources/fabric.mod.json",
         "redistributionBasis": "open-source-license"
       }
     },

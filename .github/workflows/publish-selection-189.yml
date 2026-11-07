@@ -1,0 +1,147 @@
+name: TFL Selection 1.8.9 - publish exact signed release
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Draft setup, verification only, or publish reviewed signed beta"
+        required: true
+        type: choice
+        default: create-draft
+        options:
+          - create-draft
+          - verify-only
+          - publish-beta
+      confirm_sources_and_nvidia_terms:
+        description: "For publish-beta: I reviewed exact corresponding source and NVIDIA SDK terms"
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: tfl-selection-189-release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  create-draft:
+    if: inputs.task == 'create-draft'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create immutable-tag DRAFT Release, without publishing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="selection-mc-1.8.9-ornithe-v0.1.0-preview.1"
+          REPO="TFLivesStudio/TFLClientSelection"
+          if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            echo "::error::This draft/tag already exists. Do not overwrite."
+            exit 1
+          fi
+          gh release create "$TAG" --repo "$REPO" \
+            --target "${GITHUB_SHA}" --draft \
+            --title "TFL Selection 1.8.9 0.1.0-preview.1 - STAGING" \
+            --notes "PRIVATE WORK-IN-PROGRESS DRAFT: attach six original sha256-*.bin JAR files and tflcore-source.zip. Do not manually publish this draft; run the verified publish-beta workflow."
+          echo "Draft created. Add six .bin files and tflcore-source.zip in the Release editor." >> "$GITHUB_STEP_SUMMARY"
+
+  verify-or-publish:
+    if: inputs.task == 'verify-only' || inputs.task == 'publish-beta'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    environment: tfl-selection-release
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Install verification dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Approvals gate
+        env:
+          TASK: ${{ inputs.task }}
+          ATTEST: ${{ inputs.confirm_sources_and_nvidia_terms }}
+          SIGN_SEED: ${{ secrets.TFL_SELECTION_SIGNING_SEED_B64 }}
+        run: |
+          set -euo pipefail
+          if [[ "$TASK" == "publish-beta" ]]; then
+            if [[ "$ATTEST" != "true" ]]; then
+              echo "::error::Review sources and NVIDIA SDK distribution terms first."
+              exit 1
+            fi
+            if [[ -z "$SIGN_SEED" ]]; then
+              echo "::error::Missing Actions secret TFL_SELECTION_SIGNING_SEED_B64."
+              exit 1
+            fi
+          fi
+      - name: Validate pinned original GitHub Release JARs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/check_upstream_lock.py
+          python scripts/check_upstream_lock.py --online
+      - name: Fetch six exact JARs and TFL Core source from draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="selection-mc-1.8.9-ornithe-v0.1.0-preview.1"
+          REPO="TFLivesStudio/TFLClientSelection"
+          test "$(gh release view "$TAG" --repo "$REPO" --json isDraft --jq .isDraft)" = "true"
+          mkdir -p draft-uploaded
+          gh release download "$TAG" --repo "$REPO" --dir draft-uploaded
+          python scripts/verify_uploaded_189.py --assets draft-uploaded
+          python - <<'PY'
+          from pathlib import Path
+          import json, hashlib
+          x=json.loads(Path("inventory/owned-source-pins.mc-1.8.9-ornithe.json").read_text())["assets"]["tflcore"]
+          p=Path("draft-uploaded") / x["privateSourceAsset"]
+          assert p.is_file(), "TFL Core corresponding-source ZIP missing from draft"
+          assert p.stat().st_size == x["privateSourceBytes"], "Wrong TFL Core source size"
+          assert hashlib.sha256(p.read_bytes()).hexdigest() == x["privateSourceSha256"], "Wrong TFL Core source SHA-256"
+          print("TFL Core exact source ZIP verified")
+          PY
+      - name: Build full 11-mod release, source archives and licenses
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/assemble_189_release_ci.py \
+            --uploaded-assets draft-uploaded \
+            --output dist/selection-189
+          python scripts/verify_release_assets.py \
+            --manifest dist/selection-189/manifest.json \
+            --assets dist/selection-189/assets
+      - name: Publish verified Ed25519-signed beta and catalog
+        if: inputs.task == 'publish-beta'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TFL_SELECTION_SIGNING_SEED_B64: ${{ secrets.TFL_SELECTION_SIGNING_SEED_B64 }}
+        run: |
+          python scripts/publish_189_ci.py \
+            --uploaded-assets draft-uploaded \
+            --candidate dist/selection-189 \
+            --channel beta \
+            --acknowledge-source-and-native-terms
+      - name: Upload verification report only (no third-party JARs)
+        if: inputs.task == 'verify-only'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfl-selection-189-verification-report
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            dist/selection-189/manifest.json
+            dist/selection-189/provenance-review.json
+      - name: Summary
+        run: |
+          echo "11 exact original JARs: five public original-author and six TFL Selection." >> "$GITHUB_STEP_SUMMARY"
+          echo "Only explicit signed publish-beta publishes and promotes the catalog." >> "$GITHUB_STEP_SUMMARY"

@@ -95,6 +95,53 @@ class ReleaseBundle(unittest.TestCase):
                       dist, "1.0.0", "0.1.0")
             self.assertFalse(dist.exists())
 
+    def test_upstream_exact_assets_not_rehosted(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            z, inventory, approvals, notices, sources = fixture(root)
+            record = json.loads(approvals.read_text())
+            inv = json.loads(inventory.read_text())
+            selected = {"argentum", "argentum-extras", "cera",
+                        "osl", "sarcio", "tflcore"}
+            upstream = []
+            for item in inv["mods"]:
+                mod_id = item["id"]
+                if mod_id not in selected:
+                    continue
+                record["mods"][mod_id]["status"] = "pending"
+                repo = "QuicksilverMC/Argentum" if mod_id in {
+                    "argentum", "argentum-extras", "cera"} else (
+                        "TFLivesStudio/TFLClientMOD" if mod_id == "tflcore"
+                        else "OrnitheMC/ornithe-standard-libraries" if mod_id == "osl"
+                        else "QuicksilverMC/Sarcio")
+                origin = record["mods"][mod_id]["origin"]
+                origin["sourceRepository"] = "https://github.com/" + repo
+                origin["licenseSpdx"] = "LicenseRef-Upstream-All-Rights-Reserved" if (
+                    repo == "QuicksilverMC/Argentum") else origin["licenseSpdx"]
+                origin["redistributionBasis"] = (
+                    "upstream-direct" if repo == "QuicksilverMC/Argentum"
+                    else "open-source-license")
+                upstream.append({
+                    "id": mod_id, "version": item["version"], "sha256": item["sha256"],
+                    "bytes": item["bytes"], "origin": origin,
+                    "download": {"kind": "github-release", "repository": repo,
+                                 "tag": "v1.0.0", "asset": item["filename"]}
+                })
+            approvals.write_text(json.dumps(record))
+            lock = root / "upstream.json"
+            lock.write_text(json.dumps({"targetId": "mc-1.8.9-ornithe",
+                                        "verified": upstream}))
+            out = root / "dist"
+            manifest = build(z, inventory, approvals, notices, sources,
+                             root / "defaults", out, "1.0.0", "0.1.0",
+                             upstream_lock=lock)
+            self.assertEqual(len(manifest["files"]), 11)
+            self.assertEqual(sum("download" in x for x in manifest["files"]), 6)
+            for x in manifest["files"]:
+                if "download" in x:
+                    self.assertFalse((out / "assets" / x["assetName"]).exists())
+            self.assertEqual(sum(x["kind"] == "mod" for x in manifest["files"]), 11)
+
     def test_native_clearance_is_required(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

@@ -123,7 +123,7 @@ def source_notices(mod_id: str, source: Path, jar: Path,
     with ZipFile(jar) as z:
         for filename in ("META-INF/LICENSE", "META-INF/NOTICE", "LICENSE",
                          "META-INF/licenses/NVIDIA-DLSS.txt",
-                         "META-INF/licenses/AMD-FSR.txt"):
+                         "META-INF/licenses/AMD-FSR.txt", "natives/LICENSE-tracy"):
             if filename in z.namelist():
                 info = z.getinfo(filename)
                 must(info.file_size <= 200000, "oversized embedded notice")
@@ -208,10 +208,19 @@ def assemble(owner_assets: Path, result_dir: Path, public_upstream: bool = True)
                       "licenseSpdx":pin["license"],"licenseEvidenceUrl":license_url,
                       "redistributionBasis":"open-source-license"}
             approval = {"status":"approved", "origin":origin, "nativeClearance":{}}
-            if mod_id == "amplio":
-                approval["nativeClearance"] = {
-                    "natives/windows-x86_64/nvngx_dlss.dll":
-                    url + "/blob/" + src_revision + "/src/main/resources/META-INF/licenses/NVIDIA-DLSS.txt"}
+            with ZipFile(jar_dir / original[mod_id]["filename"]) as mod_jar:
+                for name in mod_jar.namelist():
+                    if not name.lower().endswith((".dll", ".so", ".dylib")):
+                        continue
+                    if mod_id == "amplio" and "nvngx_dlss" in name:
+                        evidence = url + "/blob/" + src_revision + "/src/main/resources/META-INF/licenses/NVIDIA-DLSS.txt"
+                    elif mod_id == "pulse" and "Tracy" in name:
+                        evidence = url + "/blob/" + src_revision + "/src/main/resources/natives/LICENSE-tracy"
+                    elif mod_id == "pulse" and ("asyncProfiler" in name or "attach_hotspot" in name):
+                        evidence = "https://github.com/async-profiler/async-profiler/blob/master/LICENSE"
+                    else:
+                        evidence = url + "/blob/" + src_revision + "/LICENSE"
+                    approval["nativeClearance"][name] = evidence
             approvals["mods"][mod_id] = approval
         # The upstream direct-download assets are not TFL-hosted, so their
         # license approval entries are placeholders but never used to stage.

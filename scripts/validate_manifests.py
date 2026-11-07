@@ -149,9 +149,10 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
             if not safe_https("https://github.com/" + repo):
                 errors.append(f"{fid}: invalid GitHub release repository")
             # The exact repository must be the source recorded in the signed manifest.
-            expected_src = f"https://github.com/{repo}".lower()
-            if isinstance(origin.get("sourceRepository"), str) and not origin["sourceRepository"].lower().rstrip("/").startswith(expected_src):
-                errors.append(f"{fid}: download repository does not match source provenance")
+            src = urlsplit(str(origin.get("sourceRepository", "")))
+            if (src.scheme != "https" or src.hostname != "github.com"
+                    or "/".join(src.path.strip("/").split("/")[:2]).casefold() != repo.casefold()):
+                errors.append(f"{fid}: download repository does not match exact GitHub source provenance")
         if status == "published" and str(origin.get("sourceRevision", "")).upper().startswith("PENDING"):
             errors.append(f"{fid}: source build provenance not yet verified")
         if basis == "upstream-direct":

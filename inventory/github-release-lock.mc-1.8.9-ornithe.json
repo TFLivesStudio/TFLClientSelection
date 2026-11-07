@@ -3,8 +3,8 @@
   "packId": "tfl-selection",
   "targetId": "mc-1.8.9-ornithe",
   "source": "2026-11-07 verified Prism ZIP and GitHub Release API",
-  "status": "partial-ready-not-published",
-  "policy": "All release downloads are immutable tag+asset references pinned to exact SHA256 and byte length. No Modrinth or latest resolver.",
+  "status": "6-tfl-assets-needed-private-core",
+  "policy": "Five public upstream assets verified (Argentum/Extras/Cera/OSL/Sarcio), SIX must be published by TFL Selection including TFL Core from PRIVATE original repo. All 11 JARs must retain exact original digests.",
   "verified": [
     {
       "id": "argentum",
@@ -115,28 +115,6 @@
         "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Sarcio",
         "redistributionBasis": "open-source-license"
       }
-    },
-    {
-      "id": "tflcore",
-      "version": "0.5.0-visual-preview.1",
-      "sha256": "c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041",
-      "bytes": 78333017,
-      "download": {
-        "kind": "github-release",
-        "repository": "TFLivesStudio/TFLClientMOD",
-        "tag": "v0.5.0-visual-preview.1",
-        "asset": "tflcore-1.8.9-0.5.0-visual-preview.1.jar"
-      },
-      "sourceCommit": "17aa9c84d07b435a63aae8ebddc078263af3552d",
-      "origin": {
-        "project": "tflcore",
-        "projectVersion": "0.5.0-visual-preview.1",
-        "sourceRepository": "https://github.com/TFLivesStudio/TFLClientMOD",
-        "sourceRevision": "17aa9c84d07b435a63aae8ebddc078263af3552d",
-        "licenseSpdx": "GPL-3.0-only",
-        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientMOD",
-        "redistributionBasis": "open-source-license"
-      }
     }
   ],
   "pending": [
@@ -166,10 +144,10 @@
       "sourceCandidate": {
         "repository": "https://github.com/moehreag/legacy-lwjgl3",
         "branch": "ornithe-multi",
-        "commitCandidate": null,
+        "commitCandidate": "ef78e7daee3c1d05638c85485250e380a4babe18",
         "declaredLicense": "LGPL-2.1-only",
         "licenseEvidenceUrl": "https://github.com/moehreag/legacy-lwjgl3/blob/ornithe-multi/LICENSE",
-        "notes": "Explicit root LICENSE is GNU Lesser GPL v2.1, not ordinary GPL; exact 1.4.10 jar build revision not identified"
+        "notes": "Source at ef78e7da... declares mod_version 1.4.10 (matching binary version); full reproducible build equivalence not established."
       }
     },
     {
@@ -198,7 +176,7 @@
       "sourceCandidate": {
         "repository": "https://github.com/QuicksilverMC/Pulse",
         "branch": "main",
-        "commitCandidate": null,
+        "commitCandidate": "1d202b831157e843b1961b1216a542585b838985",
         "declaredLicense": "GPL-3.0-only",
         "licenseEvidenceUrl": "https://github.com/QuicksilverMC/Pulse/blob/main/LICENSE",
         "notes": "Root LICENSE GNU GPL v3; exact 1.0.0 jar build revision not verified"
@@ -214,11 +192,28 @@
       "sourceCandidate": {
         "repository": "https://github.com/moehreag/soundfix",
         "branch": "ornithe/1.8.9",
-        "commitCandidate": null,
+        "commitCandidate": "5be5da21d4eb55479266591f53fdb05986dc6da7",
         "declaredLicense": "LGPL-3.0-only",
         "licenseEvidenceUrl": "https://github.com/moehreag/soundfix/blob/ornithe/1.8.9/src/main/resources/fabric.mod.json",
         "notes": "No root LICENSE in inspected branch; fabric.mod.json declares LGPL-3.0 (not GPL-3.0); corresponding source license evidence/notice still must be packaged"
       }
+    },
+    {
+      "id": "tflcore",
+      "version": "0.5.0-visual-preview.1",
+      "sha256": "c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041",
+      "bytes": 78333017,
+      "target": "TFLivesStudio/TFLClientSelection GitHub Release asset",
+      "reason": "Original TFLClientMOD v0.5.0-visual-preview.1 release and repository are PRIVATE: public launchers cannot download it. First-party GPL-3.0 binary and corresponding source must be published publicly in TFL Selection.",
+      "sourceCandidate": {
+        "repository": "https://github.com/TFLivesStudio/TFLClientMOD",
+        "branch": "v0.5.0-visual-preview.1",
+        "commitCandidate": "17aa9c84d07b435a63aae8ebddc078263af3552d",
+        "declaredLicense": "GPL-3.0-only",
+        "licenseEvidenceUrl": "https://github.com/TFLivesStudio/TFLClientMOD",
+        "notes": "Private release includes tflcore-source.zip with digest sha256:3d19f304eccc6e239fcfc36303d742b83e00165533ca037cc760360910ce0c11 and 136468685 bytes. Author must provide this source archive without granting public access to entire private repo."
+      }
     }
-  ]
+  ],
+  "sourceVerifiedOn": "2026-11-07"
 }

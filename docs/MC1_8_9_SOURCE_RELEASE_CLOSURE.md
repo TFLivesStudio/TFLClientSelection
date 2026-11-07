@@ -2,7 +2,7 @@
 
 ## Exact current ZIP vs candidate source trees
 
-The owner's Prism ZIP contains exactly five mods still missing a public **exact-hash** GitHub Release. These source repositories **do not authorize substituting JARs** with later/older versions.
+The owner's Prism ZIP contains exactly six mods still missing a public **exact-hash** GitHub Release. These source repositories **do not authorize substituting JARs** with later/older versions.
 
 | JAR | Candidate corresponding source | License checked | Remaining proof |
 |---|---|---|---|
@@ -14,7 +14,7 @@ The owner's Prism ZIP contains exactly five mods still missing a public **exact-
 
 ## Immediate next operation: prepare author-verified artifacts for publication
 
-1. Preserve **all five original JARs** exactly as exported. Available in the owner's chat private staging archive `TFLSelection_189_PENDIENTES_PARA_RELEASE_PRIVADO.zip`, each stored as `assets/sha256-<original-digest>.bin` (name is required by the v2 manifest).
+1. Preserve **all six original JARs** exactly as exported. Available in the owner's chat private staging archive `TFLSelection_189_PENDIENTES_PARA_RELEASE_PRIVADO.zip`, each stored as `assets/sha256-<original-digest>.bin` (name is required by the v2 manifest).
 2. Identify the matching source revision for each built JAR, and prepare a ZIP of complete corresponding source + license notices for each GPL/LGPL JAR. Use the user's two forks as candidates; their *branch version strings alone are not sufficient* proof.
 3. For Amplio, check NVIDIA DLSS runtime distribution terms and notices for the exact bundled binary. A MIT project license alone does not license embedded third-party binaries.
 4. Publish only the **five** approved content-addressed binaries and necessary `source-<digest>.zip`/`notices-<digest>.zip` in an immutable **TFL Selection** GitHub Release. The six author-hosted JARs are already pinned by official GitHub Release tag/name/digest and are **not mirrored**.
@@ -27,3 +27,7 @@ The owner's Prism ZIP contains exactly five mods still missing a public **exact-
 ## Why source provenance matters
 
 License metadata describes legal rights, but does not certify that a previously built binary matches the current repository head. For Lucerna, `main` currently declares `0.1.4`, while branch `work/tfl-far-terrain-shader-stability` declares `0.1.5-tfl.2`. For Amplio the fork `main` declares `0.1.1`. Pin immutable source commits that actually produced each binary before release.
+
+### Added first-party TFL Core public delivery gate
+
+The previously direct-pinned TFL Core Release is in private `TFLivesStudio/TFLClientMOD`. A normal public user cannot download private assets from it. The exact first-party binary (SHA `c2ee6bbfa1d2073bbf8a1ef4bf7db7900509213bb0830428a4041de4e1761041`, 78,333,017 bytes) must therefore be **included as the sixth TFL-owned GitHub Release asset**. Its corresponding GPL-3.0 source `tflcore-source.zip` is available in the private original release `v0.5.0-visual-preview.1` (GitHub metadata SHA `3d19f304eccc6e239fcfc36303d742b83e00165533ca037cc760360910ce0c11`, 136,468,685 bytes); an authorized owner must make a vetted source copy available to the public release. Do not publish links to private repos as public installable assets.

@@ -11,7 +11,7 @@ This is a **mixed delivery mode**, fully within GitHub:
 
 ## Verified with GitHub Releases API
 
-All six assets were verified against **exact sizes and GitHub's reported SHA-256**, equal to the original Prism ZIP. See [machine-readable lock](../inventory/github-release-lock.mc-1.8.9-ornithe.json).
+All five assets were verified against **exact sizes and GitHub's reported SHA-256**, equal to the original Prism ZIP. See [machine-readable lock](../inventory/github-release-lock.mc-1.8.9-ornithe.json).
 
 | Installed JAR | Official GitHub Release | Delivery |
 | --- | --- | --- |
@@ -24,7 +24,7 @@ All six assets were verified against **exact sizes and GitHub's reported SHA-256
 
 The matching signed manifest still defines **local installed names** such as `mods/argentum-1.0.2.jar`. An optional `files[].download` field provides `kind=github-release`, `repository`, `tag`, and `asset`. If `download` is absent, the asset is expected under **this** TFL Selection Release, named `sha256-<hash>.bin`.
 
-## Exactly five original JARs do NOT have matching verified GitHub Release assets
+## Exactly six original JARs do NOT have matching verified GitHub Release assets
 
 | JAR from Prism | Resolution required |
 | --- | --- |
@@ -55,15 +55,19 @@ The matching signed manifest still defines **local installed names** such as `mo
 ## Tools and readiness
 
 ```powershell
-python scripts/check_upstream_lock.py         # static/offline: 11 mods, 6 verified URLs, 5 pending
+python scripts/check_upstream_lock.py         # static/offline: 11 mods, 6 verified URLs, 6 pending
 python scripts/check_upstream_lock.py --online # GitHub API: exact upstream asset bytes/hash
 python -m unittest discover -s tests -v
 ```
 
-The local candidate builder `scripts/build_release_bundle.py` accepts `--upstream-lock` (defaults to the reviewed six-asset file), **skips redistributing the six source-hosted JARs**, and requires license/source/native approval for every remaining TFL-hosted binary. The existing manual publisher only publishes after a complete passing candidate plus signed QA record. A client/Java25/Ornithe Gen2 launch still requires actual integration tests.
+The local candidate builder `scripts/build_release_bundle.py` accepts `--upstream-lock` (defaults to the reviewed five-asset file), **skips redistributing the five source-hosted JARs**, and requires license/source/native approval for every remaining TFL-hosted binary. The existing manual publisher only publishes after a complete passing candidate plus signed QA record. A client/Java25/Ornithe Gen2 launch still requires actual integration tests.
 
 **Next goal:** provide authenticated publication of the five remaining redistributable assets, build/source notices, sign first complete Release, and only then promote a catalog channel. Never promote the current partial draft.
 
 ## Exact fork sources and licensing verified
 
 Lucerna is maintained in `jonathanthxd/lucerna`, branch `work/tfl-far-terrain-shader-stability`, whose `gradle.properties` declares `0.1.5-tfl.2`. Amplio is in `jonathanthxd/amplio` (`0.1.1`). The correct licenses are **Lucerna LGPL-3.0, Amplio MIT, Pulse GPL-3.0, Legacy LWJGL3 LGPL-2.1, SoundFix LGPL-3.0 declared in mod metadata**. See [exact source and publication closure](MC1_8_9_SOURCE_RELEASE_CLOSURE.md).
+
+## Critical private TFL Core correction (2026-11-07)
+
+The source repo `TFLivesStudio/TFLClientMOD` is **PRIVATE**. Its v0.5.0-visual-preview.1 release is therefore **not downloadable by a public launcher**. The exact `tflcore-1.8.9-0.5.0-visual-preview.1.jar` was moved from direct original-Release delivery to the TFL Selection Release's own six content-addressed uploaded assets. The exact original SHA-256 remains unchanged. As GPL-3.0, corresponding `tflcore-source.zip` from that private release also needs to be distributed in the public Selection Release. Public accessible original assets: only Argentum, Argentum Extras, Cera, Sarcio, OSL.

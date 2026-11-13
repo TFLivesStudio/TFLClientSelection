@@ -1,4 +1,4 @@
-name: TFL Selection 1.8.9 - publish exact signed release
+name: TFLClient 1.8.9 - publish exact signed release
 
 on:
   push:
@@ -47,7 +47,7 @@ jobs:
           fi
           gh release create "$TAG" --repo "$REPO" \
             --target "${GITHUB_SHA}" --draft \
-            --title "TFL Selection 1.8.9 0.1.0-preview.1 - STAGING" \
+            --title "TFLClient 1.8.9 0.1.0-preview.1 - STAGING" \
             --notes "PRIVATE WORK-IN-PROGRESS DRAFT: attach six original sha256-*.bin JAR files and tflcore-source.zip. Do not manually publish this draft; run the verified publish-beta workflow."
           echo "Draft created. Add six .bin files and tflcore-source.zip in the Release editor." >> "$GITHUB_STEP_SUMMARY"
 

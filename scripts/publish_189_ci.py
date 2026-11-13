@@ -95,7 +95,7 @@ def commit_catalog(candidate: Path, public_key: Path, manifest: dict, channel: s
                         str(signature_file.relative_to(ROOT))],cwd=ROOT,check=True)
         subprocess.run(["python","scripts/validate_manifests.py"],cwd=ROOT,check=True)
         subprocess.run(["git","commit","-m",
-                        f"release: TFL Selection 1.8.9 {manifest['release']} [{channel}]"],
+                        f"release: TFLClient 1.8.9 {manifest['release']} [{channel}]"],
                        cwd=ROOT,check=True)
         subprocess.run(["git","push","origin","HEAD:main"],cwd=ROOT,check=True)
 
@@ -150,7 +150,7 @@ def finish(uploaded: Path, candidate: Path, channel: str, approval: bool) -> Non
                  "GitHub Release asset mismatch: "+path.name)
     gh("release","edit",TAG,"--draft=false","--prerelease")
     commit_catalog(candidate,public_key,manifest,channel)
-    print(f"SUCCESS: public verified TFL Selection 1.8.9 {channel} Release and signed catalog")
+    print(f"SUCCESS: public verified TFLClient 1.8.9 {channel} Release and signed catalog")
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)

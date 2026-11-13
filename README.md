@@ -1,8 +1,17 @@
-# TFL Selection — official, locked Minecraft distributions
+# TFL Selection — biblioteca de clientes modificados
 
 [![TFL Client — sitio web oficial](https://launcher.tflives.com/images/social/tfl-client-es.png)](https://launcher.tflives.com)
 
-Los clientes oficiales de Minecraft modificados por **TFLives** para ofrecer distintas experiencias de juego mediante **TFL Client**.
+La biblioteca donde **TFLives** publica sus clientes modificados de Minecraft. **TFLClient** es el cliente; **TFL Client** es el launcher que lo instala.
+
+## Nombres del ecosistema
+
+**TFL Client** es el launcher. **TFL Selection** es la biblioteca donde TFLives
+publica sus clientes modificados. **TFLClient** es el cliente que se instala y se
+utiliza dentro de Minecraft; **TFL Core** impulsa sus funciones.
+
+Consulta [los nombres y términos](docs/PRODUCT_NAMES.md) para mantener esta
+distinción en todo el proyecto.
 
 ## Web oficial · [launcher.tflives.com](https://launcher.tflives.com)
 
@@ -18,14 +27,14 @@ Para conocer TFL Selection, explorar sus características y consultar cómo inst
 
 ## Repository overview
 
-This is the **public source-of-truth** for TFL Selection, the official Minecraft mod selection installed by the open-source **TFL Client** launcher.
+This is the **public source-of-truth** for TFL Selection, the library of TFLives modified Minecraft clients, including **TFLClient**, installed by the open-source **TFL Client** launcher.
 
 - Minecraft **1.8.9**: **Ornithe Gen2** (independent bootstrap integration required in the launcher).
 - Modern Minecraft: **Fabric**, starting with the **26.3** target.
-- **Locked Selection**: TFLives chooses the entire mod set. The launcher must not offer user-installed, removed, updated or overridden mods inside Selection.
+- **Managed clients in the library**: TFLives chooses the entire mod set. The launcher must not offer user-installed, removed, updated or overridden mods inside managed TFLClient instances.
 - **No Modrinth in the Selection install/update path.** Author-hosted, pinned GitHub Releases can serve rights-restricted mods directly; remaining redistributable JARs use TFL-controlled GitHub Releases. Every file is pinned by SHA-256.
 - **No VPS, API server or R2 required** for the distribution design.
-- **Auto-discovery:** newly published compatible Minecraft versions and updates to any Selection modpack appear through the signed catalog, **without publishing a new launcher build** for routine pack-content changes.
+- **Auto-discovery:** newly published compatible Minecraft versions and updates to any client in TFL Selection appear through the signed catalog, **without publishing a new launcher build** for routine pack-content changes.
 - **No .mrpack** for official Selection. Existing normal launcher instances and their capabilities are a separate product mode.
 - Players can alter Minecraft settings and keep worlds/saves, but not the managed mod selection.
 - Files delivered to the player remain inspectable; the goal is modest friction against casual copying, not unbreakable DRM.

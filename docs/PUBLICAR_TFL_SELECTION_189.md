@@ -1,4 +1,4 @@
-# Cierre de TFL Selection 1.8.9 — solo 11 mods originales
+# Cierre de TFLClient 1.8.9 — solo 11 mods originales
 
 El paquete del propietario se conserva **sin modificar versiones, nombres de instalación, tamaños ni SHA-256**. No se recompilan ni cambian estos JARs durante la publicación.
 
@@ -14,7 +14,7 @@ El paquete del propietario se conserva **sin modificar versiones, nombres de ins
 
 ### 1. Abrir el borrador que ya creé
 
-**El workflow de GitHub ya creó el borrador automáticamente y su ejecución finalizó con éxito.** Abre [la Release en borrador TFL Selection 1.8.9](https://github.com/TFLivesStudio/TFLClientSelection/releases/tag/untagged-4a4f69c3a1b08af7c4b4) y pulsa **Edit**. No necesitas ejecutar `create-draft` otra vez. Si el enlace no abre, entra en el repositorio → **Releases** → **Drafts** y busca la tag `selection-mc-1.8.9-ornithe-v0.1.0-preview.1`.
+**El workflow de GitHub ya creó el borrador automáticamente y su ejecución finalizó con éxito.** Abre [la Release en borrador TFLClient 1.8.9](https://github.com/TFLivesStudio/TFLClientSelection/releases/tag/untagged-4a4f69c3a1b08af7c4b4) y pulsa **Edit**. No necesitas ejecutar `create-draft` otra vez. Si el enlace no abre, entra en el repositorio → **Releases** → **Drafts** y busca la tag `selection-mc-1.8.9-ornithe-v0.1.0-preview.1`.
 
 ### 2. Adjuntar siete archivos exactos
 

@@ -47,13 +47,17 @@ def prepare(manifest_file: Path, current_catalog: Path, current_signature: Path,
         target = {"targetId": manifest["targetId"],
                   "minecraftVersion": manifest["minecraft"]["version"],
                   "loader": manifest["minecraft"]["loader"],
-                  "displayName": "TFL Selection " + manifest["minecraft"]["version"],
-                  "summary": "Official selection",
+                  "displayName": "TFLClient " + manifest["minecraft"]["version"],
+                  "summary": "TFLClient in the TFL Selection library",
                   "sortOrder": len(data["targets"]) + 1, "channels": {}}
         data["targets"].append(target)
     if (target["minecraftVersion"] != manifest["minecraft"]["version"] or
             target["loader"] != manifest["minecraft"]["loader"]):
         raise ValueError("Target's Minecraft/loader identity changed")
+    # Presentation metadata is updated only in this new generation, before signing.
+    name = target.get("displayName", "")
+    if name.startswith("TFL Selection "):
+        target["displayName"] = "TFLClient " + name[len("TFL Selection "):]
     target["channels"][channel] = {
         "release": manifest["release"],
         "tag": manifest["distribution"]["tag"],

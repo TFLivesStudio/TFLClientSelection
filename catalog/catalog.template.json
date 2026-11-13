@@ -8,7 +8,7 @@
       "minecraftVersion": "1.8.9",
       "loader": "ornithe-gen2",
       "channels": {},
-      "displayName": "TFL Selection 1.8.9",
+      "displayName": "TFLClient 1.8.9",
       "summary": "Minecraft 1.8.9 · Ornithe Gen2 · Java 25",
       "sortOrder": 1
     },
@@ -17,7 +17,7 @@
       "minecraftVersion": "26.3",
       "loader": "fabric",
       "channels": {},
-      "displayName": "TFL Selection 26.3",
+      "displayName": "TFLClient 26.3",
       "summary": "Minecraft 26.3 · Fabric · Java 25",
       "sortOrder": 2
     }

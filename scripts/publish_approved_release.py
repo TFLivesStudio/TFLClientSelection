@@ -98,7 +98,7 @@ def publish(candidate: Path, pubkey: Path, qa_record: Path, channel: str) -> Non
     # via signed catalog until we verify GitHub's bytes and commit catalog pointer.
     execute("gh", "release", "create", tag, "--repo", REPO,
             "--target", local_sha, "--draft",
-            "--title", "TFL Selection 1.8.9 " + data["release"],
+            "--title", "TFLClient 1.8.9 " + data["release"],
             "--notes-file", str(qa_record),
             str(manifest), str(signature), *upload)
     with tempfile.TemporaryDirectory(prefix="tfl-gh-verify-") as temporary:

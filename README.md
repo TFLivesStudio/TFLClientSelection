@@ -1,5 +1,23 @@
 # TFL Selection — official, locked Minecraft distributions
 
+[![TFL Client — sitio web oficial](https://launcher.tflives.com/images/social/tfl-client-es.png)](https://launcher.tflives.com)
+
+Los clientes oficiales de Minecraft modificados por **TFLives** para ofrecer distintas experiencias de juego mediante **TFL Client**.
+
+## Web oficial · [launcher.tflives.com](https://launcher.tflives.com)
+
+Para conocer TFL Selection, explorar sus características y consultar cómo instalar los clientes desde el launcher, empieza por la web oficial. Este repositorio reúne los catálogos, los manifiestos y la documentación de distribución.
+
+**[Conocer TFL Selection](https://launcher.tflives.com/selection)** · [Guía de instalación](https://launcher.tflives.com/ayuda/selection) · [Descargar el launcher](https://launcher.tflives.com/descargas)
+
+[Novedades](https://launcher.tflives.com/novedades) · [Ayuda](https://launcher.tflives.com/ayuda) · [Discord](https://discord.gg/tflives) · [Website in English](https://launcher.tflives.com/en)
+
+> La disponibilidad de los clientes se consulta en la web y en el launcher. La documentación técnica que sigue describe el estado de `main`, incluidos los borradores y los requisitos pendientes de publicación.
+
+---
+
+## Repository overview
+
 This is the **public source-of-truth** for TFL Selection, the official Minecraft mod selection installed by the open-source **TFL Client** launcher.
 
 - Minecraft **1.8.9**: **Ornithe Gen2** (independent bootstrap integration required in the launcher).

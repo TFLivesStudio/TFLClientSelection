@@ -186,6 +186,9 @@ def validate_manifest(data: dict, schema: dict, location: str = "drafts/example.
         notices = data.get("noticesAsset", {})
         if isinstance(notices, dict) and notices.get("assetName") != f"notices-{notices.get('sha256', '')}.zip":
             errors.append("published notices ZIP must be content-addressed")
+    icon = data.get("iconAsset")
+    if isinstance(icon, dict) and icon.get("assetName") != f"icon-{icon.get('sha256', '')}.png":
+        errors.append("official icon must be content-addressed")
     return errors
 
 

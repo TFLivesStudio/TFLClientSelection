@@ -250,6 +250,8 @@ def assemble(owner_assets: Path, result_dir: Path, public_upstream: bool = True)
         if "download" not in file:
             verify_one(file, assets, file["id"], errors)
     verify_one(manifest["noticesAsset"], assets, "notices", errors)
+    if "iconAsset" in manifest:
+        verify_one(manifest["iconAsset"], assets, "official icon", errors)
     verify_notices(assets, manifest, errors)
     must(not errors, "; ".join(errors))
     for mod_id in public:

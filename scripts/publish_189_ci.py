@@ -67,6 +67,8 @@ def validate_draft(uploaded: Path, candidate: Path) -> dict:
                 verify_one(e["origin"]["correspondingSourceAsset"],candidate/"assets",
                            "source:"+e["id"],errs)
     verify_one(manifest["noticesAsset"],candidate/"assets","notices",errs)
+    if "iconAsset" in manifest:
+        verify_one(manifest["iconAsset"], candidate/"assets", "official icon", errs)
     verify_notices(candidate/"assets",manifest,errs)
     must(not errs,"Candidate incomplete: "+"; ".join(errs))
     return manifest

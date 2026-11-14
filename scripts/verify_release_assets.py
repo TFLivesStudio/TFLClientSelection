@@ -77,6 +77,8 @@ def main() -> int:
             if source:
                 verify_one(source, staging, f"source:{entry['id']}", errors)
         verify_one(manifest["noticesAsset"], staging, "notices", errors)
+        if "iconAsset" in manifest:
+            verify_one(manifest["iconAsset"], staging, "official icon", errors)
         verify_notices(staging, manifest, errors)
         if errors:
             raise ValueError("; ".join(errors))

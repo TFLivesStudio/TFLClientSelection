@@ -36,6 +36,23 @@ class Contracts(unittest.TestCase):
         for path in (ROOT / "drafts").glob("*.json"):
             self.assertEqual(validate_manifest(load_json(path), SCHEMA, "drafts/" + path.name), [])
 
+    def test_optional_official_visual_metadata(self):
+        x = copy.deepcopy(DRAFT)
+        digest = "b" * 64
+        x["iconAsset"] = {"assetName": f"icon-{digest}.png", "sha256": digest, "bytes": 1024}
+        x["capabilities"] = {"shaders": True}
+        self.assertEqual(validate_manifest(x, SCHEMA), [])
+        x["iconAsset"]["assetName"] = "../icon.png"
+        self.assertTrue(validate_manifest(x, SCHEMA))
+        x["iconAsset"]["assetName"] = "icon-" + "c" * 64 + ".png"
+        self.assertTrue(any("content-addressed" in e for e in validate_manifest(x, SCHEMA)))
+        x["iconAsset"]["assetName"] = f"icon-{digest}.png"
+        x["iconAsset"]["bytes"] = 1024 * 1024 + 1
+        self.assertTrue(validate_manifest(x, SCHEMA))
+        x["iconAsset"]["bytes"] = 1024
+        x["capabilities"]["shaders"] = "yes"
+        self.assertTrue(validate_manifest(x, SCHEMA))
+
     def test_empty_catalog_is_not_a_release(self):
         self.assertEqual(validate_catalog(load_json(ROOT / "catalog" / "catalog.template.json"), CATALOG), [])
 
